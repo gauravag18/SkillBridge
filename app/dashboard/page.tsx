@@ -10,10 +10,7 @@ import {
   CheckCircle2,
   ArrowRight,
   BarChart3,
-  Calendar,
 } from "lucide-react";
-
-/* ---------------- NAVBAR ---------------- */
 
 function Navbar() {
   return (
@@ -33,8 +30,6 @@ function Navbar() {
     </header>
   );
 }
-
-/* ---------------- PAGE ---------------- */
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(false);
@@ -76,79 +71,121 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-6 py-10">
 
-        {/* ---------------- HERO SCORE ---------------- */}
-        <div className="card p-8 lg:p-10 shadow-sm flex flex-col lg:flex-row items-center justify-between gap-10 mb-10">
+        {/* TOP DASHBOARD ROW */}
+        <div className="grid lg:grid-cols-3 gap-8 items-stretch mb-10">
 
-          {/* Score Circle */}
-          <div className="flex items-center gap-8">
-            <div className="relative h-40 w-40 flex items-center justify-center">
-              <svg className="absolute inset-0 -rotate-90" viewBox="0 0 120 120">
-                <circle
-                  cx="60"
-                  cy="60"
-                  r="52"
-                  stroke="#f1f5f9"
-                  strokeWidth="10"
-                  fill="none"
-                />
-                <circle
-                  cx="60"
-                  cy="60"
-                  r="52"
-                  stroke="url(#grad)"
-                  strokeWidth="10"
-                  fill="none"
-                  strokeDasharray={`${readiness * 3.27} 327`}
-                  strokeLinecap="round"
-                />
-                <defs>
-                  <linearGradient id="grad">
-                    <stop offset="0%" stopColor="#ff8a5c" />
-                    <stop offset="100%" stopColor="#ff6b35" />
-                  </linearGradient>
-                </defs>
-              </svg>
+          {/* LEFT: MATCH SCORE */}
+          <div className="lg:col-span-2 card p-8 flex flex-col lg:flex-row items-center justify-between gap-10">
 
-              <div className="text-center">
-                <div className="text-5xl font-semibold text-brand">{readiness}</div>
-                <div className="text-sm text-muted">Match Score</div>
+            <div className="flex items-center gap-8">
+
+              {/* Score Circle */}
+              <div className="relative h-40 w-40 flex items-center justify-center">
+                <svg className="absolute inset-0 -rotate-90" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="52" stroke="#f1f5f9" strokeWidth="10" fill="none"/>
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="52"
+                    stroke="url(#grad)"
+                    strokeWidth="10"
+                    fill="none"
+                    strokeDasharray={`${readiness * 3.27} 327`}
+                    strokeLinecap="round"
+                  />
+                  <defs>
+                    <linearGradient id="grad">
+                      <stop offset="0%" stopColor="#ff8a5c" />
+                      <stop offset="100%" stopColor="#ff6b35" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+
+                <div className="absolute inset-0 flex flex-col items-center justify-center leading-none">
+  <span className="text-[44px] font-semibold text-brand tracking-tight mb-6 translate-y-[2px]">
+    {readiness}
+  </span>
+</div>
+
+              </div>
+
+              {/* Text */}
+              <div>
+                <h1 className="text-2xl font-semibold text-slate-900 mb-2">
+                  Career Readiness
+                </h1>
+                <p className="text-muted">
+                  Based on your profile vs {targetRole} expectations
+                </p>
               </div>
             </div>
 
-            <div>
-              <h1 className="text-2xl font-semibold text-slate-900 mb-2">
-                Career Readiness
-              </h1>
-              <p className="text-muted">
-                Based on your profile vs {targetRole} role expectations
-              </p>
+            {/* Actions */}
+            <div className="flex flex-col gap-3 w-full lg:w-60">
+              <Button className="bg-brand text-white h-11 rounded-lg">
+                <Upload className="mr-2 h-4 w-4" />
+                Upload Resume
+              </Button>
+
+              <Button variant="outline" className="h-11 rounded-lg border-soft">
+                <RefreshCcw className="mr-2 h-4 w-4" />
+                Re-analyze
+              </Button>
+
+              <Button
+                onClick={generatePlan}
+                className="h-11 rounded-lg"
+                variant="outline"
+              >
+                View Learning Plan
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex flex-col gap-3 w-full lg:w-[240px]">
-            <Button className="bg-brand text-white h-11 rounded-lg">
-              <Upload className="mr-2 h-4 w-4" />
-              Upload Resume
+          {/* RIGHT: QUICK SUMMARY */}
+          <div className="card p-6 flex flex-col justify-between">
+
+            <div>
+              <h3 className="font-semibold text-lg mb-4">Quick Summary</h3>
+
+              <div className="space-y-4 text-sm">
+
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span>Interview Readiness</span>
+                    <span className="text-brand font-medium">72%</span>
+                  </div>
+                  <div className="progress h-2">
+                    <div className="progress-fill" style={{width:"72%"}}/>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span>Top Gap</span>
+                    <span className="text-brand font-medium">System Design</span>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <span>Estimated Ready Time</span>
+                    <span className="text-muted">~ 3 Weeks</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <Button className="mt-6 bg-brand text-white h-11 rounded-lg">
+              Start Preparation
             </Button>
 
-            <Button variant="outline" className="h-11 rounded-lg border-soft">
-              <RefreshCcw className="mr-2 h-4 w-4" />
-              Re-analyze
-            </Button>
-
-            <Button
-              onClick={generatePlan}
-              className="h-11 rounded-lg"
-              variant="outline"
-            >
-              View Learning Plan
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
           </div>
         </div>
 
-        {/* ---------------- MAIN GRID ---------------- */}
+        {/*MAIN GRID*/}
         <div className="grid lg:grid-cols-3 gap-8 items-start">
 
           {/* LEFT COLUMN */}
@@ -170,10 +207,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="progress h-2">
-                      <div
-                        className="progress-fill"
-                        style={{ width: `${gap.percentage}%` }}
-                      />
+                      <div className="progress-fill" style={{ width: `${gap.percentage}%` }} />
                     </div>
                   </div>
                 ))}
@@ -211,46 +245,31 @@ export default function DashboardPage() {
                 ))}
               </div>
             </div>
+
           </div>
 
           {/* RIGHT SIDEBAR */}
           <div className="space-y-6">
 
-            {/* Insight */}
-            <div className="card p-6">
-              <h3 className="font-semibold text-lg mb-3">Insight</h3>
-              <p className="text-sm text-muted leading-relaxed">
-                You're close to interview-ready. Improving System Design and DSA
-                could significantly increase your interview success rate.
-              </p>
-            </div>
-
-            {/* Top Gap */}
-            <div className="card p-6">
-              <h3 className="font-semibold text-lg mb-4">Top Skill Gap</h3>
-
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span>System Design</span>
-                  <span className="text-brand font-medium">High</span>
-                </div>
-
-                <div className="progress h-2">
-                  <div className="progress-fill" style={{ width: "80%" }} />
-                </div>
-              </div>
-            </div>
-
-            {/* Reminder */}
             <div className="card p-6">
               <h3 className="font-semibold text-lg mb-3">Recommendation</h3>
               <p className="text-sm text-muted">
-                Practice 2 DSA problems daily and study 1 system design concept
-                per day to reach 85% readiness within ~3 weeks.
+                Focus on System Design and DSA practice daily to cross 85% readiness.
               </p>
             </div>
 
+            <div className="card p-6">
+              <h3 className="font-semibold text-lg mb-4">Next Step</h3>
+              <p className="text-sm text-muted mb-4">
+                Start structured preparation roadmap designed for SDE interviews.
+              </p>
+              <Button className="w-full bg-brand text-white">
+                Generate 30-Day Plan
+              </Button>
+            </div>
+
           </div>
+
         </div>
       </main>
     </div>
