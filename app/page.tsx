@@ -83,7 +83,7 @@ const ReviewCard = ({
     <figure
       className={cn(
         "relative h-full w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
-        "border-slate-200 bg-white hover:border-[#7091e6] hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+        "border-slate-200 bg-white hover:border-border-strong hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
       )}
     >
       <div className="flex flex-row items-center gap-2">
@@ -137,7 +137,7 @@ export default function Home() {
 
             <Link
               href="/onboard"
-              className="px-4 py-2 bg-[#3d52a0] text-white font-semibold rounded-lg hover:bg-[#2f417f] transition-all hover:shadow-lg text-xs"
+              className="px-4 py-2 bg-[#3d52a0] text-white font-semibold rounded-lg hover:bg-primary-hover transition-all hover:shadow-lg text-xs"
             >
               Get Started
             </Link>
@@ -151,8 +151,8 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             {/* Left - Text */}
             <div className="text-left space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#e3ecff] border border-[#adbbda] rounded-full text-xs font-medium text-[#3d52a0] animate-fade-in">
-                <span className="w-1.5 h-1.5 bg-[#7091e6] rounded-full animate-pulse"></span>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#e3ecff] border border-border-soft rounded-full text-xs font-medium text-[#3d52a0] animate-fade-in">
+                <span className="w-1.5 h-1.5 bg-border-strong rounded-full animate-pulse"></span>
                 AI Powered Career Intelligence
               </div>
 
@@ -168,7 +168,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-3 pt-1">
                 <Link
                   href="/onboard"
-                  className="group inline-flex items-center justify-center px-6 py-3 bg-[#3d52a0] text-white font-semibold rounded-lg hover:bg-[#2f417f] transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                  className="group inline-flex items-center justify-center px-6 py-3 bg-[#3d52a0] text-white font-semibold rounded-lg hover:bg-primary-hover transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 >
                   Start Your Analysis
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
@@ -184,11 +184,11 @@ export default function Home() {
 
               <div className="flex items-center gap-6 pt-2 text-xs text-slate-600">
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="text-[#7091e6]" size={14} />
+                  <CheckCircle2 className="text-border-strong" size={14} />
                   No credit card required
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="text-[#7091e6]" size={14} />
+                  <CheckCircle2 className="text-border-strong" size={14} />
                   Instant results
                 </span>
               </div>
@@ -196,7 +196,7 @@ export default function Home() {
 
             {/* Right - Animated Beam */}
             <div className="relative flex items-center justify-center" ref={containerRef}>
-              <div className="relative h-[360px] w-full max-w-lg overflow-hidden rounded-xl bg-[#f0f3fa] border border-slate-200 p-8">
+              <div className="relative h-90 w-full max-w-lg overflow-hidden rounded-xl bg-[#f0f3fa] border border-slate-200 p-8">
                 {/* Center - User profile */}
                 <Circle
                   ref={centerRef}
@@ -281,7 +281,7 @@ export default function Home() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="group bg-white rounded-xl p-6 border border-slate-200 hover:border-[#7091e6] hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className="group bg-white rounded-xl p-6 border border-slate-200 hover:border-border-strong hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="w-12 h-12 rounded-lg bg-[#e3ecff] flex items-center justify-center mb-4 group-hover:bg-[#d1e0ff] transition-colors">
                   <item.icon className="text-[#3d52a0]" size={24} />
@@ -306,7 +306,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="relative flex h-[380px] w-full flex-row items-center justify-center gap-4 overflow-hidden [perspective:400px]">
+          <div className="relative flex h-95 w-full flex-row items-center justify-center gap-4 overflow-hidden perspective-[400px]">
             <div
               className="flex flex-row items-center gap-4"
               style={{
@@ -358,8 +358,8 @@ export default function Home() {
                   "Continuous updates aligned with industry evolution",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-2.5">
-                    <div className="mt-0.5 w-5 h-5 rounded-full bg-[#e3ecff] flex items-center justify-center flex-shrink-0">
-                      <CheckCircle2 className="text-[#3d52a0]" size={12} />
+                    <div className="mt-0.5 w-5 h-5 rounded-full bg-[#e3ecff] flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="text-border-strong" size={12} />
                     </div>
                     <p className="text-slate-700 text-sm">{item}</p>
                   </div>
@@ -375,8 +375,8 @@ export default function Home() {
                 { icon: CheckCircle2, title: "Satisfaction", value: "4.9/5" },
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-lg p-5 border border-slate-200">
-                  <item.icon className="text-[#7091e6] mb-2" size={22} />
-                  <div className="text-2xl font-bold text-[#3d52a0] mb-0.5">{item.value}</div>
+                  <item.icon className="text-border-strong mb-2" size={22} />
+                  <div className="text-2xl font-bold text-primary mb-0.5">{item.value}</div>
                   <div className="text-xs text-slate-600">{item.title}</div>
                 </div>
               ))}
@@ -387,41 +387,9 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="py-10 border-t border-slate-200 bg-white">
-        <div className="max-w-6xl mx-auto px-4 lg:px-6">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-bold text-lg text-slate-900">SkillBridge</span>
-              </div>
-              <p className="text-slate-600 text-sm max-w-md">
-                Empowering tech professionals with AI driven career intelligence and personalized growth strategies.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-slate-900 mb-3 text-sm">Product</h3>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li><Link href="#features" className="hover:text-[#3d52a0] transition-colors text-xs">Features</Link></li>
-                <li><Link href="#process" className="hover:text-[#3d52a0] transition-colors text-xs">How It Works</Link></li>
-                <li><Link href="#testimonials" className="hover:text-[#3d52a0] transition-colors text-xs">Testimonials</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-slate-900 mb-3 text-sm">Company</h3>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li><Link href="/about" className="hover:text-[#3d52a0] transition-colors text-xs">About</Link></li>
-                <li><Link href="/privacy" className="hover:text-[#3d52a0] transition-colors text-xs">Privacy</Link></li>
-                <li><Link href="/terms" className="hover:text-[#3d52a0] transition-colors text-xs">Terms</Link></li>
-                <li><Link href="/contact" className="hover:text-[#3d52a0] transition-colors text-xs">Contact</Link></li>
-              </ul>
-            </div>
-          </div>
-
           <div className="pt-6 border-t border-slate-200 text-center text-xs text-slate-600">
             <p>© {new Date().getFullYear()} SkillBridge. All rights reserved.</p>
           </div>
-        </div>
       </footer>
 
       <style jsx>{`
