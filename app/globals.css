@@ -1,129 +1,114 @@
 @import "tailwindcss";
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.8rem;
 
-  /* Base colors – orange + white theme */
-  --color-background: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-hover: #fff7f0;
+  /* Brand */
+  --brand: #ff6b35;
+  --brand-hover: #e85a28;
+  --brand-soft: #fff3ed;
+  --brand-soft-2: #ffebe1;
 
-  --color-primary: #f97316;       /* orange-600 */
-  --color-primary-hover: #ea580c; /* orange-700 */
-  --color-primary-soft: #fff3ed;  /* very light orange */
+  /* Backgrounds */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-hover: #fffaf7;
 
-  --color-accent: #fb923c;        /* orange-400 */
-  --color-accent-soft: #fffaf7;
+  /* Text */
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
 
-  --color-foreground: #1f2937;
-  --color-muted: #4b5563;
-  --color-subtle: #6b7280;
+  /* Borders */
+  --border: #e5e7eb;
+  --border-soft: #f1f5f9;
 
-  --color-border: #fed7aa;
-  --color-border-strong: #f97316;
+  /* Status */
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
   font-family: var(--font-geist-sans, Inter, system-ui, sans-serif);
-  background: #ffffff;
-  color: var(--color-foreground);
-  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
 }
 
-/* Remove grain overlay if you don't want it – comment out if needed */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-  opacity: 0.03; /* very subtle */
-  z-index: 0;
+.dark {
+  display: none !important;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: all 0.25s ease;
 }
 
-/* Surfaces */
-.bg-white,
-[class*="bg-white"],
-.bg-surface,
-.bg-card {
-  background: #ffffff !important;
-  border: 1px solid #fed7aa !important;
-}
-
-/* Shadows with light orange tint */
-.shadow-sm,
-.shadow-lg,
-.shadow-xl {
+.card:hover {
+  border-color: #ffe2d5;
   box-shadow:
-    0 4px 12px rgba(249,115,22,0.08),
-    0 2px 4px rgba(0,0,0,0.06) !important;
+    0 10px 22px rgba(0,0,0,0.06),
+    0 4px 10px rgba(0,0,0,0.04);
+}
+.btn-primary {
+  background: var(--brand);
+  color: white;
+  border-radius: 10px;
+  transition: 0.2s ease;
 }
 
-/* Hover lift */
-.rounded-xl:hover,
-.rounded-lg:hover {
-  transform: translateY(-3px);
-  box-shadow:
-    0 10px 20px rgba(249,115,22,0.12),
-    0 4px 8px rgba(0,0,0,0.08) !important;
+.btn-primary:hover {
+  background: var(--brand-hover);
 }
 
-/* Borders */
-.border,
-[class*="border-"] {
-  border-color: #fed7aa !important;
+.btn-soft {
+  background: var(--brand-soft);
+  color: var(--brand);
 }
 
-/* Orange fills */
-.bg-\[\#ff6b35\],
-.bg-\[\#f97316\],
-[class*="bg-orange"],
-.bg-primary {
-  background: #f97316 !important;
+.btn-soft:hover {
+  background: var(--brand-soft-2);
+}
+input, textarea, select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+  background: white;
+  transition: all 0.2s ease;
 }
 
-.bg-\[\#ff6b35\]:hover,
-.bg-primary:hover {
-  background: #ea580c !important;
+input:focus, textarea:focus, select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(255,107,53,0.15);
 }
 
-/* Light orange backgrounds */
-.bg-\[\#fff3ed\],
-.bg-\[\#fffaf7\],
-.bg-\[\#fffcfa\] {
-  background: #fffaf7 !important;
+
+.bg-brand { background: var(--brand); }
+.bg-brand-soft { background: var(--brand-soft); }
+.bg-brand-soft-2 { background: var(--brand-soft-2); }
+
+.text-brand { color: var(--brand); }
+
+.border-soft { border-color: var(--border); }
+
+.text-muted { color: var(--text-muted); }
+.text-subtle { color: var(--text-subtle); }
+
+/* Progress bar */
+.progress {
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
-/* Text */
-.text-slate-900,
-.text-foreground { color: #1f2937 !important; }
-.text-slate-700 { color: #374151 !important; }
-.text-slate-600 { color: #4b5563 !important; }
-.text-\[\#ff6b35\],
-.text-primary { color: #f97316 !important; }
-
-/* Focus & hover */
-.focus\:border-\[\#ff6b35\]:focus,
-.focus\:ring-\[\#ff6b35\]:focus {
-  border-color: #f97316 !important;
-  --tw-ring-color: rgba(249,115,22,0.3) !important;
-}
-
-.hover\:border-\[\#ff6b35\]:hover,
-.hover\:text-\[\#ff6b35\]:hover {
-  border-color: #f97316 !important;
-  color: #f97316 !important;
-}
-
-header {
-  background: #ffffff !important;
-  border-bottom: 1px solid #fed7aa !important;
-}
-
-/* Remove blue gradients */
-.bg-linear-to-b,
-.bg-linear-to-t,
-.bg-linear-to-r,
-.bg-linear-to-l {
-  background: transparent !important;
+.progress-fill {
+  background: var(--brand);
+  height: 100%;
+  transition: width 0.6s ease;
 }
