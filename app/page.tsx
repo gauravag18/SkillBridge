@@ -112,8 +112,7 @@ export default function Home() {
   const centerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
-      {/* Header */}
+    <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -124,20 +123,20 @@ export default function Home() {
 
           <div className="flex items-center gap-6">
             <nav className="hidden md:flex items-center gap-6">
-              <Link href="#features" className="text-slate-600 hover:text-[#3d52a0] font-medium transition-colors text-sm">
+              <Link href="#features" className="text-slate-600 hover:text-[#ff6b35] font-medium transition-colors text-sm">
                 Features
               </Link>
-              <Link href="#process" className="text-slate-600 hover:text-[#3d52a0] font-medium transition-colors text-sm">
+              <Link href="#process" className="text-slate-600 hover:text-[#ff6b35] font-medium transition-colors text-sm">
                 How It Works
               </Link>
-              <Link href="#testimonials" className="text-slate-600 hover:text-[#3d52a0] font-medium transition-colors text-sm">
+              <Link href="#testimonials" className="text-slate-600 hover:text-[#ff6b35] font-medium transition-colors text-sm">
                 Testimonials
               </Link>
             </nav>
 
             <Link
               href="/onboard"
-              className="px-4 py-2 bg-[#3d52a0] text-white font-semibold rounded-lg hover:bg-primary-hover transition-all hover:shadow-lg text-xs"
+              className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all hover:shadow-lg text-xs"
             >
               Get Started
             </Link>
@@ -151,14 +150,14 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             {/* Left - Text */}
             <div className="text-left space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#e3ecff] border border-border-soft rounded-full text-xs font-medium text-[#3d52a0] animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#fff3ed] border border-border-soft rounded-full text-xs font-medium text-[#ff6b35] animate-fade-in">
                 <span className="w-1.5 h-1.5 bg-border-strong rounded-full animate-pulse"></span>
                 AI Powered Career Intelligence
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] text-slate-900">
                 Bridge the Gap Between
-                <span className="block text-[#3d52a0] mt-1">Skills & Success</span>
+                <span className="block text-[#ff6b35] mt-1">Skills & Success</span>
               </h1>
 
               <p className="text-base text-slate-600 leading-relaxed max-w-xl">
@@ -168,7 +167,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-3 pt-1">
                 <Link
                   href="/onboard"
-                  className="group inline-flex items-center justify-center px-6 py-3 bg-[#3d52a0] text-white font-semibold rounded-lg hover:bg-primary-hover transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                  className="group inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 >
                   Start Your Analysis
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
@@ -176,7 +175,7 @@ export default function Home() {
 
                 <Link
                   href="#process"
-                  className="inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#3d52a0] hover:text-[#3d52a0] transition-all text-sm"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
                 >
                   See How It Works
                 </Link>
@@ -196,13 +195,13 @@ export default function Home() {
 
             {/* Right - Animated Beam */}
             <div className="relative flex items-center justify-center" ref={containerRef}>
-              <div className="relative h-90 w-full max-w-lg overflow-hidden rounded-xl bg-[#f0f3fa] border border-slate-200 p-8">
+              <div className="relative h-90 w-full max-w-lg overflow-hidden rounded-xl bg-[#fffaf7] border border-slate-200 p-8">
                 {/* Center - User profile */}
                 <Circle
                   ref={centerRef}
-                  className="size-16 border-[#3d52a0] bg-[#e3ecff] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xl"
+                  className="size-16 border-[#ff6b35] bg-[#fff3ed] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xl"
                 >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="#3d52a0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#ff6b35" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
                   </svg>
@@ -217,7 +216,7 @@ export default function Home() {
                 <Circle ref={div6Ref} className="absolute top-20 right-20"><Icons.leetcode /></Circle>
                 <Circle ref={div7Ref} className="absolute bottom-16 right-6"><Icons.linkedin /></Circle>
 
-                {/* Animated Beams - using accent blue */}
+                {/* Animated Beams - using orange */}
                 <AnimatedBeam containerRef={containerRef} fromRef={div1Ref} toRef={centerRef} curvature={-80} />
                 <AnimatedBeam containerRef={containerRef} fromRef={div2Ref} toRef={centerRef} curvature={80} reverse />
                 <AnimatedBeam containerRef={containerRef} fromRef={div3Ref} toRef={centerRef} curvature={-60} />
@@ -232,7 +231,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section id="stats" className="py-10 bg-[#f8f9fc] border-y border-slate-200">
+      <section id="stats" className="py-10 bg-[#fffcfa] border-y border-slate-200">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -241,7 +240,7 @@ export default function Home() {
               { number: "30 Days", label: "Average Timeline" },
             ].map((stat, i) => (
               <div key={i} className="text-center animate-fade-in" style={{ animationDelay: `${i * 100}ms` }}>
-                <div className="text-3xl font-bold text-[#3d52a0] mb-1">{stat.number}</div>
+                <div className="text-3xl font-bold text-[#ff6b35] mb-1">{stat.number}</div>
                 <div className="text-slate-600 font-medium text-sm">{stat.label}</div>
               </div>
             ))}
@@ -283,8 +282,8 @@ export default function Home() {
                 key={i}
                 className="group bg-white rounded-xl p-6 border border-slate-200 hover:border-border-strong hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
-                <div className="w-12 h-12 rounded-lg bg-[#e3ecff] flex items-center justify-center mb-4 group-hover:bg-[#d1e0ff] transition-colors">
-                  <item.icon className="text-[#3d52a0]" size={24} />
+                <div className="w-12 h-12 rounded-lg bg-[#fff3ed] flex items-center justify-center mb-4 group-hover:bg-[#ffebe1] transition-colors">
+                  <item.icon className="text-[#ff6b35]" size={24} />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
                 <p className="text-slate-600 leading-relaxed text-sm">{item.desc}</p>
@@ -339,7 +338,7 @@ export default function Home() {
       </section>
 
       {/* Value Propositions */}
-      <section className="py-16 bg-[#f8f9fc]">
+      <section className="py-16 bg-[#fffcfa]">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -358,7 +357,7 @@ export default function Home() {
                   "Continuous updates aligned with industry evolution",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-2.5">
-                    <div className="mt-0.5 w-5 h-5 rounded-full bg-[#e3ecff] flex items-center justify-center shrink-0">
+                    <div className="mt-0.5 w-5 h-5 rounded-full bg-[#fff3ed] flex items-center justify-center shrink-0">
                       <CheckCircle2 className="text-border-strong" size={12} />
                     </div>
                     <p className="text-slate-700 text-sm">{item}</p>
@@ -376,7 +375,7 @@ export default function Home() {
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-lg p-5 border border-slate-200">
                   <item.icon className="text-border-strong mb-2" size={22} />
-                  <div className="text-2xl font-bold text-primary mb-0.5">{item.value}</div>
+                  <div className="text-2xl font-bold text-[#ff6b35] mb-0.5">{item.value}</div>
                   <div className="text-xs text-slate-600">{item.title}</div>
                 </div>
               ))}

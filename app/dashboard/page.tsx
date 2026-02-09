@@ -1,244 +1,354 @@
+"use client";
+
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
-  Brain, Target, Flame, RotateCcw, ChevronRight, Upload, FileText, Sparkles,
+  Upload,
+  RefreshCcw,
+  Target,
+  TrendingUp,
+  AlertCircle,
+  FileText,
+  Zap,
+  CheckCircle2,
+  XCircle,
+  ArrowRight,
+  Sparkles,
+  Calendar,
+  BarChart3,
 } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import ProgressRing from "@/components/ProgressRing";
-import { mockAnalysis } from "@/lib/mockData";
+import { cn } from "@/lib/utils";
 
-const Dashboard = () => {
-  const navigate = useNavigate();
-  const [resumeFile, setResumeFile] = useState<string>("");
-  const [analyzed, setAnalyzed] = useState(true); // mock: already analyzed
-  const [analyzing, setAnalyzing] = useState(false);
+function Navbar() {
+  return (
+    <header className="border-b border-orange-100 bg-white/90 backdrop-blur-md sticky top-0 z-50 h-16 flex items-center shadow-sm">
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 w-full flex items-center justify-between">
+        <Link href="/" className="font-bold text-xl tracking-tight text-slate-900">
+          SkillBridge
+        </Link>
+        <Link
+          href="/"
+          className="px-5 py-2.5 bg-orange-600 text-white font-medium rounded-full hover:bg-orange-700 transition-all shadow-sm hover:shadow-md text-sm"
+        >
+          Back to Home
+        </Link>
+      </div>
+    </header>
+  );
+}
 
-  const completedTasks = 4;
-  const progress = Math.round((completedTasks / 30) * 100);
-  const streak = 4;
-  const hasPlan = true; // mock
+export default function DashboardPage() {
+  const [loading, setLoading] = useState(false);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) setResumeFile(file.name);
-  };
+  const readiness = 72;
+  const targetRole = "Software Engineer";
 
-  const handleAnalyze = () => {
-    setAnalyzing(true);
+  const strengths = [
+    "Strong problem-solving with 300+ LeetCode problems",
+    "Full-stack experience with MERN stack",
+    "Good understanding of REST APIs",
+    "Active GitHub profile with 15+ projects",
+  ];
+
+  const weaknesses = [
+    "Limited system design knowledge",
+    "No experience with cloud platforms (AWS/Azure)",
+    "Weak DSA fundamentals in graphs and DP",
+    "Missing database optimization skills",
+  ];
+
+  const skillGaps = [
+    { skill: "System Design", priority: "High", percentage: 80 },
+    { skill: "Data Structures & Algorithms", priority: "High", percentage: 65 },
+    { skill: "AWS/Cloud Computing", priority: "Medium", percentage: 55 },
+    { skill: "Database Optimization", priority: "Medium", percentage: 45 },
+    { skill: "Docker & Kubernetes", priority: "Low", percentage: 30 },
+  ];
+
+  const generatePlan = () => {
+    setLoading(true);
     setTimeout(() => {
-      setAnalyzing(false);
-      setAnalyzed(true);
+      window.location.href = "/plan";
     }, 1500);
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <Navbar />
-      <main className="container mx-auto px-4 pt-24 pb-16 max-w-5xl">
+
+      <main className="max-w-7xl mx-auto px-5 lg:px-8 py-10 lg:py-14">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-3xl font-extrabold mb-1">Welcome back! 👋</h1>
-          <p className="text-muted-foreground">Here's your career progress at a glance.</p>
-        </motion.div>
+        <div className="mb-12 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-200 rounded-full text-sm font-medium text-orange-700 mb-5">
+            <Zap size={16} className="fill-current" />
+            AI-Powered Career Analysis
+          </div>
+          <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight mb-4">
+            Career Readiness Dashboard
+          </h1>
+          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+            Your profile analysis for <strong className="text-orange-700">{targetRole}</strong> roles • India 2026 market
+          </p>
+        </div>
 
-        {/* Stats Row */}
-        {hasPlan && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
-          >
-            <div className="bg-card rounded-2xl border border-border shadow-card p-6 flex items-center gap-6">
-              <ProgressRing progress={progress} />
-              <div>
-                <p className="text-sm text-muted-foreground">30-Day Plan</p>
-                <p className="text-xl font-bold">{completedTasks}/30 Tasks</p>
-                <p className="text-xs text-muted-foreground mt-1">Keep going!</p>
+        {/* Top Stats – 3 equal cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {/* Readiness Score */}
+          <div className="bg-white rounded-2xl border border-orange-100 p-7 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
+            <div className="flex items-center justify-between mb-5">
+              <span className="text-sm font-medium text-slate-600">Readiness Score</span>
+              <div className="h-10 w-10 rounded-xl bg-orange-50 flex items-center justify-center">
+                <TrendingUp className="h-5 w-5 text-orange-600" />
               </div>
             </div>
+            <div className="flex items-baseline gap-2 mb-4">
+              <span className="text-5xl font-extrabold text-orange-600">{readiness}</span>
+              <span className="text-2xl font-bold text-orange-700/80">%</span>
+            </div>
+            <div className="w-full h-2.5 bg-orange-50 rounded-full overflow-hidden mb-3">
+              <div
+                className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full transition-all duration-1000"
+                style={{ width: `${readiness}%` }}
+              />
+            </div>
+            <p className="text-xs text-slate-500 mt-auto">Industry benchmark: ~75%</p>
+          </div>
 
-            <div className="bg-card rounded-2xl border border-border shadow-card p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl gradient-warm flex items-center justify-center">
-                  <Flame className="h-5 w-5 text-primary-foreground" />
+          {/* Target Role */}
+          <div className="bg-white rounded-2xl border border-orange-100 p-7 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
+            <div className="flex items-center justify-between mb-5">
+              <span className="text-sm font-medium text-slate-600">Target Role</span>
+              <div className="h-10 w-10 rounded-xl bg-orange-50 flex items-center justify-center">
+                <Target className="h-5 w-5 text-orange-600" />
+              </div>
+            </div>
+            <div className="mb-4">
+              <span className="text-2xl font-bold text-slate-900">{targetRole}</span>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-auto">
+              <span className="px-3 py-1.5 bg-orange-50 text-orange-700 text-xs font-medium rounded-full border border-orange-200">
+                Off-Campus 2026
+              </span>
+              <span className="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-medium rounded-full">
+                India Market
+              </span>
+            </div>
+          </div>
+
+          {/* Resume Status */}
+          <div className="bg-white rounded-2xl border border-orange-100 p-7 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
+            <div className="flex items-center justify-between mb-5">
+              <span className="text-sm font-medium text-slate-600">Resume</span>
+              <div className="h-10 w-10 rounded-xl bg-orange-50 flex items-center justify-center">
+                <FileText className="h-5 w-5 text-orange-600" />
+              </div>
+            </div>
+            <div className="mb-4">
+              <span className="text-sm text-slate-700">
+                Last analyzed: <span className="font-semibold text-slate-900">Today</span>
+              </span>
+            </div>
+            <Button
+              className="w-full bg-orange-600 hover:bg-orange-700 text-white h-11 rounded-full shadow-sm hover:shadow-md transition-all mt-auto"
+              size="sm"
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Upload New
+            </Button>
+          </div>
+        </div>
+
+        {/* Main Content – Skill Gaps + Generate Plan */}
+        <div className="grid lg:grid-cols-5 gap-6 lg:gap-8 mb-12 items-stretch">
+          {/* Skill Gaps – takes 3/5 */}
+          <div className="lg:col-span-3 bg-white rounded-2xl border border-orange-100 p-7 lg:p-9 shadow-sm flex flex-col">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-4">
+                <div className="h-11 w-11 rounded-xl bg-orange-50 flex items-center justify-center">
+                  <BarChart3 className="h-5 w-5 text-orange-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Current Streak</p>
-                  <p className="text-2xl font-bold">{streak} Days 🔥</p>
+                  <h2 className="text-2xl font-bold text-slate-900">Skill Gap Analysis</h2>
+                  <p className="text-sm text-slate-600">Priority areas to focus on</p>
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground">Complete today's task to keep your streak alive!</p>
+              <span className="px-4 py-2 bg-orange-50 text-orange-700 text-sm font-medium rounded-full border border-orange-200">
+                Top 5 Priorities
+              </span>
             </div>
 
-            <div className="bg-card rounded-2xl border border-border shadow-card p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl gradient-warm flex items-center justify-center">
-                  <Target className="h-5 w-5 text-primary-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Skill Match</p>
-                  <p className="text-2xl font-bold">{mockAnalysis.matchScore}%</p>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {mockAnalysis.suggestedRoles.map((r) => (
-                  <span key={r} className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-secondary text-secondary-foreground">
-                    {r}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        <div className="grid lg:grid-cols-5 gap-8">
-          {/* Left Column — Resume & Analyze */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="lg:col-span-2 space-y-6"
-          >
-            {/* Resume Upload */}
-            <div className="bg-card rounded-2xl border border-border shadow-card p-6">
-              <h2 className="font-bold text-lg flex items-center gap-2 mb-4">
-                <FileText className="h-5 w-5 text-primary" /> Resume
-              </h2>
-              <label className="flex flex-col items-center justify-center border-2 border-dashed border-border rounded-xl p-6 cursor-pointer hover:border-primary/50 hover:bg-secondary/50 transition-colors">
-                <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-                {resumeFile ? (
-                  <p className="text-sm font-medium">{resumeFile}</p>
-                ) : (
-                  <>
-                    <p className="text-sm font-medium">Upload resume</p>
-                    <p className="text-xs text-muted-foreground">PDF or DOCX, max 5MB</p>
-                  </>
-                )}
-                <input type="file" className="hidden" accept=".pdf,.docx" onChange={handleFileChange} />
-              </label>
-              <Button
-                className="w-full mt-4 shadow-warm"
-                onClick={handleAnalyze}
-                disabled={analyzing}
-              >
-                {analyzing ? (
-                  <>Analyzing…</>
-                ) : analyzed ? (
-                  <><RotateCcw className="mr-2 h-4 w-4" /> Re-analyze Resume</>
-                ) : (
-                  <><Sparkles className="mr-2 h-4 w-4" /> Analyze Resume</>
-                )}
-              </Button>
-            </div>
-
-            {/* Analysis Results */}
-            {analyzed && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-card rounded-2xl border border-border shadow-card p-6"
-              >
-                <h2 className="font-bold text-lg flex items-center gap-2 mb-4">
-                  <Brain className="h-5 w-5 text-primary" /> Skill Gaps
-                </h2>
-                <div className="space-y-2.5">
-                  {mockAnalysis.topGaps.map((gap) => (
-                    <div key={gap.skill} className="flex items-center justify-between p-3 rounded-xl bg-secondary/50 hover:bg-secondary transition-colors">
-                      <div className="flex items-center gap-3">
-                        <gap.icon className="h-4 w-4 text-primary" />
-                        <span className="text-sm font-medium">{gap.skill}</span>
-                      </div>
+            <div className="space-y-6 flex-1">
+              {skillGaps.map((gap, i) => (
+                <div key={i} className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-orange-50 text-orange-700 text-sm font-semibold">
+                        {i + 1}
+                      </span>
+                      <span className="text-lg font-semibold text-slate-900">{gap.skill}</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm text-slate-500">{gap.percentage}% gap</span>
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        className={cn(
+                          "px-3.5 py-1.5 text-xs font-semibold rounded-full",
                           gap.priority === "High"
-                            ? "bg-destructive/10 text-destructive"
+                            ? "bg-orange-100 text-orange-800 border border-orange-200"
                             : gap.priority === "Medium"
-                            ? "bg-accent/20 text-accent-foreground"
-                            : "bg-muted text-muted-foreground"
-                        }`}
+                            ? "bg-amber-100 text-amber-800 border border-amber-200"
+                            : "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                        )}
                       >
                         {gap.priority}
                       </span>
                     </div>
-                  ))}
+                  </div>
+                  <div className="h-3 bg-orange-50 rounded-full overflow-hidden">
+                    <div
+                      className={cn(
+                        "h-full rounded-full transition-all duration-1000 ease-out",
+                        gap.priority === "High"
+                          ? "bg-gradient-to-r from-orange-500 to-orange-600"
+                          : gap.priority === "Medium"
+                          ? "bg-gradient-to-r from-amber-500 to-amber-600"
+                          : "bg-gradient-to-r from-emerald-500 to-emerald-600"
+                      )}
+                      style={{ width: `${gap.percentage}%` }}
+                    />
+                  </div>
                 </div>
+              ))}
+            </div>
 
-                <Button
-                  className="w-full mt-5 shadow-warm"
-                  size="lg"
-                  onClick={() => navigate("/plan")}
+            <div className="mt-8 p-5 bg-orange-50/40 rounded-xl border border-orange-100">
+              <p className="text-slate-700 leading-relaxed">
+                <strong className="text-orange-800">Focus Recommendation:</strong> Start with High priority gaps.
+                System Design and strong DSA skills are still among the top requirements in 2026 product company interviews.
+              </p>
+            </div>
+          </div>
+
+          {/* Generate Plan – takes 2/5 – sticky on large screens */}
+          <div className="lg:col-span-2 flex flex-col">
+            <div className="bg-gradient-to-br from-orange-50/80 to-white border-2 border-orange-200 rounded-2xl p-8 lg:p-10 shadow-md hover:shadow-lg transition-all lg:sticky lg:top-24">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="h-12 w-12 rounded-xl bg-orange-100 flex items-center justify-center">
+                  <Calendar className="h-6 w-6 text-orange-600" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-900">Generate Your 30-Day Plan</h2>
+                  <p className="text-sm text-slate-600">AI-Personalized Roadmap</p>
+                </div>
+              </div>
+
+              <p className="text-slate-700 mb-7 leading-relaxed">
+                Receive a tailored 30-day roadmap to close your skill gaps and boost readiness to <strong className="text-orange-700">85%+</strong>.
+              </p>
+
+              <div className="space-y-4 mb-8 bg-white/70 rounded-xl p-6 border border-orange-100">
+                {[
+                  "Daily targeted LeetCode + DSA practice plan",
+                  "Structured system design case studies & patterns",
+                  "Hands-on cloud projects with real deployment",
+                  "Hand-picked high-quality learning resources",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-orange-600 shrink-0 mt-0.5" />
+                    <span className="text-slate-700 text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <Button
+                onClick={generatePlan}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white h-14 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+              >
+                {loading ? (
+                  <>
+                    <RefreshCcw className="mr-3 h-5 w-5 animate-spin" />
+                    Generating Plan...
+                  </>
+                ) : (
+                  <>
+                    Create My 30-Day Plan
+                    <ArrowRight className="ml-3 h-5 w-5" />
+                  </>
+                )}
+              </Button>
+
+              <div className="mt-6 text-center text-sm text-slate-500 flex items-center justify-center gap-2">
+                <Sparkles size={16} className="text-orange-600" />
+                <span>Powered by advanced AI • Tailored for {targetRole}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Strengths & Weaknesses – same height */}
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+          {/* Strengths */}
+          <div className="bg-white rounded-2xl border border-emerald-100 p-7 lg:p-9 shadow-sm hover:shadow-md transition-all flex flex-col">
+            <div className="flex items-center gap-4 mb-7">
+              <div className="h-12 w-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+                <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900">Your Key Strengths</h2>
+            </div>
+
+            <div className="space-y-4 flex-1">
+              {strengths.map((strength, i) => (
+                <div
+                  key={i}
+                  className="flex items-start gap-4 p-5 bg-emerald-50/40 rounded-xl border border-emerald-100 hover:border-emerald-200 transition-colors"
                 >
-                  {hasPlan ? (
-                    <>View / Re-generate 30-Day Plan <ChevronRight className="ml-2 h-4 w-4" /></>
-                  ) : (
-                    <>Generate 30-Day Plan <Sparkles className="ml-2 h-4 w-4" /></>
-                  )}
-                </Button>
-              </motion.div>
-            )}
-          </motion.div>
+                  <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle2 size={16} className="text-emerald-600" />
+                  </div>
+                  <p className="text-slate-700 leading-relaxed">{strength}</p>
+                </div>
+              ))}
+            </div>
 
-          {/* Right Column — Quick Plan Preview */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="lg:col-span-3"
-          >
-            {hasPlan ? (
-              <div className="bg-card rounded-2xl border border-border shadow-card p-6 h-full">
-                <div className="flex items-center justify-between mb-5">
-                  <h2 className="font-bold text-lg flex items-center gap-2">
-                    <Target className="h-5 w-5 text-primary" /> Your Roadmap
-                  </h2>
-                  <Button variant="outline" size="sm" onClick={() => navigate("/plan")}>
-                    View Full Plan <ChevronRight className="h-3 w-3 ml-1" />
-                  </Button>
-                </div>
-                <div className="grid grid-cols-4 gap-2">
-                  {Array.from({ length: 30 }, (_, i) => {
-                    const done = i < completedTasks;
-                    const today = i === completedTasks;
-                    return (
-                      <div
-                        key={i}
-                        className={`aspect-square rounded-lg flex items-center justify-center text-xs font-bold transition-colors cursor-pointer ${
-                          done
-                            ? "gradient-warm text-primary-foreground"
-                            : today
-                            ? "border-2 border-primary text-primary"
-                            : "bg-muted/50 text-muted-foreground"
-                        }`}
-                        onClick={() => navigate("/plan")}
-                      >
-                        {i + 1}
-                      </div>
-                    );
-                  })}
-                </div>
-                <p className="text-xs text-muted-foreground text-center mt-4">
-                  Click any day or "View Full Plan" to see tasks & check them off
-                </p>
+            <div className="mt-8 p-5 bg-emerald-50 rounded-xl border border-emerald-100">
+              <p className="text-slate-700">
+                <strong className="text-emerald-800">Keep building on these!</strong> These are your strongest assets in interviews and resume screening.
+              </p>
+            </div>
+          </div>
+
+          {/* Weaknesses */}
+          <div className="bg-white rounded-2xl border border-rose-100 p-7 lg:p-9 shadow-sm hover:shadow-md transition-all flex flex-col">
+            <div className="flex items-center gap-4 mb-7">
+              <div className="h-12 w-12 rounded-xl bg-rose-50 flex items-center justify-center">
+                <AlertCircle className="h-6 w-6 text-rose-600" />
               </div>
-            ) : (
-              <div className="bg-card rounded-2xl border border-border shadow-card p-12 flex flex-col items-center justify-center h-full text-center">
-                <div className="w-16 h-16 rounded-2xl gradient-warm-subtle flex items-center justify-center mb-4">
-                  <Sparkles className="h-8 w-8 text-primary" />
+              <h2 className="text-2xl font-bold text-slate-900">Areas to Improve</h2>
+            </div>
+
+            <div className="space-y-4 flex-1">
+              {weaknesses.map((weakness, i) => (
+                <div
+                  key={i}
+                  className="flex items-start gap-4 p-5 bg-rose-50/40 rounded-xl border border-rose-100 hover:border-rose-200 transition-colors"
+                >
+                  <div className="h-8 w-8 rounded-full bg-rose-100 flex items-center justify-center shrink-0 mt-0.5">
+                    <XCircle size={16} className="text-rose-600" />
+                  </div>
+                  <p className="text-slate-700 leading-relaxed">{weakness}</p>
                 </div>
-                <h3 className="font-bold text-lg mb-2">No Plan Yet</h3>
-                <p className="text-sm text-muted-foreground max-w-xs">
-                  Upload your resume and analyze it to generate your personalized 30-day action plan.
-                </p>
-              </div>
-            )}
-          </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-8 p-5 bg-rose-50 rounded-xl border border-rose-100">
+              <p className="text-slate-700">
+                <strong className="text-rose-800">Target these first:</strong> These gaps appear frequently in 2026 job descriptions for product-based companies.
+              </p>
+            </div>
+          </div>
         </div>
       </main>
     </div>
   );
-};
-
-export default Dashboard;
+}

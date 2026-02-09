@@ -20,7 +20,7 @@ export default function ResumeUploader({ onFileSelect }: Props) {
     <div className="space-y-5">
 
       {/* Upload Area */}
-      <div className="w-full border border-slate-200 rounded-xl bg-linear-to-b from-[#d0d9ed] to-[#879ff4] shadow-sm overflow-hidden">
+      <div className="w-full border border-slate-200 rounded-xl bg-linear-to-b from-[#f8faff] to-white shadow-sm overflow-hidden">
         <FileUpload onChange={handleFileUpload} />
       </div>
 

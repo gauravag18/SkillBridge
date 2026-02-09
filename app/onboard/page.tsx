@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import ResumeUploader from "@/components/ui/ResumeUploader";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2, CheckCircle2, FileText, Target, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,19 +31,19 @@ const skillCategories = {
 /* ---------- Navbar ---------- */
 function Navbar() {
   return (
-    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50 h-[60px] flex items-center">
-      <div className="max-w-6xl mx-auto px-4 lg:px-6 w-full flex items-center justify-between">
+    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50 h-15 flex items-center">
+      <div className="max-w-7xl mx-auto px-4 lg:px-6 w-full flex items-center justify-between">
 
         <Link href="/" className="font-bold text-lg text-slate-900">
           SkillBridge
         </Link>
 
         <Link
-              href="/"
-              className="px-4 py-2 bg-[#3d52a0] text-white font-semibold rounded-lg hover:bg-primary-hover transition-all hover:shadow-lg text-xs"
-            >
-              Back
-            </Link>
+          href="/"
+          className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg hover:bg-[#e55a28] transition-all hover:shadow-lg text-xs"
+        >
+          Back
+        </Link>
 
       </div>
     </header>
@@ -78,73 +78,92 @@ export default function OnboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f8fc]">
+    <div className="min-h-screen bg-[#fffcfa]">
 
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-4 lg:px-6 py-10">
+      <main className="max-w-7xl mx-auto px-4 lg:px-6 py-10">
 
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">
+        {/* Header Section */}
+        <div className="mb-10 text-center max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-xs font-medium text-[#ff6b35] mb-4">
+            <Zap size={14} className="fill-current" />
+            AI-Powered Analysis
+          </div>
+          <h1 className="text-4xl font-bold text-slate-900 mb-3">
             Create Your Career Profile
           </h1>
-          <p className="text-slate-700 mt-2">
-            Fill your details and upload resume. Our AI will analyze your readiness.
+          <p className="text-slate-600 text-lg">
+            Fill in your details and upload your resume. Our AI will analyze your readiness and create a personalized roadmap.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+        <div className="grid lg:grid-cols-3 gap-8 items-strech">
 
-          {/* LEFT PANEL */}
-          <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm space-y-8">
-
-            {/* Basic Info */}
-            <div className="space-y-6">
-              <h2 className="text-lg font-semibold text-slate-900">Basic Information</h2>
-
-              <div className="space-y-3">
-                <Label>Full Name</Label>
-                <Input
-                  placeholder="e.g. Gaurav Agarwalla"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
+          {/* LEFT PANEL - Basic Info & Academic & What Happens */}
+          <div className="lg:col-span-1 space-y-6">
+            
+            {/* Basic Information Card */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2 mb-5">
+                <div className="h-8 w-8 rounded-lg bg-[#fff3ed] flex items-center justify-center">
+                  <Target className="text-[#ff6b35]" size={18} />
+                </div>
+                <h2 className="text-lg font-semibold text-slate-900">Basic Information</h2>
               </div>
 
-              <div className="space-y-3">
-                <Label>Target Role</Label>
-                <Select value={targetRole} onValueChange={setTargetRole}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select target role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="frontend">Frontend Developer</SelectItem>
-                    <SelectItem value="backend">Backend Developer</SelectItem>
-                    <SelectItem value="fullstack">Full Stack Developer</SelectItem>
-                    <SelectItem value="software">Software Engineer</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {targetRole === "other" && (
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-slate-700">Full Name</Label>
                   <Input
-                    placeholder="Enter your role (DevOps, QA, etc)"
-                    value={customRole}
-                    onChange={(e) => setCustomRole(e.target.value)}
+                    placeholder="e.g. Gaurav Agarwalla"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]"
                   />
-                )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-slate-700">Target Role</Label>
+                  <Select value={targetRole} onValueChange={setTargetRole}>
+                    <SelectTrigger className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]">
+                      <SelectValue placeholder="Select target role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="frontend">Frontend Developer</SelectItem>
+                      <SelectItem value="backend">Backend Developer</SelectItem>
+                      <SelectItem value="fullstack">Full Stack Developer</SelectItem>
+                      <SelectItem value="software">Software Engineer</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  {targetRole === "other" && (
+                    <Input
+                      placeholder="Enter your role (DevOps, QA, etc)"
+                      value={customRole}
+                      onChange={(e) => setCustomRole(e.target.value)}
+                      className="mt-2 border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]"
+                    />
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Academic */}
-            <div className="space-y-6">
-              <h2 className="text-lg font-semibold text-slate-900">Academic Details</h2>
+            {/* Academic Details Card */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2 mb-5">
+                <div className="h-8 w-8 rounded-lg bg-[#fff3ed] flex items-center justify-center">
+                  <FileText className="text-[#ff6b35]" size={18} />
+                </div>
+                <h2 className="text-lg font-semibold text-slate-900">Academic Details</h2>
+              </div>
 
-              <div className="grid grid-cols-2 gap-5">
-                <div className="space-y-3">
-                  <Label>Year in College</Label>
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-slate-700">Year in College</Label>
                   <Select value={year} onValueChange={setYear}>
-                    <SelectTrigger>
+                    <SelectTrigger className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]">
                       <SelectValue placeholder="Select year" />
                     </SelectTrigger>
                     <SelectContent>
@@ -161,49 +180,114 @@ export default function OnboardPage() {
                       placeholder="Years of experience"
                       value={experience}
                       onChange={(e) => setExperience(e.target.value)}
+                      className="mt-2 border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]"
                     />
                   )}
                 </div>
 
-                <div className="space-y-3">
-                  <Label>CGPA</Label>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-slate-700">CGPA</Label>
                   <Input
                     placeholder="8.4"
                     value={cgpa}
                     onChange={(e) => setCgpa(e.target.value)}
+                    className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Skills */}
-            <div className="space-y-6">
-              <h2 className="text-lg font-semibold text-slate-900">Technical Skills</h2>
+            {/* What Happens Next Card */}
+            <div className="bg-white rounded-xl border border-slate-200 p-10 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-sm font-semibold text-slate-900 mb-5 flex items-center gap-2">
+                <CheckCircle2 className="text-[#ff6b35]" size={16} />
+                What happens next?
+              </h3>
+
+              <div className="space-y-4">
+
+                <div className="flex gap-3">
+                  <div className="h-8 w-8 rounded-full bg-[#fff3ed] text-[#ff6b35] flex items-center justify-center text-sm font-bold shrink-0">
+                    1
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-900 text-sm">Skill Extraction</p>
+                    <p className="text-xs text-slate-600 mt-0.5">
+                      We detect technologies, coursework and experience areas directly from your resume.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <div className="h-8 w-8 rounded-full bg-[#fff3ed] text-[#ff6b35] flex items-center justify-center text-sm font-bold shrink-0">
+                    2
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-900 text-sm">Gap Detection</p>
+                    <p className="text-xs text-slate-600 mt-0.5">
+                      Your profile is compared with real developer job requirements.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <div className="h-8 w-8 rounded-full bg-[#fff3ed] text-[#ff6b35] flex items-center justify-center text-sm font-bold shrink-0">
+                    3
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-900 text-sm">Learning Roadmap</p>
+                    <p className="text-xs text-slate-600 mt-0.5">
+                      You receive a clear 30-day plan showing exactly what to study and practice.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          {/* MIDDLE PANEL - Skills */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
+              <h2 className="text-lg font-semibold text-slate-900 mb-5">Technical Skills</h2>
 
               {skills.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {skills.map((skill) => (
-                    <Badge key={skill} className="bg-[#e3ecff] text-[#2f417f]" onClick={() => removeSkill(skill)}>
-                      {skill} ×
-                    </Badge>
-                  ))}
+                <div className="mb-5 p-4 bg-[#fffaf7] rounded-lg border border-[#ff6b35]/20">
+                  <p className="text-xs font-medium text-slate-700 mb-2">
+                    Selected Skills ({skills.length})
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {skills.map((skill) => (
+                      <Badge 
+                        key={skill} 
+                        className="bg-[#ff6b35] text-white hover:bg-[#e55a28] cursor-pointer" 
+                        onClick={() => removeSkill(skill)}
+                      >
+                        {skill} ×
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              <div className="space-y-5 max-h-[420px] overflow-y-auto pr-2">
+              <div className="space-y-5 flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
                 {Object.entries(skillCategories).map(([category, list]) => (
                   <div key={category}>
-                    <h3 className="text-sm font-semibold text-slate-800 mb-2">{category}</h3>
+                    <h3 className="text-sm font-semibold text-slate-800 mb-2.5 flex items-center gap-2">
+                      <div className="h-1 w-1 rounded-full bg-[#ff6b35]"></div>
+                      {category}
+                    </h3>
                     <div className="flex flex-wrap gap-2">
                       {list.map((skill) => (
                         <Badge
                           key={skill}
                           variant="outline"
                           className={cn(
-                            "cursor-pointer",
+                            "cursor-pointer transition-all",
                             skills.includes(skill)
-                              ? "bg-[#3d52a0] text-white border-[#3d52a0]"
-                              : "hover:bg-[#eef3ff]"
+                              ? "bg-[#ff6b35] text-white border-[#ff6b35] shadow-sm"
+                              : "hover:bg-[#fff3ed] hover:border-[#ff6b35]/30"
                           )}
                           onClick={() => addSkill(skill)}
                         >
@@ -215,13 +299,29 @@ export default function OnboardPage() {
                 ))}
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 mt-5 pt-5 border-t border-slate-200">
                 <Input
                   placeholder="Add custom skill"
                   value={customSkill}
                   onChange={(e) => setCustomSkill(e.target.value)}
+                  className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && customSkill.trim()) {
+                      addSkill(customSkill);
+                      setCustomSkill("");
+                    }
+                  }}
                 />
-                <Button type="button" onClick={() => { addSkill(customSkill); setCustomSkill(""); }}>
+                <Button 
+                  type="button" 
+                  onClick={() => { 
+                    if (customSkill.trim()) {
+                      addSkill(customSkill); 
+                      setCustomSkill(""); 
+                    }
+                  }}
+                  className="bg-[#ff6b35] hover:bg-[#e55a28]"
+                >
                   Add
                 </Button>
               </div>
@@ -229,99 +329,84 @@ export default function OnboardPage() {
             </div>
           </div>
 
-          {/* RIGHT PANEL */}
-          <div className="bg-white rounded-xl border border-slate-400 p-8 shadow-sm flex flex-col justify-between">
+          {/* RIGHT PANEL - Resume Upload & Report Preview */}
+          <div className="lg:col-span-1 space-y-6">
+            
+            {/* Resume Upload Card */}
+            <div className="bg-linear-to-br from-white to-[#fffaf7] rounded-xl border-2 border-[#ff6b35]/30 p-6 shadow-lg">
 
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-xl font-semibold text-slate-900">
-                  AI Resume Analyzer
-                </h2>
-                <p className="text-slate-600 text-sm mt-1">
-                  Upload resume and our AI will evaluate interview readiness.
-                </p>
+              <div className="space-y-4 mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ff6b35] text-white rounded-full text-xs font-medium">
+                  <Zap size={12} className="fill-current" />
+                  AI Powered
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-slate-900">
+                    Resume Analyzer
+                  </h2>
+                  <p className="text-orange-600 text-sm mt-1">
+                    Upload your resume and let AI evaluate your interview readiness.
+                  </p>
+                </div>
               </div>
 
               <ResumeUploader onFileSelect={setResumeFile} />
-            </div>  
-             <div className="pt-2">
-    <h3 className="text-sm font-semibold text-foreground mb-4">
-      What happens next?
-    </h3>
 
-    <div className="space-y-5">
+              <Button
+                onClick={startAnalysis}
+                disabled={!resumeFile || loading}
+                className="w-full mt-6 bg-[#ff6b35] hover:bg-[#e55a28] text-white h-12 font-semibold shadow-lg hover:shadow-xl transition-all"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin"/>
+                    Analyzing Resume...
+                  </>
+                ) : (
+                  <>
+                    Analyze My Resume
+                    <ArrowRight className="ml-2 h-5 w-5"/>
+                  </>
+                )}
+              </Button>
+            </div>
 
-      <div className="flex gap-4">
-        <div className="h-7 w-7 rounded-full bg-primary-soft text-primary flex items-center justify-center text-xs font-semibold mt-0.5">
-          1
-        </div>
-        <div>
-          <p className="font-medium text-foreground">Skill Extraction</p>
-          <p className="text-xs">
-            We detect technologies, coursework and experience areas directly from your resume.
-          </p>
-        </div>
-      </div>
+            {/* Report Preview Card */}
+            <div className="bg-[#1a1a1a] rounded-xl p-6 text-white shadow-lg flex-1">
+              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                <div className="h-1.5 w-1.5 rounded-full bg-[#ff6b35]"></div>
+                Your report will include
+              </h3>
 
-      <div className="flex gap-4">
-        <div className="h-7 w-7 rounded-full bg-primary-soft text-primary flex items-center justify-center text-xs font-semibold mt-0.5">
-          2
-        </div>
-        <div>
-          <p className="font-medium text-foreground">Gap Detection</p>
-          <p className="text-xs">
-            Your profile is compared with real developer job requirements.
-          </p>
-        </div>
-      </div>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-[#ff6b35] shrink-0" />
+                  <span>Career readiness score</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-[#ff6b35] shrink-0" />
+                  <span>Missing technical skills</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-[#ff6b35] shrink-0" />
+                  <span>Suggested job roles</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-[#ff6b35] shrink-0" />
+                  <span>Learning priority order</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 size={16} className="text-[#ff6b35] shrink-0" />
+                  <span>Personalized 30-day roadmap</span>
+                </li>
+              </ul>
 
-      <div className="flex gap-4">
-        <div className="h-7 w-7 rounded-full bg-primary-soft text-primary flex items-center justify-center text-xs font-semibold mt-0.5">
-          3
-        </div>
-        <div>
-          <p className="font-medium text-foreground">Learning Roadmap</p>
-          <p className="text-xs">
-            You receive a clear 30-day plan showing exactly what to study and practice.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  {/* Output Preview */}
-  <div className="pt-2">
-    <h3 className="text-sm font-semibold text-foreground mb-3">
-      Your report will include
-    </h3>
-
-    <ul className="space-y-2 text-sm text-semibold">
-      <li>• Career readiness score</li>
-      <li>• Missing technical skills</li>
-      <li>• Suggested job roles</li>
-      <li>• Learning priority order</li>
-      <li>• Personalized 30-day roadmap</li>
-    </ul>
-  </div>
-
-            <Button
-              onClick={startAnalysis}
-              disabled={!resumeFile || loading}
-              className="w-full mt-8 bg-[#16308c] hover:bg-[#2f417f] text-white h-12"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin"/>
-                  Analyzing Resume...
-                </>
-              ) : (
-                <>
-                  Analyze My Resume
-                  <ArrowRight className="ml-2 h-5 w-5"/>
-                </>
-              )}
-            </Button>
+              <div className="mt-6 pt-6 border-t border-white/10">
+                <p className="text-xs text-slate-400">
+                  Our AI analyzes 50+ data points to create your personalized career development plan
+                </p>
+              </div>
+            </div>
 
           </div>
 
