@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Upload, Brain, Calendar, CheckCircle2, TrendingUp, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -110,6 +110,13 @@ export default function Home() {
   const div6Ref = useRef<HTMLDivElement>(null);
   const div7Ref = useRef<HTMLDivElement>(null);
   const centerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && !localStorage.getItem("skillbridge_uuid")) {
+      const newUuid = crypto.randomUUID();
+      localStorage.setItem("skillbridge_uuid", newUuid);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -386,9 +393,9 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="py-10 border-t border-slate-200 bg-white">
-          <div className="pt-6 border-t border-slate-200 text-center text-xs text-slate-600">
-            <p>© {new Date().getFullYear()} SkillBridge. All rights reserved.</p>
-          </div>
+        <div className="pt-6 border-t border-slate-200 text-center text-xs text-slate-600">
+          <p>© {new Date().getFullYear()} SkillBridge. All rights reserved.</p>
+        </div>
       </footer>
 
       <style jsx>{`

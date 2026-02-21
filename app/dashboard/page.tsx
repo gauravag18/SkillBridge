@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,46 +29,72 @@ function Navbar() {
   );
 }
 
-export default function DashboardPage() {
-  const [loading, setLoading] = useState(false);
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ uuid?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const uuid = resolvedSearchParams.uuid || "";
 
-  const readiness = 72;
-  const targetRole = "Software Engineer";
+  const supabase = await createClient();
 
-  const strengths = [
-    "Strong problem-solving with 300+ LeetCode problems",
-    "Full-stack experience with MERN stack",
-    "Good understanding of REST APIs",
-    "Active GitHub profile with 15+ projects",
-  ];
+  if (!uuid) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
+        <div className="text-center p-8">
+          <h2 className="text-2xl font-bold mb-4">Session expired or missing</h2>
+          <p className="mb-6">Please start from the home page.</p>
+          <Link href="/">
+            <Button>Go to Home</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
-  const weaknesses = [
-    "Limited system design knowledge",
-    "No cloud deployment experience",
-    "Weak DSA fundamentals in graphs and DP",
-    "Missing database optimization skills",
-  ];
+  await supabase.rpc("set_my_uuid", { p_uuid: uuid });
 
-  const skillGaps = [
-    { skill: "System Design", percentage: 80 },
-    { skill: "Data Structures & Algorithms", percentage: 65 },
-    { skill: "AWS / Cloud", percentage: 55 },
-    { skill: "Database Optimization", percentage: 45 },
-  ];
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("uuid", uuid)
+    .single();
 
-  const generatePlan = () => {
-    setLoading(true);
-    setTimeout(() => {
-      window.location.href = "/plan";
-    }, 1200);
-  };
+  const { data: analysis } = await supabase
+    .from("analyses")
+    .select("*")
+    .eq("profile_uuid", uuid)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  // If no profile exists yet
+  if (!profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
+        <div className="text-center p-8">
+          <h2 className="text-2xl font-bold mb-4">Profile not found</h2>
+          <p className="mb-6">Please complete onboarding first.</p>
+          <Link href="/onboard">
+            <Button>Go to Onboarding</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const readiness = analysis?.readiness_score ?? null;
+  const targetRole = profile.target_role ?? "Not specified";
+  const strengths = analysis?.strengths ?? [];
+  const weaknesses = analysis?.weaknesses ?? [];
+  const skillGaps = analysis?.skill_gaps ?? [];
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-6 py-10">
-
         {/* TOP DASHBOARD ROW */}
         <div className="grid lg:grid-cols-3 gap-8 items-stretch mb-10">
 
@@ -90,7 +114,7 @@ export default function DashboardPage() {
                     stroke="url(#grad)"
                     strokeWidth="10"
                     fill="none"
-                    strokeDasharray={`${readiness * 3.27} 327`}
+                    strokeDasharray={`${(readiness ?? 0) * 3.27} 327`}
                     strokeLinecap="round"
                   />
                   <defs>
@@ -102,11 +126,10 @@ export default function DashboardPage() {
                 </svg>
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center leading-none">
-  <span className="text-[44px] font-semibold text-brand tracking-tight mb-6 translate-y-[2px]">
-    {readiness}
-  </span>
-</div>
-
+                  <span className="text-[44px] font-semibold text-brand tracking-tight mb-6 translate-y-[2px]">
+                    {readiness ?? "—"}
+                  </span>
+                </div>
               </div>
 
               {/* Text */}
@@ -132,14 +155,15 @@ export default function DashboardPage() {
                 Re-analyze
               </Button>
 
-              <Button
-                onClick={generatePlan}
-                className="h-11 rounded-lg"
-                variant="outline"
-              >
-                View Learning Plan
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <Link href={`/plan?uuid=${uuid}`}>
+                <Button
+                  className="h-11 rounded-lg"
+                  variant="outline"
+                >
+                  View Learning Plan
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -154,24 +178,39 @@ export default function DashboardPage() {
                 <div>
                   <div className="flex justify-between mb-1">
                     <span>Interview Readiness</span>
-                    <span className="text-brand font-medium">72%</span>
+                    <span className="text-brand font-medium">
+                      {readiness !== null ? `${readiness}%` : "Not analyzed yet"}
+                    </span>
                   </div>
                   <div className="progress h-2">
-                    <div className="progress-fill" style={{width:"72%"}}/>
+                    <div
+                      className="progress-fill"
+                      style={{ width: readiness !== null ? `${readiness}%` : "0%" }}
+                    />
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-1">
                     <span>Top Gap</span>
-                    <span className="text-brand font-medium">System Design</span>
+                    <span className="text-brand font-medium">
+                      {skillGaps[0]?.skill || "None detected yet"}
+                    </span>
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-1">
                     <span>Estimated Ready Time</span>
-                    <span className="text-muted">~ 3 Weeks</span>
+                    <span className="text-muted">
+                      {readiness !== null
+                        ? readiness < 60
+                          ? "~ 6-8 Weeks"
+                          : readiness < 80
+                          ? "~ 3-5 Weeks"
+                          : "~ 1-3 Weeks"
+                        : "Pending analysis"}
+                    </span>
                   </div>
                 </div>
 
@@ -185,66 +224,96 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/*MAIN GRID*/}
+        {/* MAIN GRID */}
         <div className="grid lg:grid-cols-3 gap-8 items-start">
 
           {/* LEFT COLUMN */}
           <div className="lg:col-span-2 space-y-8">
 
             {/* Skill Gap */}
-            <div className="card p-7">
-              <h2 className="text-xl font-semibold flex items-center gap-3 mb-6">
-                <BarChart3 className="text-brand" />
-                Skill Gap Analysis
-              </h2>
+            {skillGaps.length > 0 ? (
+              <div className="card p-7">
+                <h2 className="text-xl font-semibold flex items-center gap-3 mb-6">
+                  <BarChart3 className="text-brand" />
+                  Skill Gap Analysis
+                </h2>
 
-              <div className="space-y-5">
-                {skillGaps.map((gap, i) => (
-                  <div key={i}>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="font-medium">{gap.skill}</span>
-                      <span className="text-muted">{gap.percentage}% gap</span>
-                    </div>
+                <div className="space-y-5">
+                  {skillGaps.map((gap: any, i: number) => (
+                    <div key={i}>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="font-medium">{gap.skill}</span>
+                        <span className="text-muted">{gap.percentage}% gap</span>
+                      </div>
 
-                    <div className="progress h-2">
-                      <div className="progress-fill" style={{ width: `${gap.percentage}%` }} />
+                      <div className="progress h-2">
+                        <div className="progress-fill" style={{ width: `${gap.percentage}%` }} />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="card p-7">
+                <h2 className="text-xl font-semibold flex items-center gap-3 mb-6">
+                  <BarChart3 className="text-brand" />
+                  Skill Gap Analysis
+                </h2>
+                <p className="text-muted">No skill gaps detected yet. Complete analysis to see results.</p>
+              </div>
+            )}
 
             {/* Strengths */}
-            <div className="card p-7">
-              <h2 className="text-xl font-semibold flex items-center gap-3 mb-5">
-                <CheckCircle2 className="text-green-500" />
-                Strengths
-              </h2>
+            {strengths.length > 0 ? (
+              <div className="card p-7">
+                <h2 className="text-xl font-semibold flex items-center gap-3 mb-5">
+                  <CheckCircle2 className="text-green-500" />
+                  Strengths
+                </h2>
 
-              <div className="space-y-3">
-                {strengths.map((s, i) => (
-                  <div key={i} className="bg-slate-50 p-3 rounded-lg text-sm">
-                    {s}
-                  </div>
-                ))}
+                <div className="space-y-3">
+                  {strengths.map((s: string, i: number) => (
+                    <div key={i} className="bg-slate-50 p-3 rounded-lg text-sm">
+                      {s}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="card p-7">
+                <h2 className="text-xl font-semibold flex items-center gap-3 mb-5">
+                  <CheckCircle2 className="text-green-500" />
+                  Strengths
+                </h2>
+                <p className="text-muted">No strengths detected yet. Complete analysis to see results.</p>
+              </div>
+            )}
 
             {/* Weaknesses */}
-            <div className="card p-7">
-              <h2 className="text-xl font-semibold flex items-center gap-3 mb-5">
-                <AlertCircle className="text-red-500" />
-                Areas to Improve
-              </h2>
+            {weaknesses.length > 0 ? (
+              <div className="card p-7">
+                <h2 className="text-xl font-semibold flex items-center gap-3 mb-5">
+                  <AlertCircle className="text-red-500" />
+                  Areas to Improve
+                </h2>
 
-              <div className="space-y-3">
-                {weaknesses.map((w, i) => (
-                  <div key={i} className="bg-slate-50 p-3 rounded-lg text-sm">
-                    {w}
-                  </div>
-                ))}
+                <div className="space-y-3">
+                  {weaknesses.map((w: string, i: number) => (
+                    <div key={i} className="bg-slate-50 p-3 rounded-lg text-sm">
+                      {w}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="card p-7">
+                <h2 className="text-xl font-semibold flex items-center gap-3 mb-5">
+                  <AlertCircle className="text-red-500" />
+                  Areas to Improve
+                </h2>
+                <p className="text-muted">No areas to improve detected yet. Complete analysis to see results.</p>
+              </div>
+            )}
 
           </div>
 
@@ -254,18 +323,26 @@ export default function DashboardPage() {
             <div className="card p-6">
               <h3 className="font-semibold text-lg mb-3">Recommendation</h3>
               <p className="text-sm text-muted">
-                Focus on System Design and DSA practice daily to cross 85% readiness.
+                {readiness !== null
+                  ? readiness < 70
+                    ? "Prioritize top skill gaps and daily DSA practice."
+                    : "You're close — focus on projects and behavioral prep."
+                  : "Complete analysis to get personalized recommendations."}
               </p>
             </div>
 
             <div className="card p-6">
               <h3 className="font-semibold text-lg mb-4">Next Step</h3>
               <p className="text-sm text-muted mb-4">
-                Start structured preparation roadmap designed for SDE interviews.
+                {analysis
+                  ? "Follow your personalized 30-day roadmap."
+                  : "Upload and analyze your resume to get started."}
               </p>
-              <Button className="w-full bg-brand text-white">
-                Generate 30-Day Plan
-              </Button>
+              <Link href={`/plan?uuid=${uuid}`}>
+                <Button className="w-full bg-brand text-white">
+                  {analysis ? "View 30-Day Plan" : "Generate 30-Day Plan"}
+                </Button>
+              </Link>
             </div>
 
           </div>
