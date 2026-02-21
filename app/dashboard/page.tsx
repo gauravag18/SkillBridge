@@ -126,7 +126,7 @@ export default async function DashboardPage({
                 </svg>
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center leading-none">
-                  <span className="text-[44px] font-semibold text-brand tracking-tight mb-6 translate-y-[2px]">
+                  <span className="text-[44px] font-semibold text-brand tracking-tight mb-6 translate-y-0.5">
                     {readiness ?? "—"}
                   </span>
                 </div>

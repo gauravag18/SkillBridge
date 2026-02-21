@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { use, useState, useEffect } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
@@ -54,8 +54,10 @@ const plan30 = [
 export default function PlanPage({
   searchParams,
 }: {
-  searchParams: { uuid?: string };
+  searchParams: Promise<{ uuid?: string }>;
 }) {
+  const resolvedParams = use(searchParams);
+
   const [day, setDay] = useState(1);
   const [completed, setCompleted] = useState<boolean[]>([false, false, false]);
   const [uuid, setUuid] = useState("");
@@ -63,7 +65,7 @@ export default function PlanPage({
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    const paramUuid = searchParams.uuid;
+    const paramUuid = resolvedParams.uuid;
     const storedUuid = localStorage.getItem("skillbridge_uuid");
     const finalUuid = paramUuid || storedUuid || "";
 
@@ -71,7 +73,7 @@ export default function PlanPage({
       setUuid(finalUuid);
       if (!storedUuid) localStorage.setItem("skillbridge_uuid", finalUuid);
     }
-  }, [searchParams.uuid]);
+  }, [resolvedParams.uuid]);
 
   const tasks = plan30[day - 1] || [];
 
@@ -221,7 +223,7 @@ export default function PlanPage({
             ))}
           </div>
 
-          <Button 
+          <Button
             className="mt-6 bg-brand text-white w-full h-11"
             disabled={saving}
           >
@@ -231,7 +233,6 @@ export default function PlanPage({
 
         {/*WEEK PHASES*/}
         <div className="grid md:grid-cols-4 gap-6">
-
           {[
             ["Week 1", "DSA Foundation"],
             ["Week 2", "Core CS Subjects"],
