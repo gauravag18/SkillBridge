@@ -24,6 +24,7 @@ export async function onboardUser(prevState: any, formData: FormData) {
     college_year: (formData.get("year") as string) || null,
     cgpa: (formData.get("cgpa") as string)?.trim() || null,
     experience: (formData.get("experience") as string)?.trim() || null,
+    job_description: (formData.get("jobDescription") as string)?.trim() || null,
     skills: (() => {
       try {
         return JSON.parse(formData.get("skills") as string || "[]");
@@ -43,10 +44,8 @@ export async function onboardUser(prevState: any, formData: FormData) {
     return { error: upsertError.message || "Failed to save profile" };
   }
 
-  // Create plan row so progress saving works
   await getOrCreatePlan(uuid);
 
-  // Auto-analysis
   const analysisResult = await analyzeResume(uuid);
   if (!analysisResult.success) {
     console.warn("Auto-analysis after onboard failed:", analysisResult.error);

@@ -11,7 +11,7 @@ export async function analyzeResume(uuid: string) {
 
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
-    .select("target_role, skills, resume_text, resume_path")
+    .select("target_role, skills, resume_text, resume_path, job_description")
     .eq("uuid", uuid)
     .single();
 
@@ -49,6 +49,7 @@ export async function analyzeResume(uuid: string) {
 
   const userSkills = Array.isArray(profile.skills) ? profile.skills : [];
   const targetRole = profile.target_role || "Software Engineer";
+  const jobDescription = profile.job_description?.trim() || "";
 
   if (!process.env.GROQ_API_KEY) {
     return { success: false, error: "Server configuration error (missing API key)" };
@@ -63,10 +64,11 @@ export async function analyzeResume(uuid: string) {
   const prompt = `
 You are an expert technical recruiter and career coach specializing in software engineering roles.
 
-Analyze the resume text and profile below.
+Analyze the resume and profile below.
 
 Target role: ${targetRole}
 User-selected skills: ${userSkills.join(", ") || "None provided"}
+${jobDescription ? `\nJob Description provided by user:\n"""\n${jobDescription}\n"""` : ""}
 
 Resume content:
 """
@@ -75,21 +77,32 @@ ${resumeText}
 
 Task:
 Evaluate readiness for the target role on a scale of 0–100 (be strict and realistic).
+${jobDescription ? "Since a job description is provided, weight the score heavily based on how well the resume matches that specific JD." : ""}
+
 Prioritize:
-- Match to technical skills
-- Depth in DSA/problem-solving
-- System design knowledge primarily for mid/senior roles
-- Cloud/DevOps exposure if needed for the role
-- Project quality and real-world impact
+- Match to technical skills${jobDescription ? " and JD requirements" : ""}
+- Depth in DSA/problem-solving skills
+- System design knowledge according to Job Description if provided
+- Cloud/DevOps exposure if speicified in Job Description
+- Project quality and real-world impact over quantity of projects
 
 Return ONLY valid JSON with this exact structure:
 {
   "readiness_score": number,
+  "jd_match_score": number or null,
   "strengths": string[],
   "weaknesses": string[],
   "skill_gaps": [{ "skill": "string", "percentage": number }],
+  "jd_missing_skills": string[],
   "summary": "string"
 }
+
+Rules:
+- "jd_match_score": 0-100 score of how well resume matches the JD. Set to null if no JD was provided.
+- "jd_missing_skills": list of skills/requirements from JD that are missing in resume. Empty array if no JD.
+- strengths: 3-6 concise bullets
+- weaknesses: 3-6 concise bullets
+- skill_gaps: top 5-8 skills with gap percentage
 `;
 
   try {
@@ -117,9 +130,11 @@ Return ONLY valid JSON with this exact structure:
       .insert({
         profile_uuid: uuid,
         readiness_score: parsed.readiness_score,
+        jd_match_score: parsed.jd_match_score ?? null,
         strengths: parsed.strengths,
         weaknesses: parsed.weaknesses,
         skill_gaps: parsed.skill_gaps,
+        jd_missing_skills: parsed.jd_missing_skills ?? [],
         summary: parsed.summary,
       });
 
