@@ -55,9 +55,7 @@ export async function analyzeResume(uuid: string) {
     return { success: false, error: "Server configuration error (missing API key)" };
   }
 
-  if (!resumeText) {
-    resumeText = "No resume content available for evaluation.";
-  }
+  if (!resumeText) resumeText = "No resume content available for evaluation.";
 
   const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -82,8 +80,8 @@ ${jobDescription ? "Since a job description is provided, weight the score heavil
 Prioritize:
 - Match to technical skills${jobDescription ? " and JD requirements" : ""}
 - Depth in DSA/problem-solving skills
-- System design knowledge according to Job Description if provided
-- Cloud/DevOps exposure if speicified in Job Description
+- System design knowledge according to Job description
+- Cloud/DevOps exposure if specified in JD
 - Project quality and real-world impact over quantity of projects
 
 Return ONLY valid JSON with this exact structure:
@@ -146,5 +144,88 @@ Rules:
   } catch (err: any) {
     console.error("Groq analysis error:", err.message || err);
     return { success: false, error: err.message || "AI analysis failed" };
+  }
+}
+
+export async function generatePersonalizedPlan(
+  uuid: string,
+  analysis: {
+    skill_gaps: { skill: string; percentage: number }[];
+    weaknesses: string[];
+    strengths: string[];
+    summary: string;
+  },
+  targetRole: string
+) {
+  if (!process.env.GROQ_API_KEY) return { success: false, error: "Missing API key" };
+
+  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
+  const prompt = `
+You are an expert career coach creating a personalized 30-day study plan for a software engineering candidate.
+
+Target Role: ${targetRole}
+
+Candidate Analysis:
+- Summary: ${analysis.summary}
+- Weaknesses: ${analysis.weaknesses.join(", ")}
+- Skill Gaps (highest % = biggest gap): ${analysis.skill_gaps.map(g => `${g.skill} (${g.percentage}%)`).join(", ")}
+- Strengths: ${analysis.strengths.join(", ")}
+
+Create a focused 30-day plan that specifically addresses these weaknesses and skill gaps.
+Prioritize the biggest gaps first. Each day should have exactly 3 tasks.
+
+Return ONLY valid JSON:
+{
+  "plan": [
+    {
+      "day": 1,
+      "focus": "short focus topic for this day",
+      "tasks": ["task 1", "task 2", "task 3"]
+    }
+    ... repeat for all 30 days
+  ]
+}
+
+Rules:
+- Tasks must be specific and actionable (e.g. "Solve 2 LeetCode medium array problems", not "Practice coding")
+- Focus on the candidate's actual weak areas, not generic topics
+- Week 1-2: Address top skill gaps
+- Week 3: System design and architecture concepts relevant to role
+- Week 4: Projects, mock interviews, and job application prep
+- Each task should be completable in 1-2 hours
+`;
+
+  try {
+    const result = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [{ role: "user", content: prompt }],
+      response_format: { type: "json_object" },
+    });
+
+    const responseText = result.choices[0].message.content ?? "";
+    const parsed = JSON.parse(responseText);
+
+    if (!Array.isArray(parsed.plan) || parsed.plan.length !== 30) {
+      console.warn("Plan generation returned invalid format");
+      return { success: false, error: "Invalid plan format" };
+    }
+
+    // Save plan_data to plans table
+    const supabase = await createClient();
+    const { error } = await supabase
+      .from("plans")
+      .update({ plan_data: parsed.plan })
+      .eq("profile_uuid", uuid);
+
+    if (error) {
+      console.error("Failed to save plan:", error);
+      return { success: false, error: "Failed to save plan" };
+    }
+
+    return { success: true, plan: parsed.plan };
+  } catch (err: any) {
+    console.error("Plan generation error:", err.message);
+    return { success: false, error: err.message };
   }
 }

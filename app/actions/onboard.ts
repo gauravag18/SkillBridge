@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { analyzeResume } from "./analyze";
+import { analyzeResume, generatePersonalizedPlan } from "./analyze";
 import { getOrCreatePlan } from "./progress";
 
 export async function onboardUser(prevState: any, formData: FormData) {
@@ -44,11 +44,25 @@ export async function onboardUser(prevState: any, formData: FormData) {
     return { error: upsertError.message || "Failed to save profile" };
   }
 
+  // Create plan row first
   await getOrCreatePlan(uuid);
 
+  // Run analysis
   const analysisResult = await analyzeResume(uuid);
-  if (!analysisResult.success) {
+  if (!analysisResult.success || !analysisResult.analysis) {
     console.warn("Auto-analysis after onboard failed:", analysisResult.error);
+    redirect(`/dashboard?uuid=${uuid}`);
+  }
+
+  // Generate personalized plan based on analysis
+  const planResult = await generatePersonalizedPlan(
+    uuid,
+    analysisResult.analysis,
+    payload.target_role || "Software Engineer"
+  );
+
+  if (!planResult.success) {
+    console.warn("Plan generation failed:", planResult.error);
   }
 
   redirect(`/dashboard?uuid=${uuid}`);
