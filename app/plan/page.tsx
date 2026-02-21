@@ -12,7 +12,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { updateDayProgress } from "@/app/actions/progress";
+import { updateDayProgress, getOrCreatePlan } from "@/app/actions/progress";
 
 const plan30 = [
   ["Time Complexity + Big O", "Solve 2 Easy Arrays", "Learn Binary Search"],
@@ -22,7 +22,6 @@ const plan30 = [
   ["Recursion Intro", "Factorial + Fibonacci", "1 Problem"],
   ["Sliding Window", "2 Problems", "Notes"],
   ["Weekly Revision", "Mock Practice", "Weak Areas"],
-
   ["DBMS Normalization", "SQL Joins", "1 Query Practice"],
   ["Operating System Basics", "Processes vs Threads", "Notes"],
   ["Memory Management", "Paging vs Segmentation", "Revise"],
@@ -30,7 +29,6 @@ const plan30 = [
   ["HTTP & REST APIs", "Status Codes", "Hands-on"],
   ["Authentication", "JWT + Cookies", "Mini Task"],
   ["Weekly Revision", "Flashcards", "Quiz"],
-
   ["System Design Basics", "Scalability", "CAP Theorem"],
   ["Load Balancers", "Horizontal Scaling", "Notes"],
   ["Databases", "SQL vs NoSQL", "When to Use"],
@@ -38,7 +36,6 @@ const plan30 = [
   ["Message Queues", "Kafka Basics", "Flow"],
   ["Design WhatsApp", "Architecture", "Draw Diagram"],
   ["Weekly Revision", "Explain to yourself", "Practice"],
-
   ["Build REST API", "CRUD Backend", "Test"],
   ["Deploy Project", "Render/EC2", "Live URL"],
   ["Docker Intro", "Containerize App", "Run"],
@@ -62,18 +59,49 @@ export default function PlanPage({
   const [completed, setCompleted] = useState<boolean[]>([false, false, false]);
   const [uuid, setUuid] = useState("");
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [allProgress, setAllProgress] = useState<Record<string, boolean[]>>({});
 
+  // Set UUID on mount
   useEffect(() => {
     const paramUuid = resolvedParams.uuid;
     const storedUuid = localStorage.getItem("skillbridge_uuid");
     const finalUuid = paramUuid || storedUuid || "";
-
     if (finalUuid) {
       setUuid(finalUuid);
       if (!storedUuid) localStorage.setItem("skillbridge_uuid", finalUuid);
     }
   }, [resolvedParams.uuid]);
+
+  // Load all progress from Supabase once uuid is ready
+  useEffect(() => {
+    if (!uuid) return;
+
+    const loadProgress = async () => {
+      setLoading(true);
+      const result = await getOrCreatePlan(uuid);
+      setLoading(false);
+
+      if (result.plan?.progress) {
+        setAllProgress(result.plan.progress);
+        const saved = result.plan.progress[`day1`];
+        if (Array.isArray(saved)) setCompleted(saved);
+      }
+    };
+
+    loadProgress();
+  }, [uuid]);
+
+  // When day changes, load that day's saved progress
+  useEffect(() => {
+    const saved = allProgress[`day${day}`];
+    if (Array.isArray(saved)) {
+      setCompleted(saved);
+    } else {
+      setCompleted(Array(plan30[day - 1]?.length || 3).fill(false));
+    }
+  }, [day, allProgress]);
 
   const tasks = plan30[day - 1] || [];
 
@@ -86,6 +114,7 @@ export default function PlanPage({
     const updated = [...completed];
     updated[i] = !updated[i];
     setCompleted(updated);
+    setAllProgress((prev) => ({ ...prev, [`day${day}`]: updated }));
 
     setSaving(true);
     setErrorMsg("");
@@ -101,7 +130,9 @@ export default function PlanPage({
   };
 
   const progress =
-    (completed.filter((c) => c).length / completed.length) * 100;
+    completed.length > 0
+      ? (completed.filter((c) => c).length / completed.length) * 100
+      : 0;
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
@@ -111,8 +142,7 @@ export default function PlanPage({
           <Link href="/" className="font-semibold text-[17px]">
             SkillBridge
           </Link>
-
-          <Link href="/dashboard">
+          <Link href={`/dashboard?uuid=${uuid}`}>
             <Button variant="outline">Back to Dashboard</Button>
           </Link>
         </div>
@@ -120,118 +150,106 @@ export default function PlanPage({
 
       <main className="max-w-7xl mx-auto px-6 py-10 space-y-10">
 
-        {/* HEADER*/}
+        {/* HEADER */}
         <div className="grid md:grid-cols-3 gap-6">
-
-          {/* Day Tracker */}
           <div className="card p-6">
             <div className="flex items-center gap-3 mb-2">
               <CalendarDays className="text-brand" />
               <h3 className="font-semibold">Current Day</h3>
             </div>
-            <div className="text-3xl font-semibold text-brand">
-              Day {day} / 30
-            </div>
-            <p className="text-sm text-muted mt-2">
-              Follow daily to reach interview readiness
-            </p>
+            <div className="text-3xl font-semibold text-brand">Day {day} / 30</div>
+            <p className="text-sm text-muted mt-2">Follow daily to reach interview readiness</p>
           </div>
 
-          {/* Progress */}
           <div className="card p-6">
             <div className="flex items-center gap-3 mb-2">
               <Target className="text-brand" />
               <h3 className="font-semibold">Today's Completion</h3>
             </div>
-            <div className="text-3xl font-semibold text-brand mb-2">
-              {Math.round(progress)}%
-            </div>
-
+            <div className="text-3xl font-semibold text-brand mb-2">{Math.round(progress)}%</div>
             <div className="progress h-2">
               <div className="progress-fill" style={{ width: `${progress}%` }} />
             </div>
           </div>
 
-          {/* Motivation */}
           <div className="card p-6">
             <div className="flex items-center gap-3 mb-2">
               <Flame className="text-orange-500" />
               <h3 className="font-semibold">Goal</h3>
             </div>
-            <div className="text-2xl font-semibold">
-              85% Job Ready
-            </div>
-            <p className="text-sm text-muted mt-2">
-              Approx 3–4 weeks if consistent
-            </p>
+            <div className="text-2xl font-semibold">85% Job Ready</div>
+            <p className="text-sm text-muted mt-2">Approx 3–4 weeks if consistent</p>
           </div>
         </div>
 
-        {/* DAY SELECTOR*/}
+        {/* DAY SELECTOR */}
         <div className="card p-6">
           <h2 className="text-lg font-semibold mb-4">Jump to Day</h2>
           <div className="grid grid-cols-6 md:grid-cols-10 gap-2">
-            {Array.from({ length: 30 }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  setDay(i + 1);
-                  setCompleted(Array(plan30[i]?.length || 3).fill(false));
-                }}
-                className={`h-9 rounded-lg text-sm font-medium border 
-                  ${day === i + 1
-                    ? "bg-brand text-white border-brand"
-                    : "bg-white hover:bg-brand-soft border-soft"}`}
-              >
-                {i + 1}
-              </button>
-            ))}
+            {Array.from({ length: 30 }, (_, i) => {
+              const dayProgress = allProgress[`day${i + 1}`];
+              const isDone =
+                Array.isArray(dayProgress) &&
+                dayProgress.length > 0 &&
+                dayProgress.every(Boolean);
+              return (
+                <button
+                  key={i}
+                  onClick={() => setDay(i + 1)}
+                  className={`h-9 rounded-lg text-sm font-medium border
+                    ${
+                      day === i + 1
+                        ? "bg-brand text-white border-brand"
+                        : isDone
+                        ? "bg-green-100 border-green-400 text-green-700"
+                        : "bg-white hover:bg-brand-soft border-soft"
+                    }`}
+                >
+                  {i + 1}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/*TODAY TASKS*/}
+        {/* TODAY TASKS */}
         <div className="card p-7">
-          <h2 className="text-xl font-semibold mb-6">
-            Today's Focus (Day {day})
-          </h2>
+          <h2 className="text-xl font-semibold mb-6">Today's Focus (Day {day})</h2>
 
           {errorMsg && <p className="text-red-600 text-sm mb-4">{errorMsg}</p>}
 
-          <div className="space-y-4">
-            {tasks.map((task, i) => (
-              <div
-                key={i}
-                onClick={() => toggle(i)}
-                className="flex items-center gap-4 p-4 rounded-xl border border-soft hover:bg-brand-soft cursor-pointer transition"
-              >
-                {completed[i] ? (
-                  <CheckCircle2 className="text-green-500" />
-                ) : (
-                  <Circle className="text-muted" />
-                )}
-
-                <span
-                  className={`${
-                    completed[i]
-                      ? "line-through text-muted"
-                      : "text-slate-800"
-                  }`}
+          {loading ? (
+            <p className="text-muted text-sm">Loading progress...</p>
+          ) : (
+            <div className="space-y-4">
+              {tasks.map((task, i) => (
+                <div
+                  key={i}
+                  onClick={() => toggle(i)}
+                  className="flex items-center gap-4 p-4 rounded-xl border border-soft hover:bg-brand-soft cursor-pointer transition"
                 >
-                  {task}
-                </span>
-              </div>
-            ))}
-          </div>
+                  {completed[i] ? (
+                    <CheckCircle2 className="text-green-500" />
+                  ) : (
+                    <Circle className="text-muted" />
+                  )}
+                  <span className={completed[i] ? "line-through text-muted" : "text-slate-800"}>
+                    {task}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
 
           <Button
             className="mt-6 bg-brand text-white w-full h-11"
-            disabled={saving}
+            disabled={saving || loading}
           >
             {saving ? "Saving..." : "Mark Day Complete"}
           </Button>
         </div>
 
-        {/*WEEK PHASES*/}
+        {/* WEEK PHASES */}
         <div className="grid md:grid-cols-4 gap-6">
           {[
             ["Week 1", "DSA Foundation"],
@@ -246,10 +264,9 @@ export default function PlanPage({
           ))}
         </div>
 
-        {/*RESOURCE SECTION*/}
+        {/* RESOURCE SECTION */}
         <div className="card p-7">
           <h2 className="text-xl font-semibold mb-5">Recommended Resources</h2>
-
           <div className="grid md:grid-cols-3 gap-4 text-sm">
             <div className="p-4 rounded-lg border border-soft">
               <BookOpen className="text-brand mb-2" />

@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { analyzeResume } from "./analyze";
+import { getOrCreatePlan } from "./progress";
 
 export async function onboardUser(prevState: any, formData: FormData) {
   const supabase = await createClient();
@@ -16,9 +17,11 @@ export async function onboardUser(prevState: any, formData: FormData) {
   const payload = {
     uuid,
     full_name: (formData.get("fullName") as string)?.trim() || null,
-    target_role: (formData.get("targetRole") as string) || 
-                 (formData.get("customRole") as string)?.trim() || null,
-    college_year: formData.get("year") as string || null,
+    target_role:
+      (formData.get("targetRole") as string) ||
+      (formData.get("customRole") as string)?.trim() ||
+      null,
+    college_year: (formData.get("year") as string) || null,
     cgpa: (formData.get("cgpa") as string)?.trim() || null,
     experience: (formData.get("experience") as string)?.trim() || null,
     skills: (() => {
@@ -40,7 +43,10 @@ export async function onboardUser(prevState: any, formData: FormData) {
     return { error: upsertError.message || "Failed to save profile" };
   }
 
-  // Auto-analysis 
+  // Create plan row so progress saving works
+  await getOrCreatePlan(uuid);
+
+  // Auto-analysis
   const analysisResult = await analyzeResume(uuid);
   if (!analysisResult.success) {
     console.warn("Auto-analysis after onboard failed:", analysisResult.error);

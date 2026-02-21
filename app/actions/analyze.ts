@@ -2,8 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import Groq from "groq-sdk";
-const pdfParseLib = require("pdf-parse");
-const pdfParse = pdfParseLib.default || pdfParseLib;
+import { extractText } from "unpdf";
 
 export async function analyzeResume(uuid: string) {
   const supabase = await createClient();
@@ -31,17 +30,20 @@ export async function analyzeResume(uuid: string) {
       if (downloadError) throw downloadError;
 
       const buffer = Buffer.from(await fileBlob.arrayBuffer());
-      const pdfData = await pdfParse(buffer);
-      resumeText = pdfData.text.trim();
+      const { text } = await extractText(new Uint8Array(buffer), { mergePages: true });
+      resumeText = text?.trim() || "";
 
-      await supabase
-        .from("profiles")
-        .update({ resume_text: resumeText })
-        .eq("uuid", uuid);
-
+      if (resumeText) {
+        await supabase
+          .from("profiles")
+          .update({ resume_text: resumeText })
+          .eq("uuid", uuid);
+        console.log("Resume extracted, length:", resumeText.length);
+      } else {
+        console.warn("PDF extraction returned empty text");
+      }
     } catch (extractErr: any) {
       console.error("PDF extraction failed:", extractErr.message);
-      resumeText = "Failed to extract text from resume.";
     }
   }
 
@@ -50,6 +52,10 @@ export async function analyzeResume(uuid: string) {
 
   if (!process.env.GROQ_API_KEY) {
     return { success: false, error: "Server configuration error (missing API key)" };
+  }
+
+  if (!resumeText) {
+    resumeText = "No resume content available for evaluation.";
   }
 
   const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
@@ -64,7 +70,7 @@ User-selected skills: ${userSkills.join(", ") || "None provided"}
 
 Resume content:
 """
-${resumeText || "No resume content was extracted."}
+${resumeText}
 """
 
 Task:
@@ -72,8 +78,8 @@ Evaluate readiness for the target role on a scale of 0–100 (be strict and real
 Prioritize:
 - Match to technical skills
 - Depth in DSA/problem-solving
-- System design knowledge
-- Cloud/DevOps exposure
+- System design knowledge primarily for mid/senior roles
+- Cloud/DevOps exposure if needed for the role
 - Project quality and real-world impact
 
 Return ONLY valid JSON with this exact structure:
