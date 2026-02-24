@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
-import { FileText, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 interface Props {
   onFileSelect: (file: File | null) => void;
@@ -17,26 +17,15 @@ export default function ResumeUploader({ onFileSelect }: Props) {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-3">
+      <FileUpload onChange={handleFileUpload} />
 
-      {/* Upload Area */}
-      <div className="w-full border border-slate-200 rounded-xl bg-linear-to-b from-[#f8faff] to-white shadow-sm overflow-hidden">
-        <FileUpload onChange={handleFileUpload} />
-      </div>
-
-      {/* File Preview */}
       {files.length > 0 && (
-        <div className="flex items-center gap-3 bg-[#eef3ff] border border-[#d6e0ff] rounded-lg p-4">
-          <FileText className="h-6 w-6 text-[#3d52a0]" />
-          <div className="flex-1">
-            <p className="font-semibold text-slate-900">
-              {files[0].name}
-            </p>
-            <p className="text-sm text-slate-600">
-              {(files[0].size / 1024 / 1024).toFixed(2)} MB • PDF Ready
-            </p>
-          </div>
-          <CheckCircle2 className="text-green-600" />
+        <div className="flex items-center gap-3 bg-[#fff3ed] border border-[#ff6b35] rounded-lg p-3">
+          <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
+          <p className="text-sm font-medium text-slate-800 truncate">
+            Resume uploaded successfully
+          </p>
         </div>
       )}
     </div>

@@ -31,11 +31,11 @@ const skillCategories = {
 
 function Navbar() {
   return (
-    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50 h-15 flex items-center">
-      <div className="max-w-7xl mx-auto px-4 lg:px-6 w-full flex items-center justify-between">
-        <Link href="/" className="font-bold text-lg text-slate-900">SkillBridge</Link>
-        <Link href="/" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg hover:bg-[#e55a28] transition-all hover:shadow-lg text-xs">
-          Back
+    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
+        <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
+        <Link href="/" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg hover:shadow-lg transition-all text-xs">
+          Back 
         </Link>
       </div>
     </header>
@@ -119,7 +119,6 @@ export default function OnboardPage() {
       return;
     }
 
-    // Build FormData manually to ensure all state values are captured
     const formData = new FormData();
     formData.append("uuid", uuid);
     formData.append("fullName", fullName);
@@ -140,9 +139,19 @@ export default function OnboardPage() {
 
   return (
     <div className="min-h-screen bg-[#fffcfa]">
+      <style>{`
+        [data-radix-popper-content-wrapper] > div,
+        [role="listbox"] {
+          background-color: white !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+        }
+      `}</style>
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 lg:px-6 py-10">
+
+        {/* Page Header */}
         <div className="mb-10 text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-xs font-medium text-[#ff6b35] mb-4">
             <Zap size={14} className="fill-current" />
@@ -155,21 +164,24 @@ export default function OnboardPage() {
         </div>
 
         <form ref={formRef} onSubmit={handleSubmit}>
-          <div className="grid lg:grid-cols-3 gap-8 items-stretch">
+          <div className="grid lg:grid-cols-[1fr_340px] gap-8 items-start">
 
-            {/* LEFT PANEL */}
-            <div className="lg:col-span-1 space-y-6">
+            {/* ── LEFT: Main form column ── */}
+            <div className="space-y-6">
 
-              {/* Basic Information */}
-              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="h-8 w-8 rounded-lg bg-[#fff3ed] flex items-center justify-center">
+              {/* Step 1 — Basic Information */}
+              <section className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-8 w-8 rounded-lg bg-[#fff3ed] flex items-center justify-center shrink-0">
                     <Target className="text-[#ff6b35]" size={18} />
                   </div>
-                  <h2 className="text-lg font-semibold text-slate-900">Basic Information</h2>
+                  <div>
+                    <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">Step 1</p>
+                    <h2 className="text-lg font-semibold text-slate-900 leading-tight">Basic Information</h2>
+                  </div>
                 </div>
 
-                <div className="space-y-5">
+                <div className="grid sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-slate-700">Full Name</Label>
                     <Input
@@ -186,7 +198,7 @@ export default function OnboardPage() {
                       <SelectTrigger className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]">
                         <SelectValue placeholder="Select target role" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white border border-slate-200 shadow-lg backdrop-blur-none z-[100]">
                         <SelectItem value="frontend">Frontend Developer</SelectItem>
                         <SelectItem value="backend">Backend Developer</SelectItem>
                         <SelectItem value="fullstack">Full Stack Developer</SelectItem>
@@ -194,7 +206,6 @@ export default function OnboardPage() {
                         <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
-
                     {targetRole === "other" && (
                       <Input
                         placeholder="Enter your role (DevOps, QA, etc)"
@@ -205,49 +216,13 @@ export default function OnboardPage() {
                     )}
                   </div>
 
-                  {/* JOB DESCRIPTION */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-sm font-medium text-slate-700">
-                        Job Description
-                        <span className="ml-1 text-xs text-slate-400">(optional)</span>
-                      </Label>
-                      <span className={`text-xs font-medium ${jobDescription.length >= JD_LIMIT - 50 ? "text-red-500" : "text-slate-400"}`}>
-                        {jobDescription.length} / {JD_LIMIT}
-                      </span>
-                    </div>
-                    <textarea
-                      placeholder="Paste the job description here to get a more targeted analysis..."
-                      value={jobDescription}
-                      onChange={(e) => setJobDescription(e.target.value.slice(0, JD_LIMIT))}
-                      rows={5}
-                      maxLength={JD_LIMIT}
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35] resize-none text-slate-800 placeholder:text-slate-400 bg-white"
-                    />
-                    <p className="text-xs text-slate-400">
-                      Adding a JD gives you a score matched to that specific role.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Academic Details */}
-              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="h-8 w-8 rounded-lg bg-[#fff3ed] flex items-center justify-center">
-                    <FileText className="text-[#ff6b35]" size={18} />
-                  </div>
-                  <h2 className="text-lg font-semibold text-slate-900">Academic Details</h2>
-                </div>
-
-                <div className="space-y-5">
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-slate-700">Year in College</Label>
                     <Select value={year} onValueChange={setYear}>
                       <SelectTrigger className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]">
                         <SelectValue placeholder="Select year" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white border border-slate-200 shadow-lg backdrop-blur-none z-[100]">
                         <SelectItem value="1">1st Year</SelectItem>
                         <SelectItem value="2">2nd Year</SelectItem>
                         <SelectItem value="3">3rd Year</SelectItem>
@@ -255,7 +230,6 @@ export default function OnboardPage() {
                         <SelectItem value="passed">Passed Out</SelectItem>
                       </SelectContent>
                     </Select>
-
                     {year === "passed" && (
                       <Input
                         placeholder="Years of experience"
@@ -275,39 +249,43 @@ export default function OnboardPage() {
                       className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]"
                     />
                   </div>
-                </div>
-              </div>
 
-              {/* What Happens Next */}
-              <div className="bg-white rounded-xl border border-slate-200 p-10 shadow-sm hover:shadow-md transition-shadow">
-                <h3 className="text-sm font-semibold text-slate-900 mb-5 flex items-center gap-2">
-                  <CheckCircle2 className="text-[#ff6b35]" size={16} />
-                  What happens next?
-                </h3>
-                <div className="space-y-4">
-                  {[
-                    ["1", "Skill Extraction", "We detect technologies, coursework and experience areas directly from your resume."],
-                    ["2", "Gap Detection", "Your profile is compared with real developer job requirements."],
-                    ["3", "Learning Roadmap", "You receive a clear 30-day plan showing exactly what to study and practice."],
-                  ].map(([num, title, desc]) => (
-                    <div key={num} className="flex gap-3">
-                      <div className="h-8 w-8 rounded-full bg-[#fff3ed] text-[#ff6b35] flex items-center justify-center text-sm font-bold shrink-0">
-                        {num}
-                      </div>
-                      <div>
-                        <p className="font-semibold text-slate-900 text-sm">{title}</p>
-                        <p className="text-xs text-slate-600 mt-0.5">{desc}</p>
-                      </div>
+                  <div className="sm:col-span-2 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm font-medium text-slate-700">
+                        Job Description
+                        <span className="ml-1 text-xs text-slate-400">(optional)</span>
+                      </Label>
+                      <span className={`text-xs font-medium ${jobDescription.length >= JD_LIMIT - 50 ? "text-red-500" : "text-slate-400"}`}>
+                        {jobDescription.length} / {JD_LIMIT}
+                      </span>
                     </div>
-                  ))}
+                    <textarea
+                      placeholder="Paste the job description here to get a more targeted analysis..."
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value.slice(0, JD_LIMIT))}
+                      rows={4}
+                      maxLength={JD_LIMIT}
+                      className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:border-[#ff6b35] focus:outline-none focus:ring-1 focus:ring-[#ff6b35] resize-none text-slate-800 placeholder:text-slate-400 bg-white"
+                    />
+                    <p className="text-xs text-slate-400">
+                      Adding a JD gives you a score matched to that specific role.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </section>
 
-            {/* MIDDLE PANEL - Skills */}
-            <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
-                <h2 className="text-lg font-semibold text-slate-900 mb-5">Technical Skills</h2>
+              {/* Step 2 — Technical Skills */}
+              <section className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-8 w-8 rounded-lg bg-[#fff3ed] flex items-center justify-center shrink-0">
+                    <FileText className="text-[#ff6b35]" size={18} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">Step 2</p>
+                    <h2 className="text-lg font-semibold text-slate-900 leading-tight">Technical Skills</h2>
+                  </div>
+                </div>
 
                 {skills.length > 0 && (
                   <div className="mb-5 p-4 bg-[#fffaf7] rounded-lg border border-[#ff6b35]/20">
@@ -328,7 +306,7 @@ export default function OnboardPage() {
                   </div>
                 )}
 
-                <div className="space-y-5 flex-1 overflow-y-auto pr-2">
+                <div className="space-y-5">
                   {Object.entries(skillCategories).map(([category, list]) => (
                     <div key={category}>
                       <h3 className="text-sm font-semibold text-slate-800 mb-2.5 flex items-center gap-2">
@@ -383,27 +361,24 @@ export default function OnboardPage() {
                     Add
                   </Button>
                 </div>
-              </div>
-            </div>
+              </section>
 
-            {/* RIGHT PANEL */}
-            <div className="lg:col-span-1 space-y-6">
-              <div className="bg-linear-to-br from-white to-[#fffaf7] rounded-xl border-2 border-[#ff6b35]/30 p-6 shadow-lg">
+              {/* Step 3 — Resume Upload (mobile / below-lg) */}
+              <section className="lg:hidden bg-linear-to-br from-white to-[#fffaf7] rounded-xl border-2 border-[#ff6b35]/30 p-6 shadow-lg">
                 <div className="space-y-4 mb-6">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ff6b35] text-white rounded-full text-xs font-medium">
                     <Zap size={12} className="fill-current" />
                     AI Powered
                   </div>
                   <div>
+                    <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">Step 3</p>
                     <h2 className="text-xl font-bold text-slate-900">Resume Analyzer</h2>
                     <p className="text-orange-600 text-sm mt-1">
                       Upload your resume and let AI evaluate your interview readiness.
                     </p>
                   </div>
                 </div>
-
                 <ResumeUploader onFileSelect={setResumeFile} />
-
                 <Button
                   type="submit"
                   disabled={loading || !resumeFile || !uuid}
@@ -415,10 +390,49 @@ export default function OnboardPage() {
                     <>Analyze My Resume<ArrowRight className="ml-2 h-5 w-5" /></>
                   )}
                 </Button>
+                {errorMsg && <p className="text-red-600 text-sm mt-3 text-center">{errorMsg}</p>}
+              </section>
+
+            </div>
+
+            {/* ── RIGHT: Sticky sidebar ── */}
+            <div className="hidden lg:block">
+              <div className="sticky top-24 flex flex-col gap-6">
+
+              {/* Resume Upload */}
+              <div className="bg-linear-to-br from-white to-[#fffaf7] rounded-xl border-2 border-[#ff6b35]/30 p-5 shadow-lg">
+                <div className="space-y-2 mb-4">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ff6b35] text-white rounded-full text-xs font-medium">
+                    <Zap size={12} className="fill-current" />
+                    AI Powered
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">Step 3</p>
+                    <h2 className="text-lg font-bold text-slate-900">Resume Analyzer</h2>
+                    <p className="text-orange-600 text-sm mt-0.5">
+                      Upload your resume and let AI evaluate your interview readiness.
+                    </p>
+                  </div>
+                </div>
+
+                <ResumeUploader onFileSelect={setResumeFile} />
+
+                <Button
+                  type="submit"
+                  disabled={loading || !resumeFile || !uuid}
+                  className="w-full mt-4 bg-[#ff6b35] hover:bg-[#e55a28] text-white h-11 font-semibold shadow-lg hover:shadow-xl transition-all"
+                >
+                  {loading ? (
+                    <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Analyzing Resume...</>
+                  ) : (
+                    <>Analyze My Resume<ArrowRight className="ml-2 h-5 w-5" /></>
+                  )}
+                </Button>
 
                 {errorMsg && <p className="text-red-600 text-sm mt-3 text-center">{errorMsg}</p>}
               </div>
 
+              {/* Report includes */}
               <div className="bg-[#1a1a1a] rounded-xl p-6 text-white shadow-lg">
                 <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
                   <div className="h-1.5 w-1.5 rounded-full bg-[#ff6b35]"></div>
@@ -445,8 +459,34 @@ export default function OnboardPage() {
                   </p>
                 </div>
               </div>
-            </div>
 
+              {/* What happens next */}
+              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-sm font-semibold text-slate-900 mb-5 flex items-center gap-2">
+                  <CheckCircle2 className="text-[#ff6b35]" size={16} />
+                  What happens next?
+                </h3>
+                <div className="space-y-4">
+                  {[
+                    ["1", "Skill Extraction", "We detect technologies, coursework and experience areas directly from your resume."],
+                    ["2", "Gap Detection", "Your profile is compared with real developer job requirements."],
+                    ["3", "Learning Roadmap", "You receive a clear 30-day plan showing exactly what to study and practice."],
+                  ].map(([num, title, desc]) => (
+                    <div key={num} className="flex gap-3">
+                      <div className="h-8 w-8 rounded-full bg-[#fff3ed] text-[#ff6b35] flex items-center justify-center text-sm font-bold shrink-0">
+                        {num}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-900 text-sm">{title}</p>
+                        <p className="text-xs text-slate-600 mt-0.5">{desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>  {/* end sticky inner */}
+            </div>  {/* end sidebar outer */}
           </div>
         </form>
       </main>
