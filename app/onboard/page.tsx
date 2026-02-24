@@ -35,7 +35,7 @@ function Navbar() {
       <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
         <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
         <Link href="/" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg hover:shadow-lg transition-all text-xs">
-          Back 
+          Back to Home
         </Link>
       </div>
     </header>
@@ -198,7 +198,7 @@ export default function OnboardPage() {
                       <SelectTrigger className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]">
                         <SelectValue placeholder="Select target role" />
                       </SelectTrigger>
-                      <SelectContent className="bg-white border border-slate-200 shadow-lg backdrop-blur-none z-[100]">
+                      <SelectContent className="bg-white border border-slate-200 shadow-lg backdrop-blur-none z-100">
                         <SelectItem value="frontend">Frontend Developer</SelectItem>
                         <SelectItem value="backend">Backend Developer</SelectItem>
                         <SelectItem value="fullstack">Full Stack Developer</SelectItem>
@@ -222,7 +222,7 @@ export default function OnboardPage() {
                       <SelectTrigger className="border-slate-200 focus:border-[#ff6b35] focus:ring-[#ff6b35]">
                         <SelectValue placeholder="Select year" />
                       </SelectTrigger>
-                      <SelectContent className="bg-white border border-slate-200 shadow-lg backdrop-blur-none z-[100]">
+                      <SelectContent className="bg-white border border-slate-200 shadow-lg backdrop-blur-none z-100">
                         <SelectItem value="1">1st Year</SelectItem>
                         <SelectItem value="2">2nd Year</SelectItem>
                         <SelectItem value="3">3rd Year</SelectItem>
