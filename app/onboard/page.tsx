@@ -58,7 +58,7 @@ export default function OnboardPage() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const formRef = useRef<HTMLFormElement>(null);
-  const JD_LIMIT = 500;
+  const JD_LIMIT = 1000;
 
   useEffect(() => {
     let storedUuid = localStorage.getItem("skillbridge_uuid");
