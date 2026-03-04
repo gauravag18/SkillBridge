@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import Groq from "groq-sdk";
 import { extractText } from "unpdf";
+import { fetchAndAnalyzeGithub } from "./github"; 
 
 export async function analyzeResume(uuid: string) {
   const supabase = await createClient();
@@ -11,7 +12,9 @@ export async function analyzeResume(uuid: string) {
 
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
-    .select("target_role, skills, resume_text, resume_path, job_description")
+    .select(
+      "target_role, skills, resume_text, resume_path, job_description, github_username"
+    )
     .eq("uuid", uuid)
     .single();
 
@@ -138,6 +141,23 @@ Rules:
 
     if (insertError) {
       return { success: false, error: "Failed to save analysis" };
+    }
+
+    // GitHub analysis
+    if (profile.github_username?.trim()) {
+      try {
+        const githubResult = await fetchAndAnalyzeGithub(
+          uuid,
+          profile.github_username.trim(),
+          targetRole
+        );
+
+        if (!githubResult.success) {
+          console.warn(`GitHub analysis failed for ${profile.github_username}:`, githubResult.message);
+        }
+      } catch (githubErr) {
+        console.error("GitHub analysis error during onboard:", githubErr);
+      }
     }
 
     return { success: true, analysis: parsed };

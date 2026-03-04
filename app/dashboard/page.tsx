@@ -1,3 +1,5 @@
+"use server";
+
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import {
@@ -11,6 +13,11 @@ import {
   Zap,
   TrendingUp,
   AlertTriangle,
+  Github,
+  Users,
+  Star,
+  Code,
+  BookOpen,
 } from "lucide-react";
 
 function Navbar() {
@@ -51,17 +58,13 @@ function GapPriorityBadge({ pct }: { pct: number }) {
 
 function GapCard({ gap, index }: { gap: any; index: number }) {
   const pct: number = gap.percentage;
-
-  const barColor =
-    pct >= 70 ? "#ef4444" : pct >= 40 ? "#f59e0b" : "#3b82f6";
-
+  const barColor = pct >= 70 ? "#ef4444" : pct >= 40 ? "#f59e0b" : "#3b82f6";
   const bgClass =
     pct >= 70
       ? "bg-red-50 border-red-100"
       : pct >= 40
       ? "bg-yellow-50 border-yellow-100"
       : "bg-blue-50 border-blue-100";
-
   const hint =
     pct >= 70
       ? "Significant gap — prioritize immediately"
@@ -83,8 +86,6 @@ function GapCard({ gap, index }: { gap: any; index: number }) {
         </div>
         <GapPriorityBadge pct={pct} />
       </div>
-
-      {/* Segmented bar */}
       <div className="flex gap-0.5 mb-2">
         {Array.from({ length: 10 }).map((_, i) => {
           const active = pct >= (i + 1) * 10 - 5;
@@ -97,7 +98,6 @@ function GapCard({ gap, index }: { gap: any; index: number }) {
           );
         })}
       </div>
-
       <div className="flex items-center justify-between">
         <span className="text-xs text-slate-500">{hint}</span>
         <span className="text-xs font-bold" style={{ color: barColor }}>
@@ -115,7 +115,6 @@ export default async function DashboardPage({
 }) {
   const resolvedSearchParams = await searchParams;
   const uuid = resolvedSearchParams.uuid || "";
-
   const supabase = await createClient();
 
   if (!uuid) {
@@ -183,32 +182,26 @@ export default async function DashboardPage({
   const jdMissingSkills = analysis?.jd_missing_skills ?? [];
   const hasJD = !!profile.job_description;
 
+  const githubData = profile.github_data ?? null;
+  const hasGithub = !!profile.github_username && !!githubData;
+
   const readinessLabel =
-    readiness === null
-      ? null
-      : readiness >= 80
-      ? "Interview Ready"
-      : readiness >= 60
-      ? "Almost There"
-      : "Needs Work";
+    readiness === null ? null
+    : readiness >= 80 ? "Interview Ready"
+    : readiness >= 60 ? "Almost There"
+    : "Needs Work";
 
   const readinessColor =
-    readiness === null
-      ? "#94a3b8"
-      : readiness >= 80
-      ? "#16a34a"
-      : readiness >= 60
-      ? "#ca8a04"
-      : "#ef4444";
+    readiness === null ? "#94a3b8"
+    : readiness >= 80 ? "#16a34a"
+    : readiness >= 60 ? "#ca8a04"
+    : "#ef4444";
 
   const estimatedTime =
-    readiness === null
-      ? "Pending"
-      : readiness < 60
-      ? "6–8 Weeks"
-      : readiness < 80
-      ? "3–5 Weeks"
-      : "1–3 Weeks";
+    readiness === null ? "Pending"
+    : readiness < 60 ? "6–8 Weeks"
+    : readiness < 80 ? "3–5 Weeks"
+    : "1–3 Weeks";
 
   const sortedGaps = [...skillGaps].sort(
     (a: any, b: any) => b.percentage - a.percentage
@@ -224,8 +217,6 @@ export default async function DashboardPage({
         {/* ── HERO BANNER ── */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="grid lg:grid-cols-[180px_1fr_220px]">
-
-            {/* Score ring panel */}
             <div className="flex items-center justify-center p-8 bg-[#fffaf7] border-b lg:border-b-0 lg:border-r border-slate-100">
               <div className="relative h-32 w-32 flex items-center justify-center">
                 <svg className="absolute inset-0 -rotate-90" viewBox="0 0 120 120">
@@ -254,7 +245,6 @@ export default async function DashboardPage({
               </div>
             </div>
 
-            {/* Info panel */}
             <div className="p-6 lg:p-8 flex flex-col justify-center">
               <div className="flex flex-wrap items-center gap-2 mb-3">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-xs font-medium text-[#ff6b35]">
@@ -273,20 +263,16 @@ export default async function DashboardPage({
                   </span>
                 )}
               </div>
-
               <h1 className="text-2xl font-bold text-slate-900 mb-1">Career Readiness</h1>
               <p className="text-sm text-slate-500 mb-5">
                 Analyzed against{" "}
                 <span className="font-semibold text-slate-700">{targetRole}</span> expectations
               </p>
-
               <div className="flex flex-wrap gap-2">
                 {hasJD && jdMatchScore !== null && (
                   <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#fff3ed] border border-[#ff6b35]/30 rounded-lg">
                     <FileSearch size={13} className="text-[#ff6b35]" />
-                    <span className="text-xs font-semibold text-[#ff6b35]">
-                      {jdMatchScore}% JD Match
-                    </span>
+                    <span className="text-xs font-semibold text-[#ff6b35]">{jdMatchScore}% JD Match</span>
                   </div>
                 )}
                 {hasJD && jdMatchScore === null && (
@@ -310,7 +296,6 @@ export default async function DashboardPage({
               </div>
             </div>
 
-            {/* CTA panel */}
             <div className="border-t lg:border-t-0 lg:border-l border-slate-100 bg-[#1a1a1a] p-6 flex flex-col justify-between">
               <div>
                 <p className="text-xs text-slate-400 mb-1">Your next step</p>
@@ -330,47 +315,27 @@ export default async function DashboardPage({
                 </div>
               </Link>
             </div>
-
           </div>
         </div>
 
         {/* ── METRIC STRIP ── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            {
-              label: "Interview Readiness",
-              value: readiness !== null ? `${readiness}%` : "—",
-              bar: readiness,
-            },
+            { label: "Interview Readiness", value: readiness !== null ? `${readiness}%` : "—", bar: readiness },
             {
               label: "JD Match Score",
-              value: hasJD
-                ? jdMatchScore !== null
-                  ? `${jdMatchScore}%`
-                  : "Pending"
-                : "No JD",
+              value: hasJD ? (jdMatchScore !== null ? `${jdMatchScore}%` : "Pending") : "No JD",
               bar: hasJD ? jdMatchScore : null,
             },
-            {
-              label: "Skill Gaps Found",
-              value: skillGaps.length > 0 ? `${skillGaps.length}` : "—",
-              bar: null,
-            },
-            {
-              label: "Est. Ready In",
-              value: estimatedTime,
-              bar: null,
-            },
+            { label: "Skill Gaps Found", value: skillGaps.length > 0 ? `${skillGaps.length}` : "—", bar: null },
+            { label: "Est. Ready In", value: estimatedTime, bar: null },
           ].map((m, i) => (
             <div key={i} className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
               <p className="text-xs text-slate-400 mb-1">{m.label}</p>
               <p className="text-lg font-bold text-slate-900 mb-2">{m.value}</p>
               {m.bar !== null && (
                 <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-[#ff6b35] rounded-full"
-                    style={{ width: `${m.bar}%` }}
-                  />
+                  <div className="h-full bg-[#ff6b35] rounded-full" style={{ width: `${m.bar}%` }} />
                 </div>
               )}
             </div>
@@ -380,7 +345,7 @@ export default async function DashboardPage({
         {/* ── MAIN GRID ── */}
         <div className="grid lg:grid-cols-[1fr_300px] gap-6 items-start">
 
-          {/* Left */}
+          {/* LEFT COLUMN */}
           <div className="space-y-6">
 
             {/* JD Match */}
@@ -433,7 +398,7 @@ export default async function DashboardPage({
               </div>
             )}
 
-            {/* ── SKILL GAP ANALYSIS ── */}
+            {/* Skill Gap Analysis */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
               <div className="flex items-center justify-between mb-1">
                 <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -448,10 +413,8 @@ export default async function DashboardPage({
                   </span>
                 )}
               </div>
-
               {sortedGaps.length > 0 ? (
                 <>
-                  {/* Legend */}
                   <div className="flex items-center gap-4 mt-2 mb-5">
                     {[
                       { color: "#ef4444", label: "Critical ≥70%" },
@@ -459,15 +422,11 @@ export default async function DashboardPage({
                       { color: "#3b82f6", label: "Medium <40%" },
                     ].map((l) => (
                       <div key={l.label} className="flex items-center gap-1.5">
-                        <div
-                          className="h-2 w-2 rounded-full"
-                          style={{ backgroundColor: l.color }}
-                        />
+                        <div className="h-2 w-2 rounded-full" style={{ backgroundColor: l.color }} />
                         <span className="text-xs text-slate-400">{l.label}</span>
                       </div>
                     ))}
                   </div>
-
                   <div className="space-y-3">
                     {sortedGaps.map((gap: any, i: number) => (
                       <GapCard key={i} gap={gap} index={i} />
@@ -480,9 +439,7 @@ export default async function DashboardPage({
                     <BarChart3 size={22} className="text-slate-300" />
                   </div>
                   <p className="text-sm font-medium text-slate-400">No skill gaps detected yet</p>
-                  <p className="text-xs text-slate-300 mt-1">
-                    Complete your resume analysis to see results
-                  </p>
+                  <p className="text-xs text-slate-300 mt-1">Complete your resume analysis to see results</p>
                 </div>
               )}
             </div>
@@ -491,8 +448,7 @@ export default async function DashboardPage({
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
                 <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 mb-4">
-                  <CheckCircle2 size={16} className="text-green-500" />
-                  Strengths
+                  <CheckCircle2 size={16} className="text-green-500" /> Strengths
                 </h2>
                 {strengths.length > 0 ? (
                   <div className="space-y-2">
@@ -507,16 +463,13 @@ export default async function DashboardPage({
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-slate-400">
-                    Complete analysis to see your strengths.
-                  </p>
+                  <p className="text-sm text-slate-400">Complete analysis to see your strengths.</p>
                 )}
               </div>
 
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
                 <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 mb-4">
-                  <AlertCircle size={16} className="text-red-400" />
-                  Areas to Improve
+                  <AlertCircle size={16} className="text-red-400" /> Areas to Improve
                 </h2>
                 {weaknesses.length > 0 ? (
                   <div className="space-y-2">
@@ -531,15 +484,13 @@ export default async function DashboardPage({
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-slate-400">
-                    Complete analysis to see areas to improve.
-                  </p>
+                  <p className="text-sm text-slate-400">Complete analysis to see areas to improve.</p>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Right sidebar */}
+          {/* RIGHT SIDEBAR */}
           <div className="space-y-5">
 
             {/* Recommendation */}
@@ -587,6 +538,91 @@ export default async function DashboardPage({
                     </span>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Github Analysis */}
+            {hasGithub ? (
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                {/* Header */}
+                <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+                  <h3 className="font-bold text-slate-900 flex items-center gap-2 text-sm">
+                    <div className="h-6 w-6 rounded-md bg-[#fff3ed] flex items-center justify-center">
+                      <Github size={12} className="text-[#ff6b35]" />
+                    </div>
+                    GitHub Profile
+                  </h3>
+                  <a
+                    href={`https://github.com/${profile.github_username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-[#ff6b35] hover:underline flex items-center gap-1 font-medium"
+                  >
+                    @{profile.github_username} <ArrowRight size={11} />
+                  </a>
+                </div>
+
+                {/* Stats */}
+                <div className="grid grid-cols-2 gap-px bg-slate-100">
+                  {[
+                    { icon: Users, label: "Followers", value: githubData.followers?.toLocaleString() },
+                    { icon: Code, label: "Repos", value: githubData.public_repos?.toLocaleString() },
+                    { icon: Star, label: "Stars", value: githubData.total_stars?.toLocaleString() },
+                    { icon: BookOpen, label: "Top Language", value: githubData.top_languages?.[0]?.language },
+                  ].map(({ icon: Icon, label, value }) => (
+                    <div key={label} className="bg-[#fffaf7] px-4 py-3 flex flex-col gap-1">
+                      <div className="flex items-center gap-1.5">
+                        <Icon size={11} className="text-[#ff6b35]" />
+                        <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wide">{label}</span>
+                      </div>
+                      <span className="text-base font-bold text-slate-900 leading-tight">{value ?? "—"}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Summary
+                {githubData.summary && (
+                  <div className="px-5 py-4 border-t border-slate-100">
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Summary</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">{githubData.summary}</p>
+                  </div>
+                )} */}
+
+                {/* Suggestions
+                {githubData.suggestions?.length > 0 && (
+                  <div className="px-5 pb-5 pt-4 border-t border-slate-100">
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                      Suggestions
+                    </p>
+                    <ul className="space-y-2.5">
+                      {githubData.suggestions.map((sug: string, i: number) => (
+                        <li key={i} className="flex items-start gap-2.5 text-xs text-slate-600 leading-relaxed">
+                          <div className="h-4 w-4 rounded-full bg-[#fff3ed] flex items-center justify-center shrink-0 mt-0.5">
+                            <span className="text-[#ff6b35] font-bold text-[9px]">{i + 1}</span>
+                          </div>
+                          {sug}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )} */}
+              </div>
+            ) : (
+              /* No GitHub — compact CTA */
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 text-center">
+                <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3">
+                  <Github size={18} className="text-slate-400" />
+                </div>
+                <h3 className="text-sm font-semibold text-slate-700 mb-1">Connect GitHub</h3>
+                <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+                  Link your GitHub profile to get portfolio insights and suggestions.
+                </p>
+                <Link
+                  href="/onboard"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 bg-[#fff3ed] text-[#ff6b35] rounded-lg text-xs font-semibold hover:bg-[#ffe8d9] transition-colors"
+                >
+                  Add GitHub Username
+                </Link>
               </div>
             )}
 
