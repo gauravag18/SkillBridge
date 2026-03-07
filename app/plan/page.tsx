@@ -12,7 +12,7 @@ import {
   Trophy,
   Loader2,
   ArrowRight,
-  Zap,
+  ChevronRight,
 } from "lucide-react";
 import { updateDayProgress, getOrCreatePlan } from "@/app/actions/progress";
 
@@ -107,7 +107,6 @@ export default function PlanPage({
 
   const overallPct = Math.round((totalCompleted / 30) * 100);
 
-  // Streak: consecutive completed days ending at current day
   const streak = (() => {
     let s = 0;
     for (let d = day; d >= 1; d--) {
@@ -118,9 +117,8 @@ export default function PlanPage({
     return s;
   })();
 
-  // Daily tips rotating by day
   const tips = [
-    "Focus beats multitasking, one concept deeply understood beats three skimmed.",
+    "Focus beats multitasking — one concept deeply understood beats three skimmed.",
     "Code what you learn today. Reading alone doesn't stick.",
     "Struggle with a problem for 20 min before looking up — that's how intuition forms.",
     "Review yesterday's notes for 5 min before starting today.",
@@ -130,7 +128,6 @@ export default function PlanPage({
   ];
   const todayTip = tips[(day - 1) % tips.length];
 
-  // Confetti on day completion
   const [showConfetti, setShowConfetti] = useState(false);
   const isDayDone = completed.length > 0 && completed.every(Boolean);
 
@@ -146,9 +143,8 @@ export default function PlanPage({
   };
 
   return (
-    <div className="min-h-screen bg-[#fffcfa] relative">
+    <div className="min-h-screen bg-[#f8f7f5] relative">
 
-      {/* Confetti burst */}
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-999 overflow-hidden">
           {Array.from({ length: 48 }).map((_, i) => {
@@ -172,7 +168,7 @@ export default function PlanPage({
           })}
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <div className="bg-white rounded-2xl border-2 border-[#ff6b35] shadow-2xl px-8 py-5 text-center">
-              <div className="text-3xl mb-1">🎉</div>
+              <p className="text-3xl mb-1">🎉</p>
               <p className="text-base font-bold text-slate-900">Day {day} Complete!</p>
               <p className="text-xs text-slate-500 mt-0.5">Keep the streak going!</p>
             </div>
@@ -187,48 +183,59 @@ export default function PlanPage({
         }
       `}</style>
 
-      {/* Navbar */}
+      {/* Navbar  */}
       <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
           <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
-          <Link
-            href={`/dashboard?uuid=${uuid}`}
-            className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg hover:shadow-lg transition-all text-xs"
-          >
-            Back to Dashboard
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link
+              href={`/dashboard?uuid=${uuid}`}
+              className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg hover:shadow-lg transition-all text-xs"
+            >
+              Dashboard
+            </Link>
+          </div>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 lg:px-6 py-10 space-y-6">
+      <main className="max-w-6xl mx-auto px-4 lg:px-6 py-8 space-y-5">
 
-        {/* ── HERO BANNER ── */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 text-xs text-slate-400">
+          <Link href="/" className="hover:text-slate-600 transition-colors">Home</Link>
+          <ChevronRight size={12} />
+          <Link href={`/dashboard?uuid=${uuid}`} className="hover:text-slate-600 transition-colors">Dashboard</Link>
+          <ChevronRight size={12} />
+          <span className="text-slate-600 font-medium">30-Day Plan</span>
+        </div>
+
+        {/* HERO BANNER */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+          <div className="h-0.5 bg-linear-to-r from-[#ff6b35] via-[#ff8a5c] to-transparent" />
           <div className="grid lg:grid-cols-[1fr_auto]">
             <div className="p-6 lg:p-8">
               <div className="flex items-center gap-2 mb-3">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-xs font-medium text-[#ff6b35]">
-                  <Zap size={10} className="fill-current" /> 30-Day Roadmap
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-[10px] font-bold text-[#ff6b35] uppercase tracking-wide">
+                  30-Day Roadmap
                 </span>
                 {streak >= 2 && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-orange-100 border border-orange-200 rounded-full text-xs font-bold text-orange-600">
-                    🔥 {streak}-day streak
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-orange-100 border border-orange-200 rounded-full text-[10px] font-bold text-orange-600">
+                    {streak}-day streak
                   </span>
                 )}
                 {streak >= 7 && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-yellow-100 border border-yellow-200 rounded-full text-xs font-bold text-yellow-700">
-                    🏆 On fire!
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-yellow-100 border border-yellow-200 rounded-full text-[10px] font-bold text-yellow-700">
+                    On fire!
                   </span>
                 )}
               </div>
-              <h1 className="text-2xl font-bold text-slate-900 mb-1">Your Learning Plan</h1>
+              <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">Your Learning Plan</h1>
               <p className="text-sm text-slate-500 mb-5">
                 {currentDayPlan?.focus
                   ? <>Today: <span className="font-semibold text-slate-700">{currentDayPlan.focus}</span></>
                   : "Follow daily tasks to reach interview readiness"}
               </p>
 
-              {/* Overall progress bar */}
               <div className="max-w-md">
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-xs text-slate-400">Overall progress</span>
@@ -243,7 +250,7 @@ export default function PlanPage({
               </div>
             </div>
 
-            {/* Stat trio — with streak */}
+            {/* Stat*/}
             <div className="border-t lg:border-t-0 lg:border-l border-slate-100 grid grid-cols-3 lg:grid-cols-1 divide-x lg:divide-x-0 lg:divide-y divide-slate-100">
               {[
                 { icon: CalendarDays, label: "Current Day", value: `${day} / 30`, color: "text-[#ff6b35]" },
@@ -262,17 +269,20 @@ export default function PlanPage({
           </div>
         </div>
 
-        {/* ── 30-DAY VISUAL TIMELINE ── */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <CalendarDays size={14} className="text-[#ff6b35]" />
+        {/* 30-DAY VISUAL TIMELINE */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wide">
+              <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
+                <CalendarDays size={12} className="text-[#ff6b35]" />
+              </div>
               30-Day Map
             </h2>
             <div className="flex items-center gap-3">
               {[
                 { color: "bg-[#ff6b35]", label: "Today" },
                 { color: "bg-green-400", label: "Done" },
+                { color: "bg-orange-200", label: "Partial" },
                 { color: "bg-slate-200", label: "Upcoming" },
               ].map(({ color, label }) => (
                 <div key={label} className="flex items-center gap-1">
@@ -307,7 +317,6 @@ export default function PlanPage({
                         : "bg-slate-100 hover:bg-slate-200"
                     }`}
                   />
-                  {/* Day label — show every 5 */}
                   {d % 5 === 0 && (
                     <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[9px] text-slate-400">{d}</span>
                   )}
@@ -318,17 +327,18 @@ export default function PlanPage({
           <div className="mt-6" />
         </div>
 
-        {/* ── MAIN LAYOUT ── */}
-        <div className="grid lg:grid-cols-[280px_1fr] gap-6 items-start">
+        {/* MAIN LAYOUT */}
+        <div className="grid lg:grid-cols-[280px_1fr] gap-5 items-start">
 
           {/* Left — Day selector */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sticky top-20">
-            <h2 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <CalendarDays size={14} className="text-[#ff6b35]" />
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sticky top-20">
+            <h2 className="text-xs font-bold text-slate-900 mb-4 flex items-center gap-2 uppercase tracking-wide">
+              <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
+                <CalendarDays size={12} className="text-[#ff6b35]" />
+              </div>
               Jump to Day
             </h2>
 
-            {/* Week groups */}
             {[
               { label: "Week 1", days: [1,2,3,4,5,6,7] },
               { label: "Week 2", days: [8,9,10,11,12,13,14] },
@@ -336,7 +346,7 @@ export default function PlanPage({
               { label: "Week 4", days: [22,23,24,25,26,27,28,29,30] },
             ].map(({ label, days }) => (
               <div key={label} className="mb-4">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-2">{label}</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{label}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {days.map((d) => {
                     const dp = allProgress[`day${d}`];
@@ -362,7 +372,6 @@ export default function PlanPage({
               </div>
             ))}
 
-            {/* Legend */}
             <div className="pt-3 border-t border-slate-100 flex flex-col gap-1.5">
               {[
                 { color: "bg-[#ff6b35]", label: "Current day" },
@@ -378,168 +387,172 @@ export default function PlanPage({
           </div>
 
           {/* Right — Tasks + extras */}
-          <div className="space-y-6">
+          <div className="space-y-5">
 
             {/* Task card */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-
-              {/* Day header */}
-              <div className="flex items-start justify-between mb-5">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="h-7 w-7 rounded-lg bg-[#ff6b35] flex items-center justify-center text-white text-xs font-bold">
-                      {day}
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+              {/* Card top accent */}
+              <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
+              <div className="p-6">
+                {/* Day header */}
+                <div className="flex items-start justify-between mb-5">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="h-7 w-7 rounded-lg bg-[#ff6b35] flex items-center justify-center text-white text-xs font-bold">
+                        {day}
+                      </div>
+                      <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Day {day} of 30</span>
                     </div>
-                    <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Day {day} of 30</span>
+                    <h2 className="text-lg font-bold text-slate-900">
+                      {currentDayPlan?.focus || (planLoading ? "Loading..." : "Tasks")}
+                    </h2>
                   </div>
-                  <h2 className="text-lg font-bold text-slate-900">
-                    {currentDayPlan?.focus || (planLoading ? "Loading..." : "Tasks")}
-                  </h2>
+
+                  {/* Today's mini progress ring */}
+                  <div className="relative h-12 w-12 shrink-0">
+                    <svg className="absolute inset-0 -rotate-90" viewBox="0 0 40 40">
+                      <circle cx="20" cy="20" r="16" stroke="#f1f5f9" strokeWidth="4" fill="none" />
+                      <circle
+                        cx="20" cy="20" r="16"
+                        stroke="#ff6b35"
+                        strokeWidth="4"
+                        fill="none"
+                        strokeDasharray={`${progress * 1.005} 100.5`}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-[#ff6b35]">{Math.round(progress)}%</span>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Today's mini progress ring */}
-                <div className="relative h-12 w-12 shrink-0">
-                  <svg className="absolute inset-0 -rotate-90" viewBox="0 0 40 40">
-                    <circle cx="20" cy="20" r="16" stroke="#f1f5f9" strokeWidth="4" fill="none" />
-                    <circle
-                      cx="20" cy="20" r="16"
-                      stroke="#ff6b35"
-                      strokeWidth="4"
-                      fill="none"
-                      strokeDasharray={`${progress * 1.005} 100.5`}
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-[10px] font-bold text-[#ff6b35]">{Math.round(progress)}%</span>
-                  </div>
-                </div>
-              </div>
+                {errorMsg && (
+                  <p className="text-red-600 text-sm mb-4 px-3 py-2 bg-red-50 rounded-lg border border-red-100">{errorMsg}</p>
+                )}
 
-              {errorMsg && (
-                <p className="text-red-600 text-sm mb-4 px-3 py-2 bg-red-50 rounded-lg border border-red-100">{errorMsg}</p>
-              )}
-
-              {planLoading ? (
-                <div className="flex items-center gap-3 text-slate-400 py-12 justify-center">
-                  <Loader2 className="animate-spin" size={20} />
-                  <span className="text-sm">Loading your personalized plan...</span>
-                </div>
-              ) : tasks.length === 0 ? (
-                <div className="text-center py-12 space-y-3">
-                  <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-2">
-                    <BookOpen size={22} className="text-slate-300" />
+                {planLoading ? (
+                  <div className="flex items-center gap-3 text-slate-400 py-12 justify-center">
+                    <Loader2 className="animate-spin" size={20} />
+                    <span className="text-sm">Loading your personalized plan...</span>
                   </div>
-                  <p className="text-sm font-medium text-slate-400">No personalized plan found</p>
-                  <p className="text-xs text-slate-300">Please re-onboard to generate your plan.</p>
-                  <Link
-                    href="/onboard"
-                    className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg text-sm hover:bg-[#e55a28] transition-all"
-                  >
-                    Re-analyze Resume <ArrowRight size={14} />
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {tasks.map((task, i) => (
-                    <div
-                      key={i}
-                      onClick={() => toggleWithConfetti(i)}
-                      className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all
-                        ${completed[i]
-                          ? "bg-green-50 border-green-200"
-                          : "bg-slate-50 border-slate-200 hover:border-[#ff6b35]/40 hover:bg-[#fff3ed]"
-                        }`}
+                ) : tasks.length === 0 ? (
+                  <div className="text-center py-12 space-y-3">
+                    <div className="h-12 w-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-2">
+                      <BookOpen size={22} className="text-slate-300" />
+                    </div>
+                    <p className="text-sm font-medium text-slate-400">No personalized plan found</p>
+                    <p className="text-xs text-slate-300">Please re-onboard to generate your plan.</p>
+                    <Link
+                      href="/onboard"
+                      className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg text-sm hover:bg-[#e55a28] transition-all"
                     >
-                      {completed[i] ? (
-                        <CheckCircle2 size={18} className="text-green-500 shrink-0 mt-0.5" />
-                      ) : (
-                        <Circle size={18} className="text-slate-300 shrink-0 mt-0.5" />
-                      )}
-                      <span
-                        className={`text-sm leading-relaxed ${
-                          completed[i] ? "line-through text-slate-400" : "text-slate-700"
-                        }`}
+                      Re-analyze Resume <ArrowRight size={14} />
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="space-y-2.5">
+                    {tasks.map((task, i) => (
+                      <div
+                        key={i}
+                        onClick={() => toggleWithConfetti(i)}
+                        className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all select-none
+                          ${completed[i]
+                            ? "bg-green-50 border-green-200"
+                            : "bg-slate-50 border-slate-200 hover:border-[#ff6b35]/40 hover:bg-[#fff3ed]"
+                          }`}
                       >
-                        {task}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
+                        {completed[i] ? (
+                          <CheckCircle2 size={18} className="text-green-500 shrink-0 mt-0.5" />
+                        ) : (
+                          <Circle size={18} className="text-slate-300 shrink-0 mt-0.5" />
+                        )}
+                        <span
+                          className={`text-sm leading-relaxed ${
+                            completed[i] ? "line-through text-slate-400" : "text-slate-700"
+                          }`}
+                        >
+                          {task}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
-              {/* Daily tip */}
-              <div className="mt-5 flex items-start gap-3 p-4 rounded-xl bg-[#fff3ed] border border-[#ff6b35]/20">
-                <span className="text-base shrink-0">💡</span>
-                <div>
-                  <p className="text-xs font-semibold text-[#ff6b35] mb-0.5">Tip for Day {day}</p>
-                  <p className="text-xs text-slate-600 leading-relaxed">{todayTip}</p>
+                {/* Daily tip */}
+                <div className="mt-5 flex items-start gap-3 p-4 rounded-xl bg-[#fff3ed] border border-[#ff6b35]/20">
+                  <div className="h-6 w-6 rounded-lg bg-[#ff6b35]/15 flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-xs">💡</span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#ff6b35] mb-0.5 uppercase tracking-wide">Tip for Day {day}</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">{todayTip}</p>
+                  </div>
                 </div>
+
+                {tasks.length > 0 && (
+                  <button
+                    disabled={saving || planLoading}
+                    className="mt-4 w-full bg-[#ff6b35] hover:bg-[#e55a28] disabled:opacity-50 text-white font-semibold h-11 rounded-xl text-sm transition-all hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    {saving ? (
+                      <><Loader2 size={16} className="animate-spin" /> Saving...</>
+                    ) : isDayDone ? (
+                      <><CheckCircle2 size={16} /> Day Complete!</>
+                    ) : (
+                      <>Mark Day Complete <ArrowRight size={14} /></>
+                    )}
+                  </button>
+                )}
               </div>
-
-              {tasks.length > 0 && (
-                <button
-                  disabled={saving || planLoading}
-                  className="mt-5 w-full bg-[#ff6b35] hover:bg-[#e55a28] disabled:opacity-50 text-white font-semibold h-11 rounded-xl text-sm transition-all hover:shadow-lg flex items-center justify-center gap-2"
-                >
-                  {saving ? (
-                    <><Loader2 size={16} className="animate-spin" /> Saving...</>
-                  ) : (
-                    <>Mark Day Complete <ArrowRight size={14} /></>
-                  )}
-                </button>
-              )}
             </div>
 
             {/* Week phases */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-              <h2 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <div className="h-6 w-6 rounded-md bg-[#fff3ed] flex items-center justify-center">
-                  <CalendarDays size={13} className="text-[#ff6b35]" />
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+              <h2 className="text-xs font-bold text-slate-900 mb-4 flex items-center gap-2 uppercase tracking-wide">
+                <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
+                  <CalendarDays size={12} className="text-[#ff6b35]" />
                 </div>
                 30-Day Phases
               </h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
-                  { week: "Week 1", focus: "Address Top Skill Gaps", days: "Days 1–7" },
-                  { week: "Week 2", focus: "Deep Dive & Practice", days: "Days 8–14" },
-                  { week: "Week 3", focus: "System Design & Architecture", days: "Days 15–21" },
-                  { week: "Week 4", focus: "Projects, Mocks & Applications", days: "Days 22–30" },
-                ].map(({ week, focus, days }) => {
-                  const weekNum = parseInt(week.split(" ")[1]);
-                  const startDay = (weekNum - 1) * 7 + 1;
-                  const endDay = weekNum === 4 ? 30 : weekNum * 7;
-                  const weekDays = Array.from({ length: endDay - startDay + 1 }, (_, i) => startDay + i);
+                  { week: "Week 1", focus: "Address Top Skill Gaps", days: "Days 1–7",   start: 1,  end: 7  },
+                  { week: "Week 2", focus: "Deep Dive & Practice",   days: "Days 8–14",  start: 8,  end: 14 },
+                  { week: "Week 3", focus: "System Design & Architecture", days: "Days 15–21", start: 15, end: 21 },
+                  { week: "Week 4", focus: "Projects, Mocks & Applications", days: "Days 22–30", start: 22, end: 30 },
+                ].map(({ week, focus, days, start, end }) => {
+                  const weekDays = Array.from({ length: end - start + 1 }, (_, i) => start + i);
                   const weekDone = weekDays.filter((d) => {
                     const dp = allProgress[`day${d}`];
                     return Array.isArray(dp) && dp.length > 0 && dp.every(Boolean);
                   }).length;
                   const weekPct = Math.round((weekDone / weekDays.length) * 100);
-                  const isCurrentWeek = day >= startDay && day <= endDay;
+                  const isCurrentWeek = day >= start && day <= end;
 
                   return (
                     <div
                       key={week}
                       className={`rounded-xl border p-4 transition-all ${
                         isCurrentWeek
-                          ? "border-[#ff6b35]/40 bg-[#fff3ed]"
-                          : "border-slate-200 bg-slate-50"
+                          ? "border-[#ff6b35]/30 bg-[#fff3ed]"
+                          : "border-slate-100 bg-slate-50"
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className={`text-xs font-bold uppercase tracking-wide ${isCurrentWeek ? "text-[#ff6b35]" : "text-slate-400"}`}>
+                        <span className={`text-[10px] font-bold uppercase tracking-wide ${isCurrentWeek ? "text-[#ff6b35]" : "text-slate-400"}`}>
                           {week}
                         </span>
-                        <span className="text-xs text-slate-400">{days}</span>
+                        <span className="text-[10px] text-slate-400">{days}</span>
                       </div>
-                      <p className="text-sm font-semibold text-slate-800 mb-2">{focus}</p>
-                      <div className="h-1.5 bg-white rounded-full overflow-hidden">
+                      <p className="text-sm font-semibold text-slate-800 mb-3">{focus}</p>
+                      <div className="h-1.5 bg-white rounded-full overflow-hidden mb-1.5">
                         <div
                           className="h-full bg-[#ff6b35] rounded-full transition-all"
                           style={{ width: `${weekPct}%` }}
                         />
                       </div>
-                      <p className="text-xs text-slate-400 mt-1">{weekDone}/{weekDays.length} days done</p>
+                      <p className="text-[10px] text-slate-400">{weekDone}/{weekDays.length} days done</p>
                     </div>
                   );
                 })}
@@ -548,9 +561,9 @@ export default function PlanPage({
 
             {/* Resources */}
             <div className="bg-[#1a1a1a] rounded-2xl p-6 text-white shadow-lg">
-              <h2 className="text-base font-bold mb-4 flex items-center gap-2">
+              <h2 className="text-xs font-bold mb-4 flex items-center gap-2 uppercase tracking-wide">
                 <div className="h-6 w-6 rounded-md bg-[#ff6b35]/20 flex items-center justify-center">
-                  <BookOpen size={13} className="text-[#ff6b35]" />
+                  <BookOpen size={12} className="text-[#ff6b35]" />
                 </div>
                 Recommended Resources
               </h2>
@@ -564,8 +577,8 @@ export default function PlanPage({
                     key={label}
                     className="flex items-center gap-2.5 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-pointer"
                   >
-                    <Icon size={15} className="text-[#ff6b35] shrink-0" />
-                    <span className="text-sm text-slate-300">{label}</span>
+                    <Icon size={13} className="text-[#ff6b35] shrink-0" />
+                    <span className="text-xs text-slate-300">{label}</span>
                   </div>
                 ))}
               </div>

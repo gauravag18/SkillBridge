@@ -2,26 +2,30 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Upload, Brain, Calendar, CheckCircle2, TrendingUp, Award } from "lucide-react";
+import {
+  ArrowRight, Upload, Brain, Calendar,
+  CheckCircle2, TrendingUp, Award, FileEdit,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/ui/marquee";
 import { AnimatedBeam } from "@/components/ui/animated-beam";
 
-const Circle = React.forwardRef<HTMLDivElement, { className?: string; children?: React.ReactNode }>(
-  ({ className, children }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "z-10 flex size-11 items-center justify-center rounded-full border-2 bg-white p-2 shadow-lg transition-all hover:scale-110 hover:shadow-xl",
-          className
-        )}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+const Circle = React.forwardRef<
+  HTMLDivElement,
+  { className?: string; children?: React.ReactNode }
+>(({ className, children }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "z-10 flex size-11 items-center justify-center rounded-full border-2 bg-white p-2 shadow-lg transition-all hover:scale-110 hover:shadow-xl",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+});
 Circle.displayName = "Circle";
 
 const testimonials = [
@@ -69,38 +73,25 @@ const thirdRow = testimonials.slice(4, 6);
 const fourthRow = testimonials.slice(0, 2);
 
 const ReviewCard = ({
-  img,
-  name,
-  username,
-  body,
+  img, name, username, body,
 }: {
-  img: string;
-  name: string;
-  username: string;
-  body: string;
-}) => {
-  return (
-    <figure
-      className={cn(
-        "relative h-full w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
-        "border-slate-200 bg-white hover:border-border-strong hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-      )}
-    >
-      <div className="flex flex-row items-center gap-2">
-        <img className="rounded-full" width="32" height="32" alt={name} src={img} />
-        <div className="flex flex-col">
-          <figcaption className="text-sm font-semibold text-slate-900">{name}</figcaption>
-          <p className="text-xs text-slate-500">{username}</p>
-        </div>
+  img: string; name: string; username: string; body: string;
+}) => (
+  <figure className={cn(
+    "relative h-full w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
+    "border-slate-200 bg-white hover:border-border-strong hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+  )}>
+    <div className="flex flex-row items-center gap-2">
+      <img className="rounded-full" width="32" height="32" alt={name} src={img} />
+      <div className="flex flex-col">
+        <figcaption className="text-sm font-semibold text-slate-900">{name}</figcaption>
+        <p className="text-xs text-slate-500">{username}</p>
       </div>
-      <blockquote className="mt-3 text-sm leading-relaxed text-slate-700">
-        "{body}"
-      </blockquote>
-    </figure>
-  );
-};
+    </div>
+    <blockquote className="mt-3 text-sm leading-relaxed text-slate-700">"{body}"</blockquote>
+  </figure>
+);
 
-// Icons
 const Icons = {
   vscode: () => (
     <svg viewBox="0 0 24 24" fill="#007ACC" className="w-7 h-7">
@@ -109,33 +100,33 @@ const Icons = {
   ),
   github: () => (
     <svg viewBox="0 0 24 24" fill="#181717" className="w-7 h-7">
-      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
     </svg>
   ),
   react: () => (
     <svg viewBox="0 0 24 24" fill="#61DAFB" className="w-8 h-8">
       <circle cx="12" cy="12" r="2" fill="#61DAFB" />
-      <path fill="#61DAFB" d="M12 1.5c-1.38 0-2.5 4.5-2.5 10s1.12 10 2.5 10 2.5-4.5 2.5-10-1.12-10-2.5-10zm0 18c-1.38 0-2.5-4.5-2.5-10s1.12-10 2.5-10 2.5 4.5 2.5 10-1.12 10-2.5 10z"/>
+      <path fill="#61DAFB" d="M12 1.5c-1.38 0-2.5 4.5-2.5 10s1.12 10 2.5 10 2.5-4.5 2.5-10-1.12-10-2.5-10zm0 18c-1.38 0-2.5-4.5-2.5-10s1.12-10 2.5-10 2.5 4.5 2.5 10-1.12 10-2.5 10z" />
     </svg>
   ),
   nodejs: () => (
     <svg viewBox="0 0 24 24" fill="#339933" className="w-7 h-7">
-      <path d="M12 2L22 8v8l-10 6-10-6V8l10-6zm0 2.8L5.6 10v4.8L12 18l6.4-3.2V10L12 4.8z"/>
+      <path d="M12 2L22 8v8l-10 6-10-6V8l10-6zm0 2.8L5.6 10v4.8L12 18l6.4-3.2V10L12 4.8z" />
     </svg>
   ),
   docker: () => (
     <svg viewBox="0 0 24 24" fill="#2496ED" className="w-7 h-7">
-      <path d="M22.5 9h-21v6h21V9zm-3 4h-15v-2h15v2zM3 7h18v2H3V7zm0 10h18v2H3v-2z"/>
+      <path d="M22.5 9h-21v6h21V9zm-3 4h-15v-2h15v2zM3 7h18v2H3V7zm0 10h18v2H3v-2z" />
     </svg>
   ),
   leetcode: () => (
     <svg viewBox="0 0 24 24" fill="#FFA116" className="w-7 h-7">
-      <path d="M13.5 2.5h-3L2.5 7.5v9l8 8h3l8-8v-9l-8-5zm-1.5 15h-2v-2h2v2zm0-4h-2v-6h2v6z"/>
+      <path d="M13.5 2.5h-3L2.5 7.5v9l8 8h3l8-8v-9l-8-5zm-1.5 15h-2v-2h2v2zm0-4h-2v-6h2v6z" />
     </svg>
   ),
   linkedin: () => (
     <svg viewBox="0 0 24 24" fill="#0A66C2" className="w-7 h-7">
-      <path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+      <path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
     </svg>
   ),
 };
@@ -161,7 +152,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
 
-      {/* ── Navbar ── */}
+      {/*Navbar*/}
       <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
           <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
@@ -178,15 +169,15 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ── Hero ── */}
+      {/*Hero */}
       <section className="pt-12 pb-16 md:pt-16 md:pb-20">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="grid lg:grid-cols-2 gap-10 items-center">
 
-            {/* Left — Text */}
+            {/* Left */}
             <div className="text-left space-y-5">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-xs font-medium text-[#ff6b35] animate-fade-in">
-                <span className="w-1.5 h-1.5 bg-[#ff6b35] rounded-full animate-pulse"></span>
+                <span className="w-1.5 h-1.5 bg-[#ff6b35] rounded-full animate-pulse" />
                 AI Powered Career Intelligence
               </div>
 
@@ -199,7 +190,9 @@ export default function Home() {
                 Transform your career trajectory with AI driven resume analysis, personalized skill gap identification, and actionable 30 day roadmaps designed for the competitive tech landscape.
               </p>
 
+              {/* TWO CTAs */}
               <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                {/* Primary */}
                 <Link
                   href="/onboard"
                   className="group inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
@@ -207,22 +200,35 @@ export default function Home() {
                   Start Your Analysis
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
                 </Link>
+
+                {/* Secondary */}
                 <Link
-                  href="#process"
-                  className="inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
+                  href="/resume-improve"
+                  className="group inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
                 >
-                  See How It Works
+                  <FileEdit size={15} className="mr-2" />
+                  Improve My Resume
                 </Link>
               </div>
 
-              <div className="flex items-center gap-6 pt-2 text-xs text-slate-600">
+              {/* What each does */}
+              <div className="flex flex-wrap gap-2 pt-1">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#fff3ed] border border-[#ff6b35]/15 rounded-lg">
+                  <Brain size={11} className="text-[#ff6b35]" />
+                  <span className="text-xs text-slate-600">Skill gaps + 30-day roadmap</span>
+                  <span className="text-[10px] font-semibold text-[#ff6b35] bg-[#ff6b35]/10 px-1.5 py-0.5 rounded-full">Full</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg">
+                  <FileEdit size={11} className="text-slate-400" />
+                  <span className="text-xs text-slate-600">Bullet rewrites & ATS fixes</span>
+                  <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">Free</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6 pt-1 text-xs text-slate-600">
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="text-[#ff6b35]" size={14} />
-                  No credit card required
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="text-[#ff6b35]" size={14} />
-                  Instant results
                 </span>
               </div>
             </div>
@@ -256,7 +262,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Stats ── */}
+      {/* Stats */}
       <section className="py-10 border-y border-slate-200 bg-[#fffcfa]">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-200">
@@ -274,7 +280,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Features ── */}
+      {/*Features*/}
       <section id="features" className="py-16">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="max-w-2xl mx-auto text-center mb-12">
@@ -286,26 +292,11 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              {
-                icon: Upload,
-                title: "Intelligent Resume Analysis",
-                desc: "Advanced AI evaluates your resume against current industry standards and job requirements from top tier companies.",
-              },
-              {
-                icon: Brain,
-                title: "Skill Gap Identification",
-                desc: "Pinpoint exact competency gaps in technical skills, system design, algorithms, and emerging technologies with actionable recommendations.",
-              },
-              {
-                icon: Calendar,
-                title: "Personalized Roadmap",
-                desc: "Receive a structured 30 day action plan with daily objectives, curated resources, and progress tracking mechanisms.",
-              },
+              { icon: Upload, title: "Intelligent Resume Analysis", desc: "Advanced AI evaluates your resume against current industry standards and job requirements from top tier companies." },
+              { icon: Brain, title: "Skill Gap Identification", desc: "Pinpoint exact competency gaps in technical skills, system design, algorithms, and emerging technologies with actionable recommendations." },
+              { icon: Calendar, title: "Personalized Roadmap", desc: "Receive a structured 30 day action plan with daily objectives, curated resources, and progress tracking mechanisms." },
             ].map((item, i) => (
-              <div
-                key={i}
-                className="group bg-white rounded-xl p-6 border border-slate-200 hover:border-[#ff6b35]/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              >
+              <div key={i} className="group bg-white rounded-xl p-6 border border-slate-200 hover:border-[#ff6b35]/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="w-12 h-12 rounded-lg bg-[#fff3ed] flex items-center justify-center mb-4 group-hover:bg-[#ffebe1] transition-colors">
                   <item.icon className="text-[#ff6b35]" size={24} />
                 </div>
@@ -314,10 +305,29 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          {/* Resume improvement callout */}
+          <div className="mt-8 p-5 bg-white border-2 border-dashed border-[#ff6b35]/25 rounded-2xl flex flex-col sm:flex-row items-center gap-4">
+            <div className="h-11 w-11 rounded-xl bg-[#fff3ed] flex items-center justify-center shrink-0">
+              <FileEdit size={20} className="text-[#ff6b35]" />
+            </div>
+            <div className="flex-1 text-center sm:text-left">
+              <h3 className="font-bold text-slate-900 text-sm mb-0.5">Just want to improve your resume?</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Upload your resume and get instant bullet rewrites, structure feedback, ATS optimization, and keyword analysis.
+              </p>
+            </div>
+            <Link
+              href="/resume-improve"
+              className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-[#ff6b35] text-white font-semibold rounded-xl text-sm hover:bg-[#e55a28] hover:shadow-lg transition-all"
+            >
+              Try It Free <ArrowRight size={14} />
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ── Testimonials ── */}
+      {/* Testimonials*/}
       <section id="testimonials" className="py-16 bg-[#fffcfa]">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="text-center mb-12">
@@ -326,24 +336,11 @@ export default function Home() {
           </div>
 
           <div className="relative flex h-95 w-full flex-row items-center justify-center gap-4 overflow-hidden perspective-[400px]">
-            <div
-              className="flex flex-row items-center gap-4"
-              style={{
-                transform: "translateX(-60px) translateY(0px) translateZ(-80px) rotateX(18deg) rotateY(-12deg) rotateZ(15deg)",
-              }}
-            >
-              <Marquee pauseOnHover vertical className="[--duration:28s]">
-                {firstRow.map((review) => <ReviewCard key={review.username} {...review} />)}
-              </Marquee>
-              <Marquee reverse pauseOnHover vertical className="[--duration:32s]">
-                {secondRow.map((review) => <ReviewCard key={review.username} {...review} />)}
-              </Marquee>
-              <Marquee pauseOnHover vertical className="[--duration:26s]">
-                {thirdRow.map((review) => <ReviewCard key={review.username} {...review} />)}
-              </Marquee>
-              <Marquee reverse pauseOnHover vertical className="[--duration:30s]">
-                {fourthRow.map((review) => <ReviewCard key={review.username} {...review} />)}
-              </Marquee>
+            <div className="flex flex-row items-center gap-4" style={{ transform: "translateX(-60px) translateY(0px) translateZ(-80px) rotateX(18deg) rotateY(-12deg) rotateZ(15deg)" }}>
+              <Marquee pauseOnHover vertical className="[--duration:28s]">{firstRow.map((r) => <ReviewCard key={r.username} {...r} />)}</Marquee>
+              <Marquee reverse pauseOnHover vertical className="[--duration:32s]">{secondRow.map((r) => <ReviewCard key={r.username} {...r} />)}</Marquee>
+              <Marquee pauseOnHover vertical className="[--duration:26s]">{thirdRow.map((r) => <ReviewCard key={r.username} {...r} />)}</Marquee>
+              <Marquee reverse pauseOnHover vertical className="[--duration:30s]">{fourthRow.map((r) => <ReviewCard key={r.username} {...r} />)}</Marquee>
             </div>
             <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#fffcfa] to-transparent" />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#fffcfa] to-transparent" />
@@ -353,12 +350,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Why SkillBridge ── */}
+      {/* Why SkillBridge  */}
       <section id="process" className="py-16">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-
-            {/* Left — copy */}
             <div>
               <h2 className="text-3xl font-bold text-slate-900 mb-4">Why Choose SkillBridge?</h2>
               <p className="text-base text-slate-600 mb-6">
@@ -379,20 +374,18 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-
-              {/* CTA inline */}
-              <div className="mt-8">
-                <Link
-                  href="/onboard"
-                  className="group inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                >
+              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                <Link href="/onboard" className="group inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                   Start Your Analysis
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                </Link>
+                <Link href="/resume-improve" className="group inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm">
+                  <FileEdit size={14} className="mr-2" />
+                  Improve Resume
                 </Link>
               </div>
             </div>
 
-            {/* Right — metrics grid */}
             <div className="grid grid-cols-2 gap-4">
               {[
                 { icon: TrendingUp, title: "Career Growth", value: "3x faster" },
@@ -400,10 +393,7 @@ export default function Home() {
                 { icon: Brain, title: "AI Accuracy", value: "99.2%" },
                 { icon: CheckCircle2, title: "Satisfaction", value: "4.9/5" },
               ].map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-white rounded-xl p-5 border border-slate-200 hover:border-[#ff6b35]/30 hover:shadow-md transition-all"
-                >
+                <div key={i} className="bg-white rounded-xl p-5 border border-slate-200 hover:border-[#ff6b35]/30 hover:shadow-md transition-all">
                   <item.icon className="text-[#ff6b35] mb-2" size={22} />
                   <div className="text-2xl font-bold text-[#ff6b35] mb-0.5">{item.value}</div>
                   <div className="text-xs text-slate-600">{item.title}</div>
@@ -414,7 +404,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Footer ── */}
+      {/*  Footer  */}
       <footer className="py-10 border-t border-slate-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="border-t border-slate-200 pt-6 text-center text-xs text-slate-500">
@@ -428,9 +418,7 @@ export default function Home() {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-in {
-          animation: fade-in 0.6s ease-out forwards;
-        }
+        .animate-fade-in { animation: fade-in 0.6s ease-out forwards; }
       `}</style>
     </div>
   );
