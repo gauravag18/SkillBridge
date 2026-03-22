@@ -4,7 +4,6 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import {
   AlertCircle,
-  CheckCircle2,
   ArrowRight,
   BarChart3,
   Target,
@@ -21,15 +20,54 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+const tierConfig = {
+  critical: {
+    bar: "#EA580C",     
+    bg: "bg-white",
+    border: "border-orange-100",
+    badge: "bg-[#FFF7ED] text-[#EA580C] border-[#EA580C]/20",
+    track: "bg-orange-100",
+    label: "Critical",
+    hint: "Prioritize immediately",
+    numBg: "bg-[#EA580C]",
+    icon: <AlertTriangle size={9} />,
+  },
+  high: {
+    bar: "#D97706",        // warm amber
+    bg: "bg-white",
+    border: "border-amber-100",
+    badge: "bg-amber-50 text-amber-700 border-amber-200",
+    track: "bg-amber-100",
+    label: "High",
+    hint: "Address this week",
+    numBg: "bg-amber-600",
+    icon: <TrendingUp size={9} />,
+  },
+  medium: {
+    bar: "#1E3A8A",        // navy blue (brand secondary)
+    bg: "bg-white",
+    border: "border-blue-100",
+    badge: "bg-[#EFF6FF] text-[#1E3A8A] border-[#1E3A8A]/20",
+    track: "bg-blue-100",
+    label: "Medium",
+    hint: "Schedule for later",
+    numBg: "bg-[#1E3A8A]",
+    icon: null,
+  },
+} as const;
+
 function Navbar() {
   return (
     <header className="clean-nav sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-brand transition-colors">
+        <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-[#EA580C] transition-colors">
           SkillBridge
         </Link>
-        <div className="flex items-center gap-6">
-          <Link href="/" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all hover:shadow-lg text-xs">
+        <div className="flex items-center gap-3">
+          <Link href="/resume-improve" className="text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors hidden sm:block">
+            Resume Coach
+          </Link>
+          <Link href="/" className="px-4 py-2 bg-[#EA580C] text-white font-semibold rounded-lg transition-all hover:bg-[#C2410C] text-xs">
             Home
           </Link>
         </div>
@@ -40,47 +78,12 @@ function Navbar() {
 
 function GapCard({ gap, index }: { gap: any; index: number }) {
   const pct: number = gap.percentage;
-
   const tier =
     pct >= 70 ? "critical"
     : pct >= 40 ? "high"
     : "medium";
 
-  const config = {
-    critical: {
-      bar: "#ef4444",
-      bg: "bg-white",
-      border: "border-red-100",
-      badge: "bg-red-50 text-red-600 border-red-200",
-      track: "bg-red-100",
-      label: "Critical",
-      hint: "Prioritize immediately",
-      numBg: "bg-red-500",
-      icon: <AlertTriangle size={9} />,
-    },
-    high: {
-      bar: "#f59e0b",
-      bg: "bg-white",
-      border: "border-amber-100",
-      badge: "bg-amber-50 text-amber-600 border-amber-200",
-      track: "bg-amber-100",
-      label: "High",
-      hint: "Address this week",
-      numBg: "bg-amber-500",
-      icon: <TrendingUp size={9} />,
-    },
-    medium: {
-      bar: "#3b82f6",
-      bg: "bg-white",
-      border: "border-blue-100",
-      badge: "bg-blue-50 text-blue-600 border-blue-200",
-      track: "bg-blue-100",
-      label: "Medium",
-      hint: "Schedule for later",
-      numBg: "bg-blue-500",
-      icon: null,
-    },
-  }[tier];
+  const config = tierConfig[tier];
 
   return (
     <div className={`rounded-xl border ${config.border} ${config.bg} p-4 hover:shadow-sm transition-all`}>
@@ -116,14 +119,34 @@ function SectionHeader({ icon: Icon, title, badge }: { icon: any; title: string;
   return (
     <div className="flex items-center justify-between mb-5">
       <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2.5 uppercase tracking-wide">
-        <div className="h-7 w-7 rounded-lg bg-[#fff3ed] flex items-center justify-center shrink-0">
-          <Icon size={13} className="text-[#ff6b35]" />
+        <div className="h-7 w-7 rounded-lg bg-[#FFF7ED] flex items-center justify-center shrink-0">
+          <Icon size={13} className="text-[#EA580C]" />
         </div>
         {title}
       </h2>
       {badge}
     </div>
   );
+}
+
+/* ─── Score tier helper ────────────────────────────────────────────── */
+function getScoreTier(score: number | null) {
+  if (score === null) return { label: null, color: "#94a3b8", bg: "transparent", border: "transparent" };
+  if (score >= 80) return { label: "Interview Ready", color: "#1E3A8A", bg: "#EFF6FF", border: "#1E3A8A33" };
+  if (score >= 60) return { label: "Almost There", color: "#D97706", bg: "#FFFBEB", border: "#D9770633" };
+  return { label: "Needs Work", color: "#EA580C", bg: "#FFF7ED", border: "#EA580C33" };
+}
+
+function getMatchTier(score: number) {
+  if (score >= 70) return "bg-[#EFF6FF] text-[#1E3A8A]";
+  if (score >= 40) return "bg-amber-50 text-amber-700";
+  return "bg-[#FFF7ED] text-[#EA580C]";
+}
+
+function getMatchColor(score: number) {
+  if (score >= 70) return "text-[#1E3A8A]";
+  if (score >= 40) return "text-amber-600";
+  return "text-[#EA580C]";
 }
 
 export default async function DashboardPage({
@@ -137,14 +160,14 @@ export default async function DashboardPage({
 
   if (!uuid) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#fffcfa]">
+      <div className="min-h-screen flex items-center justify-center bg-transparent">
         <div className="text-center p-8 bg-white rounded-2xl border border-slate-200 shadow-sm max-w-sm w-full mx-4">
-          <div className="h-12 w-12 rounded-full bg-[#fff3ed] flex items-center justify-center mx-auto mb-4">
-            <AlertCircle className="text-[#ff6b35]" size={22} />
+          <div className="h-12 w-12 rounded-full bg-[#FFF7ED] flex items-center justify-center mx-auto mb-4">
+            <AlertCircle className="text-[#EA580C]" size={22} />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">Session expired</h2>
+          <h2 className="text-xl font-bold text-blue-900 mb-2">Session expired</h2>
           <p className="text-slate-500 text-sm mb-6">Please start from the home page.</p>
-          <Link href="/" className="block w-full px-4 py-2.5 bg-[#ff6b35] text-white font-semibold rounded-lg text-sm text-center hover:bg-[#e55a28] transition-all">
+          <Link href="/" className="block w-full px-4 py-2.5 bg-[#EA580C] text-white font-semibold rounded-lg text-sm text-center hover:bg-[#C2410C] transition-all">
             Go to Home
           </Link>
         </div>
@@ -159,14 +182,14 @@ export default async function DashboardPage({
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#fffcfa]">
+      <div className="min-h-screen flex items-center justify-center bg-transparent">
         <div className="text-center p-8 bg-white rounded-2xl border border-slate-200 shadow-sm max-w-sm w-full mx-4">
-          <div className="h-12 w-12 rounded-full bg-[#fff3ed] flex items-center justify-center mx-auto mb-4">
-            <AlertCircle className="text-[#ff6b35]" size={22} />
+          <div className="h-12 w-12 rounded-full bg-[#FFF7ED] flex items-center justify-center mx-auto mb-4">
+            <AlertCircle className="text-[#EA580C]" size={22} />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">Profile not found</h2>
+          <h2 className="text-xl font-bold text-blue-900 mb-2">Profile not found</h2>
           <p className="text-slate-500 text-sm mb-6">Please complete onboarding first.</p>
-          <Link href="/onboard" className="block w-full px-4 py-2.5 bg-[#ff6b35] text-white font-semibold rounded-lg text-sm text-center hover:bg-[#e55a28] transition-all">
+          <Link href="/onboard" className="block w-full px-4 py-2.5 bg-[#EA580C] text-white font-semibold rounded-lg text-sm text-center hover:bg-[#C2410C] transition-all">
             Go to Onboarding
           </Link>
         </div>
@@ -185,17 +208,7 @@ export default async function DashboardPage({
   const githubData = profile.github_data ?? null;
   const hasGithub = !!profile.github_username && !!githubData;
 
-  const readinessLabel =
-    readiness === null ? null
-    : readiness >= 80 ? "Interview Ready"
-    : readiness >= 60 ? "Almost There"
-    : "Needs Work";
-
-  const readinessColor =
-    readiness === null ? "#94a3b8"
-    : readiness >= 80 ? "#16a34a"
-    : readiness >= 60 ? "#ca8a04"
-    : "#ef4444";
+  const scoreTier = getScoreTier(readiness);
 
   const estimatedTime =
     readiness === null ? "Pending"
@@ -223,10 +236,10 @@ export default async function DashboardPage({
 
         {/* HERO BANNER */}
         <div className="clean-card overflow-hidden">
-          <div className="h-0.5 bg-linear-to-r from-[#ff6b35] via-[#ff8a5c] to-transparent" />
+          <div className="h-0.5 bg-linear-to-r from-[#EA580C] via-[#EA580C]/40 to-transparent" />
           <div className="grid lg:grid-cols-[200px_1fr_240px]">
             {/* Score ring */}
-            <div className="flex flex-col items-center justify-center p-8 bg-linear-to-br from-[#fffaf7] to-[#fff3ed]/30 border-b lg:border-b-0 lg:border-r border-slate-100">
+            <div className="flex flex-col items-center justify-center p-8 bg-linear-to-br from-[#FFF7ED] to-[#FFF7ED]/30 border-b lg:border-b-0 lg:border-r border-slate-100">
               <div className="relative h-28 w-28 flex items-center justify-center mb-3">
                 <svg className="absolute inset-0 -rotate-90" viewBox="0 0 120 120">
                   <circle cx="60" cy="60" r="50" stroke="#f1f5f9" strokeWidth="10" fill="none" />
@@ -240,24 +253,24 @@ export default async function DashboardPage({
                   />
                   <defs>
                     <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#ff8a5c" />
-                      <stop offset="100%" stopColor="#ff6b35" />
+                      <stop offset="0%" stopColor="#EA580C" />
+                      <stop offset="100%" stopColor="#C2410C" />
                     </linearGradient>
                   </defs>
                 </svg>
                 <div className="flex flex-col items-center">
-                  <span className="text-3xl font-black text-[#ff6b35] leading-none tabular-nums">
+                  <span className="text-3xl font-black text-[#EA580C] leading-none tabular-nums">
                     {readiness ?? "—"}
                   </span>
                   <span className="text-[9px] text-slate-400 mt-1 uppercase tracking-widest font-semibold">score</span>
                 </div>
               </div>
-              {readinessLabel && (
+              {scoreTier.label && (
                 <span
                   className="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide border"
-                  style={{ color: readinessColor, borderColor: readinessColor + "44", backgroundColor: readinessColor + "11" }}
+                  style={{ color: scoreTier.color, borderColor: scoreTier.border, backgroundColor: scoreTier.bg }}
                 >
-                  {readinessLabel}
+                  {scoreTier.label}
                 </span>
               )}
             </div>
@@ -265,7 +278,7 @@ export default async function DashboardPage({
             {/* Info */}
             <div className="p-6 lg:p-8 flex flex-col justify-center">
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-[10px] font-bold text-[#ff6b35] uppercase tracking-wide">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#FFF7ED] border border-[#EA580C]/20 rounded-full text-[10px] font-bold text-[#EA580C] uppercase tracking-wide">
                   AI Analysis Complete
                 </span>
               </div>
@@ -276,9 +289,9 @@ export default async function DashboardPage({
 
               <div className="flex flex-wrap gap-2">
                 {hasJD && jdMatchScore !== null && (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-lg">
-                    <FileSearch size={12} className="text-[#ff6b35]" />
-                    <span className="text-xs font-bold text-[#ff6b35]">{jdMatchScore}% JD Match</span>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF7ED] border border-[#EA580C]/20 rounded-lg">
+                    <FileSearch size={12} className="text-[#EA580C]" />
+                    <span className="text-xs font-bold text-[#EA580C]">{jdMatchScore}% JD Match</span>
                   </div>
                 )}
                 <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg">
@@ -286,9 +299,9 @@ export default async function DashboardPage({
                   <span className="text-xs text-slate-600 font-semibold">~{estimatedTime} to ready</span>
                 </div>
                 {criticalCount > 0 && (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 border border-red-200 rounded-lg">
-                    <AlertTriangle size={12} className="text-red-500" />
-                    <span className="text-xs font-bold text-red-600">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF7ED] border border-[#EA580C]/20 rounded-lg">
+                    <AlertTriangle size={12} className="text-[#EA580C]" />
+                    <span className="text-xs font-bold text-[#EA580C]">
                       {criticalCount} critical gap{criticalCount > 1 ? "s" : ""}
                     </span>
                   </div>
@@ -297,11 +310,11 @@ export default async function DashboardPage({
             </div>
 
             {/* CTA panel */}
-            <div className="border-t lg:border-t-0 lg:border-l border-slate-100 bg-[#1a1a1a] p-6 flex flex-col justify-between">
+            <div className="border-t lg:border-t-0 lg:border-l border-slate-100 bg-[#0F172A] p-6 flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="h-5 w-5 rounded-md bg-[#ff6b35]/20 flex items-center justify-center">
-                    <Activity size={10} className="text-[#ff6b35]" />
+                  <div className="h-5 w-5 rounded-md bg-[#EA580C]/20 flex items-center justify-center">
+                    <Activity size={10} className="text-[#EA580C]" />
                   </div>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Next Step</span>
                 </div>
@@ -315,7 +328,7 @@ export default async function DashboardPage({
                 </p>
               </div>
               <Link href={`/plan?uuid=${uuid}`} className="block mt-6">
-                <div className="w-full bg-[#ff6b35] hover:bg-[#e55a28] text-white font-bold py-2.5 rounded-xl text-sm transition-all hover:shadow-lg flex items-center justify-center gap-2">
+                <div className="w-full bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold py-2.5 rounded-xl text-sm transition-all hover:shadow-lg flex items-center justify-center gap-2">
                   {analysis ? "View Plan" : "Get Started"}
                   <ArrowRight size={13} />
                 </div>
@@ -339,13 +352,13 @@ export default async function DashboardPage({
           ].map((m, i) => (
             <div key={i} className="clean-card p-4">
               <div className="flex items-center gap-1.5 mb-2">
-                <m.icon size={11} className="text-[#ff6b35]" />
+                <m.icon size={11} className="text-[#EA580C]" />
                 <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wide">{m.label}</p>
               </div>
               <p className="text-xl font-black text-slate-900 mb-2 tabular-nums">{m.value}</p>
               {m.bar !== null && (
                 <div className="h-1 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#ff6b35] rounded-full" style={{ width: `${m.bar}%` }} />
+                  <div className="h-full bg-[#EA580C] rounded-full" style={{ width: `${m.bar}%` }} />
                 </div>
               )}
             </div>
@@ -366,11 +379,7 @@ export default async function DashboardPage({
                   title="JD Match Analysis"
                   badge={
                     jdMatchScore !== null ? (
-                      <span className={`text-xs font-bold px-3 py-1 rounded-full ${
-                        jdMatchScore >= 70 ? "bg-green-100 text-green-700"
-                          : jdMatchScore >= 40 ? "bg-amber-100 text-amber-700"
-                          : "bg-red-100 text-red-700"
-                      }`}>
+                      <span className={`text-xs font-bold px-3 py-1 rounded-full ${getMatchTier(jdMatchScore)}`}>
                         {jdMatchScore}% match
                       </span>
                     ) : undefined
@@ -383,7 +392,7 @@ export default async function DashboardPage({
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {jdMissingSkills.map((skill: string, i: number) => (
-                        <span key={i} className="px-2.5 py-1 bg-red-50 border border-red-200/80 text-red-700 rounded-lg text-xs font-semibold">
+                        <span key={i} className="px-2.5 py-1 bg-[#FFF7ED] border border-[#EA580C]/15 text-[#EA580C] rounded-lg text-xs font-semibold">
                           {skill}
                         </span>
                       ))}
@@ -408,18 +417,18 @@ export default async function DashboardPage({
                   sortedGaps.length > 0 ? (
                     <div className="flex items-center gap-2">
                       {criticalCount > 0 && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-red-50 text-red-600 border border-red-200">
-                          <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" /> {criticalCount} Critical
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#FFF7ED] text-[#EA580C] border border-[#EA580C]/20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#EA580C] inline-block" /> {criticalCount} Critical
                         </span>
                       )}
                       {highCount > 0 && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-200">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block" /> {highCount} High
                         </span>
                       )}
                       {mediumCount > 0 && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-200">
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" /> {mediumCount} Medium
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#EFF6FF] text-[#1E3A8A] border border-[#1E3A8A]/20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#1E3A8A] inline-block" /> {mediumCount} Medium
                         </span>
                       )}
                     </div>
@@ -447,71 +456,71 @@ export default async function DashboardPage({
 
               {/* Strengths */}
               <div className="clean-card overflow-hidden">
-                <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-green-50/50">
-                  <div className="h-6 w-6 rounded-lg bg-green-100 flex items-center justify-center">
-                    <CheckCircle2 size={12} className="text-green-600" />
-                  </div>
-                  <h2 className="text-xs font-bold text-green-800 uppercase tracking-wide">Strengths</h2>
+                <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
+                  <h2 className="text-xs font-bold text-blue-900 uppercase tracking-wide">Strengths</h2>
                   {strengths.length > 0 && (
-                    <span className="ml-auto text-[10px] font-bold text-green-600 bg-green-100 px-1.5 py-0.5 rounded-full">
-                      {strengths.length}
+                    <span className="text-[10px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-2 py-0.5 rounded-full">
+                      {strengths.length} found
                     </span>
                   )}
                 </div>
-                <div className="p-4">
+                <div className="p-1.5">
                   {strengths.length > 0 ? (
-                    <div className="space-y-2">
+                    <div>
                       {strengths.map((s: string, i: number) => (
-                        <div key={i} className="flex items-start gap-2.5 group">
-                          <div className="mt-0.5 h-5 w-5 rounded-full bg-green-100 flex items-center justify-center shrink-0 group-hover:bg-green-200 transition-colors">
-                            <CheckCircle2 size={10} className="text-green-600" />
+                        <div
+                          key={i}
+                          className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-slate-50/80 transition-colors"
+                        >
+                          <div className="flex items-center gap-2.5 shrink-0 mt-px">
+                            <span className="h-5 w-5 rounded-md bg-[#EFF6FF] flex items-center justify-center text-[10px] font-bold text-[#1E3A8A] tabular-nums">
+                              {i + 1}
+                            </span>
+                            <div className="w-0.5 h-4 rounded-full bg-[#1E3A8A]/20" />
                           </div>
-                          <p className="text-xs text-slate-700 leading-relaxed pt-0.5">{s}</p>
+                          <p className="text-xs text-slate-700 leading-relaxed">{s}</p>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center justify-center py-8 text-center">
-                      <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center mb-2">
-                        <CheckCircle2 size={14} className="text-slate-300" />
-                      </div>
-                      <p className="text-xs text-slate-400">Complete analysis to see strengths.</p>
+                    <div className="flex flex-col items-center justify-center py-10 text-center">
+                      <p className="text-xs text-slate-400 font-medium">Complete analysis to see strengths.</p>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Weaknesses */}
+              {/* Areas to Improve */}
               <div className="clean-card overflow-hidden">
-                <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-red-50/50">
-                  <div className="h-6 w-6 rounded-lg bg-red-100 flex items-center justify-center">
-                    <AlertCircle size={12} className="text-red-500" />
-                  </div>
-                  <h2 className="text-xs font-bold text-red-800 uppercase tracking-wide">Areas to Improve</h2>
+                <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
+                  <h2 className="text-xs font-bold text-blue-900 uppercase tracking-wide">Areas to Improve</h2>
                   {weaknesses.length > 0 && (
-                    <span className="ml-auto text-[10px] font-bold text-red-600 bg-red-100 px-1.5 py-0.5 rounded-full">
-                      {weaknesses.length}
+                    <span className="text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">
+                      {weaknesses.length} found
                     </span>
                   )}
                 </div>
-                <div className="p-4">
+                <div className="p-1.5">
                   {weaknesses.length > 0 ? (
-                    <div className="space-y-2">
+                    <div>
                       {weaknesses.map((w: string, i: number) => (
-                        <div key={i} className="flex items-start gap-2.5 group">
-                          <div className="mt-0.5 h-5 w-5 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0 group-hover:bg-red-100 transition-colors">
-                            <AlertCircle size={10} className="text-red-400" />
+                        <div
+                          key={i}
+                          className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-slate-50/80 transition-colors"
+                        >
+                          <div className="flex items-center gap-2.5 shrink-0 mt-px">
+                            <span className="h-5 w-5 rounded-md bg-[#FFF7ED] flex items-center justify-center text-[10px] font-bold text-[#EA580C] tabular-nums">
+                              {i + 1}
+                            </span>
+                            <div className="w-0.5 h-4 rounded-full bg-[#EA580C]/20" />
                           </div>
-                          <p className="text-xs text-slate-700 leading-relaxed pt-0.5">{w}</p>
+                          <p className="text-xs text-slate-700 leading-relaxed">{w}</p>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center justify-center py-8 text-center">
-                      <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center mb-2">
-                        <AlertCircle size={14} className="text-slate-300" />
-                      </div>
-                      <p className="text-xs text-slate-400">Complete analysis to see areas to improve.</p>
+                    <div className="flex flex-col items-center justify-center py-10 text-center">
+                      <p className="text-xs text-slate-400 font-medium">Complete analysis to see areas to improve.</p>
                     </div>
                   )}
                 </div>
@@ -522,11 +531,11 @@ export default async function DashboardPage({
           {/* RIGHT SIDEBAR */}
           <div className="space-y-4">
 
-            {/* Recommendation */}
+            {/* AI Recommendation */}
             <div className="clean-card p-5">
               <div className="flex items-center gap-2 mb-3">
-                <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
-                  <Activity size={11} className="text-[#ff6b35]" />
+                <div className="h-6 w-6 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                  <Activity size={11} className="text-[#EA580C]" />
                 </div>
                 <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">AI Recommendation</h3>
               </div>
@@ -543,8 +552,8 @@ export default async function DashboardPage({
             {hasJD && (
               <div className="clean-card p-5">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
-                    <Target size={11} className="text-[#ff6b35]" />
+                  <div className="h-6 w-6 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                    <Target size={11} className="text-[#EA580C]" />
                   </div>
                   <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">JD Targeting</h3>
                 </div>
@@ -552,11 +561,7 @@ export default async function DashboardPage({
                 {jdMatchScore !== null && (
                   <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
                     <span className="text-xs text-slate-500 font-medium">Match Score</span>
-                    <span className={`font-black text-xl tabular-nums ${
-                      jdMatchScore >= 70 ? "text-green-600"
-                        : jdMatchScore >= 40 ? "text-amber-600"
-                        : "text-red-500"
-                    }`}>
+                    <span className={`font-black text-xl tabular-nums ${getMatchColor(jdMatchScore)}`}>
                       {jdMatchScore}%
                     </span>
                   </div>
@@ -569,8 +574,8 @@ export default async function DashboardPage({
               <div className="clean-card overflow-hidden">
                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
                   <div className="flex items-center gap-2">
-                    <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
-                      <Github size={11} className="text-[#ff6b35]" />
+                    <div className="h-6 w-6 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                      <Github size={11} className="text-[#EA580C]" />
                     </div>
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">GitHub Profile</h3>
                   </div>
@@ -578,7 +583,7 @@ export default async function DashboardPage({
                     href={`https://github.com/${profile.github_username}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[10px] text-[#ff6b35] hover:underline flex items-center gap-0.5 font-bold"
+                    className="text-[10px] text-[#EA580C] hover:underline flex items-center gap-0.5 font-bold"
                   >
                     @{profile.github_username} <ArrowRight size={9} />
                   </a>
@@ -591,9 +596,9 @@ export default async function DashboardPage({
                     { icon: Star, label: "Stars", value: githubData.total_stars?.toLocaleString() },
                     { icon: BookOpen, label: "Top Language", value: githubData.top_languages?.[0]?.language },
                   ].map(({ icon: Icon, label, value }) => (
-                    <div key={label} className="bg-white px-4 py-3.5 flex flex-col gap-1 hover:bg-[#fffaf7] transition-colors">
+                    <div key={label} className="bg-white px-4 py-3.5 flex flex-col gap-1 hover:bg-[#FFF7ED]/30 transition-colors">
                       <div className="flex items-center gap-1.5">
-                        <Icon size={10} className="text-[#ff6b35]" />
+                        <Icon size={10} className="text-[#EA580C]" />
                         <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{label}</span>
                       </div>
                       <span className="text-base font-black text-slate-900 leading-tight">{value ?? "—"}</span>
@@ -610,17 +615,17 @@ export default async function DashboardPage({
                 <p className="text-xs text-slate-400 mb-4 leading-relaxed">
                   Link your profile to get portfolio insights and suggestions.
                 </p>
-                <Link href="/onboard" className="inline-flex items-center gap-1.5 px-3 py-2 bg-[#fff3ed] text-[#ff6b35] rounded-lg text-xs font-bold hover:bg-[#ffe8d9] transition-colors">
+                <Link href="/onboard" className="inline-flex items-center gap-1.5 px-3 py-2 bg-[#FFF7ED] text-[#EA580C] rounded-lg text-xs font-bold hover:bg-[#FFEDD5] transition-colors">
                   Add GitHub Username <ArrowRight size={10} />
                 </Link>
               </div>
             )}
 
             {/* 30-Day CTA */}
-            <div className="bg-[#1a1a1a] rounded-2xl p-5 shadow-lg">
+            <div className="bg-[#0F172A] rounded-2xl p-5 shadow-lg">
               <div className="flex items-center gap-2 mb-2">
-                <div className="h-5 w-5 rounded-md bg-[#ff6b35]/20 flex items-center justify-center">
-                  <Activity size={10} className="text-[#ff6b35]" />
+                <div className="h-5 w-5 rounded-md bg-[#EA580C]/20 flex items-center justify-center">
+                  <Activity size={10} className="text-[#EA580C]" />
                 </div>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Your Roadmap</span>
               </div>
@@ -633,7 +638,7 @@ export default async function DashboardPage({
                   : "Complete onboarding to generate your roadmap."}
               </p>
               <Link href={`/plan?uuid=${uuid}`} className="block">
-                <div className="w-full bg-[#ff6b35] hover:bg-[#e55a28] text-white font-bold py-2.5 rounded-xl text-xs transition-all hover:shadow-lg flex items-center justify-center gap-2 uppercase tracking-wide">
+                <div className="w-full bg-[#EA580C] hover:bg-[#C2410C] text-white font-bold py-2.5 rounded-xl text-xs transition-all hover:shadow-lg flex items-center justify-center gap-2 uppercase tracking-wide">
                   {analysis ? "View 30-Day Plan" : "Generate 30-Day Plan"}
                   <ArrowRight size={12} />
                 </div>

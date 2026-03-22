@@ -87,7 +87,7 @@ function ScoreRing({
   const r = (size - strokeWidth) / 2;
   const circ = 2 * Math.PI * r;
   const dash = (score / 100) * circ;
-  const color = score >= 75 ? "#16a34a" : score >= 50 ? "#f59e0b" : "#ef4444";
+  const color = score >= 75 ? "#1E3A8A" : score >= 50 ? "#D97706" : "#EA580C";
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
@@ -108,9 +108,9 @@ function ScoreRing({
 }
 
 function ScoreBar({ score, label }: { score: number; label: string }) {
-  const color = score >= 75 ? "#16a34a" : score >= 50 ? "#f59e0b" : "#ef4444";
-  const tag = score >= 75 ? "Good" : score >= 50 ? "Fair" : "Poor";
-  const tagCls = score >= 75 ? "bg-green-100 text-green-700" : score >= 50 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600";
+  const color = score >= 75 ? "#1E3A8A" : score >= 50 ? "#D97706" : "#EA580C";
+  const tag = score >= 75 ? "Good" : score >= 50 ? "Fair" : "Needs work";
+  const tagCls = score >= 75 ? "bg-[#EFF6FF] text-[#1E3A8A]" : score >= 50 ? "bg-amber-50 text-amber-700" : "bg-[#FFF7ED] text-[#EA580C]";
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
@@ -129,9 +129,9 @@ function ScoreBar({ score, label }: { score: number; label: string }) {
 
 function PriorityBadge({ priority }: { priority: string }) {
   const map: Record<string, string> = {
-    high:   "bg-red-50 text-red-600 border-red-200",
-    medium: "bg-amber-50 text-amber-600 border-amber-200",
-    low:    "bg-blue-50 text-blue-600 border-blue-200",
+    high:   "bg-[#FFF7ED] text-[#EA580C] border-[#EA580C]/20",
+    medium: "bg-amber-50 text-amber-700 border-amber-200",
+    low:    "bg-[#EFF6FF] text-[#1E3A8A] border-[#1E3A8A]/20",
   };
   return (
     <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${map[priority] ?? map.low}`}>
@@ -166,7 +166,7 @@ function UploadPanel({
   return (
     <div className="flex flex-col h-full gap-4">
       <div>
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-[10px] font-bold text-[#ff6b35] uppercase tracking-wide mb-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FFF7ED] border border-[#EA580C]/20 rounded-full text-[10px] font-bold text-[#EA580C] uppercase tracking-wide mb-3">
           AI Resume Coach
         </div>
         <h1 className="text-xl font-bold text-slate-900 leading-tight">Resume Improvement</h1>
@@ -179,24 +179,24 @@ function UploadPanel({
       <div
         {...getRootProps()}
         className={`relative rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-200 flex flex-col items-center justify-center p-6 text-center min-h-50
-          ${isDragActive ? "border-[#ff6b35] bg-[#fff3ed]"
-            : file ? "border-green-400 bg-green-50"
-            : "border-slate-200 bg-slate-50 hover:border-[#ff6b35]/50 hover:bg-[#fff3ed]/40"
+          ${isDragActive ? "border-[#EA580C] bg-[#FFF7ED]"
+            : file ? "border-[#EA580C]/40 bg-[#FFF7ED]/50"
+            : "border-slate-200 bg-slate-50 hover:border-[#EA580C]/50 hover:bg-[#FFF7ED]/40"
           }`}
       >
         <input {...getInputProps()} />
         <AnimatePresence mode="wait">
           {file ? (
             <motion.div key="file" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center gap-3">
-              <div className="h-12 w-12 rounded-xl bg-green-100 flex items-center justify-center">
-                <FileText size={22} className="text-green-600" />
+              <div className="h-12 w-12 rounded-xl bg-[#FFF7ED] flex items-center justify-center">
+                <FileText size={22} className="text-[#EA580C]" />
               </div>
               <div>
                 <p className="font-semibold text-slate-900 text-sm">{file.name}</p>
                 <p className="text-xs text-slate-500 mt-0.5">{(file.size / 1024 / 1024).toFixed(2)} MB · PDF</p>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-                <CheckCircle2 size={12} /> Ready to analyze
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FFF7ED] text-[#EA580C] border border-[#EA580C]/15 rounded-full text-xs font-semibold">
+                Ready to analyze
               </div>
               <button
                 onClick={(e) => { e.stopPropagation(); setFile(null); }}
@@ -210,9 +210,9 @@ function UploadPanel({
               <motion.div
                 animate={{ y: isDragActive ? 0 : [0, -6, 0] }}
                 transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                className="h-12 w-12 rounded-xl bg-[#fff3ed] flex items-center justify-center shadow-sm"
+                className="h-12 w-12 rounded-xl bg-[#FFF7ED] flex items-center justify-center shadow-sm"
               >
-                <Upload size={20} className="text-[#ff6b35]" />
+                <Upload size={20} className="text-[#EA580C]" />
               </motion.div>
               <div>
                 <p className="font-semibold text-slate-700 text-sm">
@@ -229,7 +229,7 @@ function UploadPanel({
       <div>
         <button
           onClick={() => setJdOpen((p) => !p)}
-          className="w-full flex items-center justify-between px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:border-[#ff6b35]/40 transition-all"
+          className="w-full flex items-center justify-between px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:border-[#EA580C]/40 transition-all"
         >
           <span className="flex items-center gap-2">
             <Target size={14} className="text-slate-400" />
@@ -246,7 +246,7 @@ function UploadPanel({
                 onChange={(e) => setJd(e.target.value)}
                 placeholder="Paste the full job description here to get JD alignment score..."
                 rows={5}
-                className="w-full mt-2 px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-[#ff6b35]/50 resize-none"
+                className="w-full mt-2 px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-[#EA580C]/50 resize-none"
               />
             </motion.div>
           )}
@@ -257,7 +257,7 @@ function UploadPanel({
       <button
         disabled={!file || isLoading}
         onClick={() => file && onAnalyze(file, jd)}
-        className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#ff6b35] text-white font-semibold rounded-xl text-sm transition-all hover:bg-[#e55a28] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#EA580C] text-white font-semibold rounded-xl text-sm transition-all hover:bg-[#C2410C] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <><Loader2 size={16} className="animate-spin" />Analyzing your resume...</>
@@ -330,9 +330,9 @@ function LoadingState() {
   return (
     <div className="flex flex-col items-center justify-center h-full min-h-100 gap-6">
       <div className="relative h-16 w-16">
-        <div className="absolute inset-0 rounded-full border-4 border-[#ff6b35]/20 animate-spin" style={{ borderTopColor: "#ff6b35" }} />
+        <div className="absolute inset-0 rounded-full border-4 border-[#EA580C]/20 animate-spin" style={{ borderTopColor: "#EA580C" }} />
         <div className="absolute inset-0 flex items-center justify-center">
-          <FileText size={22} className="text-[#ff6b35]" />
+          <FileText size={22} className="text-[#EA580C]" />
         </div>
       </div>
       <div className="text-center">
@@ -345,7 +345,7 @@ function LoadingState() {
       </div>
       <div className="flex gap-1.5">
         {steps.map((_, i) => (
-          <div key={i} className={`h-1.5 rounded-full transition-all duration-500 ${i <= step ? "w-6 bg-[#ff6b35]" : "w-1.5 bg-slate-200"}`} />
+          <div key={i} className={`h-1.5 rounded-full transition-all duration-500 ${i <= step ? "w-6 bg-[#EA580C]" : "w-1.5 bg-slate-200"}`} />
         ))}
       </div>
     </div>
@@ -413,18 +413,16 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
       {/* ACTION ITEMS — Top issues + Quick wins */}
       <div className="grid sm:grid-cols-2 gap-5">
         <div className="clean-card overflow-hidden">
-          <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
-            <div className="h-7 w-7 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
-              <AlertTriangle size={13} className="text-[#EA580C]" />
-            </div>
-            <span className="text-xs font-bold text-slate-700">Priority Issues</span>
-            <span className="ml-auto text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{data.top_issues.length} found</span>
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
+            <span className="text-xs font-bold text-blue-900 uppercase tracking-wide">Priority Issues</span>
+            <span className="text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{data.top_issues.length} found</span>
           </div>
-          <div className="p-5 space-y-3">
+          <div className="p-2">
             {data.top_issues.map((issue, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <div className="h-5 w-5 rounded-md bg-[#FFF7ED] flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-[#EA580C] text-[10px] font-black">{i + 1}</span>
+              <div key={i} className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-50/80 transition-colors">
+                <div className="flex items-center gap-2 shrink-0 mt-px">
+                  <span className="h-5 w-5 rounded-md bg-[#FFF7ED] flex items-center justify-center text-[10px] font-bold text-[#EA580C] tabular-nums">{i + 1}</span>
+                  <div className="w-0.5 h-4 rounded-full bg-[#EA580C]/20" />
                 </div>
                 <p className="text-sm text-slate-600 leading-relaxed">{issue}</p>
               </div>
@@ -433,18 +431,16 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
         </div>
 
         <div className="clean-card overflow-hidden">
-          <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
-            <div className="h-7 w-7 rounded-lg bg-[#EFF6FF] flex items-center justify-center">
-              <Zap size={13} className="text-[#1E3A8A]" />
-            </div>
-            <span className="text-xs font-bold text-slate-700">Quick Wins</span>
-            <span className="ml-auto text-[10px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-2 py-0.5 rounded-full">Under 10 min</span>
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
+            <span className="text-xs font-bold text-blue-900 uppercase tracking-wide">Quick Wins</span>
+            <span className="text-[10px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-2 py-0.5 rounded-full">Under 10 min</span>
           </div>
-          <div className="p-5 space-y-3">
+          <div className="p-2">
             {data.quick_wins.map((win, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <div className="h-5 w-5 rounded-md bg-[#EFF6FF] flex items-center justify-center shrink-0 mt-0.5">
-                  <CheckCircle2 size={10} className="text-[#1E3A8A]" />
+              <div key={i} className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-50/80 transition-colors">
+                <div className="flex items-center gap-2 shrink-0 mt-px">
+                  <span className="h-5 w-5 rounded-md bg-[#EFF6FF] flex items-center justify-center text-[10px] font-bold text-[#1E3A8A] tabular-nums">{i + 1}</span>
+                  <div className="w-0.5 h-4 rounded-full bg-[#1E3A8A]/20" />
                 </div>
                 <p className="text-sm text-slate-600 leading-relaxed">{win}</p>
               </div>
@@ -500,7 +496,6 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                         {/* Improved version */}
                         <div className="p-4 bg-white">
                           <div className="flex items-center gap-2 mb-2">
-                            <Sparkles size={11} className="text-[#EA580C]" />
                             <span className="text-[10px] font-bold text-[#EA580C] uppercase tracking-wider">Improved</span>
                           </div>
                           <p className="text-sm text-slate-800 font-medium leading-relaxed">{b.improved}</p>
@@ -563,15 +558,11 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                         </div>
                         <div className="p-5 bg-white space-y-3">
                           <div className="flex items-start gap-3">
-                            <div className="h-5 w-5 rounded-md bg-[#FFF7ED] flex items-center justify-center shrink-0 mt-0.5">
-                              <AlertCircle size={10} className="text-[#EA580C]" />
-                            </div>
+                            <span className="text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-1.5 py-0.5 rounded shrink-0 mt-0.5 uppercase tracking-wider">Issue</span>
                             <p className="text-sm text-slate-600 leading-relaxed">{s.issue}</p>
                           </div>
                           <div className="flex items-start gap-3">
-                            <div className="h-5 w-5 rounded-md bg-[#EFF6FF] flex items-center justify-center shrink-0 mt-0.5">
-                              <CheckCircle2 size={10} className="text-[#1E3A8A]" />
-                            </div>
+                            <span className="text-[10px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-1.5 py-0.5 rounded shrink-0 mt-0.5 uppercase tracking-wider">Fix</span>
                             <p className="text-sm text-slate-700 font-medium leading-relaxed">{s.fix}</p>
                           </div>
                         </div>
@@ -613,8 +604,7 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
-                              <CheckCircle2 size={14} className="text-[#1E3A8A]" />
-                              <p className="text-sm text-slate-500 font-medium">All covered</p>
+                              <span className="text-[10px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-2 py-0.5 rounded-full">All covered</span>
                             </div>
                           )}
                         </div>
@@ -656,17 +646,14 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="rounded-xl border border-slate-200 overflow-hidden">
-                      <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
-                        <div className="h-6 w-6 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
-                          <AlertCircle size={12} className="text-[#EA580C]" />
-                        </div>
+                      <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
                         <span className="text-xs font-bold text-slate-700">Issues Found</span>
-                        <span className="ml-auto text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{data.sections.ats_analysis.issues.length}</span>
+                        <span className="text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{data.sections.ats_analysis.issues.length}</span>
                       </div>
-                      <div className="p-5 bg-white space-y-2.5">
+                      <div className="p-2 bg-white">
                         {data.sections.ats_analysis.issues.map((issue, i) => (
-                          <div key={i} className="flex items-start gap-2.5">
-                            <ChevronRight size={12} className="text-[#EA580C] shrink-0 mt-0.5" />
+                          <div key={i} className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-50/80 transition-colors">
+                            <span className="h-5 w-5 rounded-md bg-[#FFF7ED] flex items-center justify-center text-[10px] font-bold text-[#EA580C] tabular-nums shrink-0 mt-px">{i + 1}</span>
                             <p className="text-sm text-slate-600 leading-relaxed">{issue}</p>
                           </div>
                         ))}
@@ -674,16 +661,13 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                     </div>
 
                     <div className="rounded-xl border border-slate-200 overflow-hidden">
-                      <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
-                        <div className="h-6 w-6 rounded-lg bg-[#EFF6FF] flex items-center justify-center">
-                          <CheckCircle2 size={12} className="text-[#1E3A8A]" />
-                        </div>
+                      <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
                         <span className="text-xs font-bold text-slate-700">Recommendations</span>
                       </div>
-                      <div className="p-5 bg-white space-y-2.5">
+                      <div className="p-2 bg-white">
                         {data.sections.ats_analysis.recommendations.map((rec, i) => (
-                          <div key={i} className="flex items-start gap-2.5">
-                            <ChevronRight size={12} className="text-[#1E3A8A] shrink-0 mt-0.5" />
+                          <div key={i} className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-50/80 transition-colors">
+                            <span className="h-5 w-5 rounded-md bg-[#EFF6FF] flex items-center justify-center text-[10px] font-bold text-[#1E3A8A] tabular-nums shrink-0 mt-px">{i + 1}</span>
                             <p className="text-sm text-slate-600 leading-relaxed">{rec}</p>
                           </div>
                         ))}
@@ -723,17 +707,14 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="rounded-xl border border-slate-200 overflow-hidden">
-                      <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
-                        <div className="h-6 w-6 rounded-lg bg-[#EFF6FF] flex items-center justify-center">
-                          <CheckCircle2 size={12} className="text-[#1E3A8A]" />
-                        </div>
+                      <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
                         <span className="text-xs font-bold text-slate-700">Matched Requirements</span>
-                        <span className="ml-auto text-[10px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-2 py-0.5 rounded-full">{data.jd_alignment.matched_requirements.length}</span>
+                        <span className="text-[10px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-2 py-0.5 rounded-full">{data.jd_alignment.matched_requirements.length} found</span>
                       </div>
-                      <div className="p-5 bg-white space-y-2.5">
+                      <div className="p-2 bg-white">
                         {data.jd_alignment.matched_requirements.map((r, i) => (
-                          <div key={i} className="flex items-start gap-2.5">
-                            <CheckCircle2 size={11} className="text-[#1E3A8A] shrink-0 mt-0.5" />
+                          <div key={i} className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-50/80 transition-colors">
+                            <span className="h-5 w-5 rounded-md bg-[#EFF6FF] flex items-center justify-center text-[10px] font-bold text-[#1E3A8A] tabular-nums shrink-0 mt-px">{i + 1}</span>
                             <p className="text-sm text-slate-600 leading-relaxed">{r}</p>
                           </div>
                         ))}
@@ -741,17 +722,14 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                     </div>
 
                     <div className="rounded-xl border border-slate-200 overflow-hidden">
-                      <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
-                        <div className="h-6 w-6 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
-                          <AlertCircle size={12} className="text-[#EA580C]" />
-                        </div>
+                      <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
                         <span className="text-xs font-bold text-slate-700">Missing Requirements</span>
-                        <span className="ml-auto text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{data.jd_alignment.missing_requirements.length}</span>
+                        <span className="text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{data.jd_alignment.missing_requirements.length} gaps</span>
                       </div>
-                      <div className="p-5 bg-white space-y-2.5">
+                      <div className="p-2 bg-white">
                         {data.jd_alignment.missing_requirements.map((r, i) => (
-                          <div key={i} className="flex items-start gap-2.5">
-                            <AlertCircle size={11} className="text-[#EA580C] shrink-0 mt-0.5" />
+                          <div key={i} className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-50/80 transition-colors">
+                            <span className="h-5 w-5 rounded-md bg-[#FFF7ED] flex items-center justify-center text-[10px] font-bold text-[#EA580C] tabular-nums shrink-0 mt-px">{i + 1}</span>
                             <p className="text-sm text-slate-600 leading-relaxed">{r}</p>
                           </div>
                         ))}
@@ -760,16 +738,13 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                   </div>
 
                   <div className="rounded-xl border border-slate-200 overflow-hidden">
-                    <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
-                      <div className="h-6 w-6 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
-                        <Sparkles size={12} className="text-[#EA580C]" />
-                      </div>
+                    <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
                       <span className="text-xs font-bold text-slate-700">Tailoring Tips</span>
                     </div>
-                    <div className="p-5 bg-white space-y-2.5">
+                    <div className="p-2 bg-white">
                       {data.jd_alignment.tailoring_tips.map((tip, i) => (
-                        <div key={i} className="flex items-start gap-2.5">
-                          <ChevronRight size={12} className="text-[#EA580C] shrink-0 mt-0.5" />
+                        <div key={i} className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-50/80 transition-colors">
+                          <span className="h-5 w-5 rounded-md bg-[#FFF7ED] flex items-center justify-center text-[10px] font-bold text-[#EA580C] tabular-nums shrink-0 mt-px">{i + 1}</span>
                           <p className="text-sm text-slate-600 leading-relaxed">{tip}</p>
                         </div>
                       ))}
@@ -823,7 +798,7 @@ export default function ResumeImprovementPage() {
             SkillBridge
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/onboard" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all hover:shadow-lg text-xs">
+            <Link href="/onboard" className="px-4 py-2 bg-[#EA580C] text-white font-semibold rounded-lg transition-all hover:bg-[#C2410C] text-xs">
               Full Analysis
             </Link>
           </div>
@@ -844,7 +819,7 @@ export default function ResumeImprovementPage() {
           {/* LEFT — sticky upload */}
           <div className="lg:sticky lg:top-20">
             <div className="clean-card overflow-hidden">
-              <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
+              <div className="h-px bg-linear-to-r from-[#EA580C]/30 via-transparent to-transparent" />
               <div className="p-6">
                 <UploadPanel onAnalyze={handleAnalyze} isLoading={isLoading} />
               </div>
@@ -855,15 +830,15 @@ export default function ResumeImprovementPage() {
           <div className="flex flex-col">
             {isLoading ? (
               <div className="clean-card overflow-hidden">
-                <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
+                <div className="h-px bg-linear-to-r from-[#EA580C]/30 via-transparent to-transparent" />
                 <div className="p-6"><LoadingState /></div>
               </div>
             ) : error ? (
               <div className="clean-card overflow-hidden">
-                <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
+                <div className="h-px bg-linear-to-r from-[#EA580C]/30 via-transparent to-transparent" />
                 <div className="p-6 flex flex-col items-center justify-center min-h-100 gap-4">
-                  <div className="h-14 w-14 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center">
-                    <AlertTriangle size={22} className="text-red-500" />
+                  <div className="h-14 w-14 rounded-2xl bg-[#FFF7ED] border border-[#EA580C]/15 flex items-center justify-center">
+                    <AlertTriangle size={22} className="text-[#EA580C]" />
                   </div>
                   <div className="text-center">
                     <p className="font-semibold text-slate-800 mb-1">Analysis Failed</p>
@@ -871,7 +846,7 @@ export default function ResumeImprovementPage() {
                   </div>
                   <button
                     onClick={() => setError(null)}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#ff6b35] text-white text-sm font-semibold rounded-lg hover:bg-[#e55a28] transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#EA580C] text-white text-sm font-semibold rounded-lg hover:bg-[#C2410C] transition-colors"
                   >
                     <RefreshCw size={13} /> Try Again
                   </button>
@@ -881,16 +856,16 @@ export default function ResumeImprovementPage() {
               <ResultsPanel data={result} onReset={() => setResult(null)} />
             ) : (
               <div className="clean-card overflow-hidden flex-1 flex flex-col">
-                <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
+                <div className="h-px bg-linear-to-r from-[#EA580C]/30 via-transparent to-transparent" />
                 <div className="p-6 flex flex-col items-center justify-center flex-1 gap-5 text-center">
-                  <div className="h-20 w-20 rounded-2xl bg-[#fff3ed] border border-[#ff6b35]/15 flex items-center justify-center">
-                    <FileText size={32} className="text-[#ff6b35]/50" />
+                  <div className="h-20 w-20 rounded-2xl bg-[#FFF7ED] border border-[#EA580C]/15 flex items-center justify-center">
+                    <FileText size={32} className="text-[#EA580C]/50" />
                   </div>
                   <div>
                     <p className="font-bold text-slate-800 text-lg mb-2">Your analysis will appear here</p>
                     <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
                       Upload your resume on the left and click{" "}
-                      <span className="font-semibold text-[#ff6b35]">Analyze Resume</span>{" "}
+                      <span className="font-semibold text-[#EA580C]">Analyze Resume</span>{" "}
                       to get instant AI-powered feedback.
                     </p>
                   </div>
