@@ -143,7 +143,7 @@ export default function PlanPage({
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f7f5] relative">
+    <div className="min-h-screen bg-transparent relative">
 
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-999 overflow-hidden">
@@ -184,9 +184,11 @@ export default function PlanPage({
       `}</style>
 
       {/* Navbar  */}
-      <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
-          <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
+      <header className="clean-nav sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
+          <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-brand transition-colors">
+            SkillBridge
+          </Link>
           <div className="flex items-center gap-6">
             <Link
               href={`/dashboard?uuid=${uuid}`}
@@ -198,7 +200,7 @@ export default function PlanPage({
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 lg:px-6 py-8 space-y-5">
+      <main className="max-w-6xl mx-auto px-4 lg:px-6 py-12 space-y-8">
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 text-xs text-slate-400">
@@ -210,7 +212,7 @@ export default function PlanPage({
         </div>
 
         {/* HERO BANNER */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div className="clean-card overflow-hidden">
           <div className="h-0.5 bg-linear-to-r from-[#ff6b35] via-[#ff8a5c] to-transparent" />
           <div className="grid lg:grid-cols-[1fr_auto]">
             <div className="p-6 lg:p-8">
@@ -229,7 +231,7 @@ export default function PlanPage({
                   </span>
                 )}
               </div>
-              <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">Your Learning Plan</h1>
+              <h1 className="text-3xl md:text-4xl font-black mb-2 tracking-tight text-blue-900">Your Learning Plan</h1>
               <p className="text-sm text-slate-500 mb-5">
                 {currentDayPlan?.focus
                   ? <>Today: <span className="font-semibold text-slate-700">{currentDayPlan.focus}</span></>
@@ -270,7 +272,7 @@ export default function PlanPage({
         </div>
 
         {/* 30-DAY VISUAL TIMELINE */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+        <div className="clean-card p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wide">
               <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
@@ -331,7 +333,7 @@ export default function PlanPage({
         <div className="grid lg:grid-cols-[280px_1fr] gap-5 items-start">
 
           {/* Left — Day selector */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sticky top-20">
+          <div className="clean-card p-5 sticky top-20">
             <h2 className="text-xs font-bold text-slate-900 mb-4 flex items-center gap-2 uppercase tracking-wide">
               <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
                 <CalendarDays size={12} className="text-[#ff6b35]" />
@@ -390,7 +392,7 @@ export default function PlanPage({
           <div className="space-y-5">
 
             {/* Task card */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <div className="clean-card overflow-hidden">
               {/* Card top accent */}
               <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
               <div className="p-6">
@@ -508,7 +510,7 @@ export default function PlanPage({
             </div>
 
             {/* Week phases */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+            <div className="clean-card p-6">
               <h2 className="text-xs font-bold text-slate-900 mb-4 flex items-center gap-2 uppercase tracking-wide">
                 <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
                   <CalendarDays size={12} className="text-[#ff6b35]" />

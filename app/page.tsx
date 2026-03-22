@@ -153,9 +153,11 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground">
 
       {/*Navbar*/}
-      <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
-          <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
+      <header className="clean-nav sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
+          <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-brand transition-colors">
+            SkillBridge
+          </Link>
           <div className="flex items-center gap-6">
             <nav className="hidden md:flex items-center gap-6">
               <Link href="#features" className="text-slate-600 hover:text-[#ff6b35] font-medium transition-colors text-sm">Features</Link>
@@ -181,9 +183,9 @@ export default function Home() {
                 AI Powered Career Intelligence
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] text-slate-900">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-slate-900">
                 Bridge the Gap Between
-                <span className="block text-[#ff6b35] mt-1">Skills & Success</span>
+                <span className="block text-brand mt-1 pb-1">Skills & Success</span>
               </h1>
 
               <p className="text-base text-slate-600 leading-relaxed max-w-xl">
@@ -211,32 +213,13 @@ export default function Home() {
                 </Link>
               </div>
 
-              {/* What each does */}
-              <div className="flex flex-wrap gap-2 pt-1">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#fff3ed] border border-[#ff6b35]/15 rounded-lg">
-                  <Brain size={11} className="text-[#ff6b35]" />
-                  <span className="text-xs text-slate-600">Skill gaps + 30-day roadmap</span>
-                  <span className="text-[10px] font-semibold text-[#ff6b35] bg-[#ff6b35]/10 px-1.5 py-0.5 rounded-full">Full</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg">
-                  <FileEdit size={11} className="text-slate-400" />
-                  <span className="text-xs text-slate-600">Bullet rewrites & ATS fixes</span>
-                  <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">Free</span>
-                </div>
-              </div>
 
-              <div className="flex items-center gap-6 pt-1 text-xs text-slate-600">
-                <span className="flex items-center gap-1.5">
-                </span>
-                <span className="flex items-center gap-1.5">
-                </span>
-              </div>
             </div>
 
             {/* Right — Animated Beam */}
-            <div className="relative flex items-center justify-center" ref={containerRef}>
-              <div className="relative h-90 w-full max-w-lg overflow-hidden rounded-xl bg-[#fffaf7] border border-slate-200 p-8">
-                <Circle ref={centerRef} className="size-16 border-[#ff6b35] bg-[#fff3ed] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xl">
+            <div className="relative flex items-center justify-center lg:justify-end" ref={containerRef}>
+              <div className="relative h-90 w-full max-w-lg overflow-hidden clean-card p-8">
+                <Circle ref={centerRef} className="size-16 border-[#ff6b35] bg-[#fff3ed] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xl hover:scale-110 transition-transform">
                   <svg viewBox="0 0 24 24" fill="none" stroke="#ff6b35" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
@@ -263,9 +246,9 @@ export default function Home() {
       </section>
 
       {/* Stats */}
-      <section className="py-10 border-y border-slate-200 bg-[#fffcfa]">
+      <section className="py-12 border-y border-white/40 clean-panel">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
-          <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+          <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-200/50">
             {[
               { number: "10,000+", label: "Resumes Analyzed" },
               { number: "94%", label: "Success Rate" },
@@ -283,9 +266,9 @@ export default function Home() {
       {/*Features*/}
       <section id="features" className="py-16">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
-          <div className="max-w-2xl mx-auto text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">Precision Career Engineering</h2>
-            <p className="text-base text-slate-600">
+          <div className="max-w-2xl mx-auto text-center mb-14">
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Precision Career Engineering</h2>
+            <p className="text-lg text-slate-600">
               Advanced AI technology meets career strategy to deliver actionable insights that accelerate your professional growth.
             </p>
           </div>
@@ -296,11 +279,11 @@ export default function Home() {
               { icon: Brain, title: "Skill Gap Identification", desc: "Pinpoint exact competency gaps in technical skills, system design, algorithms, and emerging technologies with actionable recommendations." },
               { icon: Calendar, title: "Personalized Roadmap", desc: "Receive a structured 30 day action plan with daily objectives, curated resources, and progress tracking mechanisms." },
             ].map((item, i) => (
-              <div key={i} className="group bg-white rounded-xl p-6 border border-slate-200 hover:border-[#ff6b35]/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div className="w-12 h-12 rounded-lg bg-[#fff3ed] flex items-center justify-center mb-4 group-hover:bg-[#ffebe1] transition-colors">
-                  <item.icon className="text-[#ff6b35]" size={24} />
+              <div key={i} className="group clean-card p-6">
+                <div className="w-14 h-14 rounded-xl bg-[#fff3ed] flex items-center justify-center mb-5 group-hover:bg-[#ffebe1] transition-colors shadow-sm">
+                  <item.icon className="text-[#ff6b35]" size={28} />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
                 <p className="text-slate-600 leading-relaxed text-sm">{item.desc}</p>
               </div>
             ))}
@@ -328,10 +311,10 @@ export default function Home() {
       </section>
 
       {/* Testimonials*/}
-      <section id="testimonials" className="py-16 bg-[#fffcfa]">
+      <section id="testimonials" className="py-20 clean-panel border-y border-white/40">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">Trusted by Professionals</h2>
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">Trusted by Professionals</h2>
             <p className="text-base text-slate-600">Join thousands who've accelerated their tech careers with SkillBridge</p>
           </div>
 
@@ -342,10 +325,10 @@ export default function Home() {
               <Marquee pauseOnHover vertical className="[--duration:26s]">{thirdRow.map((r) => <ReviewCard key={r.username} {...r} />)}</Marquee>
               <Marquee reverse pauseOnHover vertical className="[--duration:30s]">{fourthRow.map((r) => <ReviewCard key={r.username} {...r} />)}</Marquee>
             </div>
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#fffcfa] to-transparent" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#fffcfa] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-linear-to-r from-[#fffcfa] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-linear-to-l from-[#fffcfa] to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[rgba(255,255,255,0.5)] to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[rgba(255,255,255,0.5)] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-linear-to-r from-[rgba(255,255,255,0.5)] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-linear-to-l from-[rgba(255,255,255,0.5)] to-transparent" />
           </div>
         </div>
       </section>
@@ -393,10 +376,10 @@ export default function Home() {
                 { icon: Brain, title: "AI Accuracy", value: "99.2%" },
                 { icon: CheckCircle2, title: "Satisfaction", value: "4.9/5" },
               ].map((item, i) => (
-                <div key={i} className="bg-white rounded-xl p-5 border border-slate-200 hover:border-[#ff6b35]/30 hover:shadow-md transition-all">
-                  <item.icon className="text-[#ff6b35] mb-2" size={22} />
-                  <div className="text-2xl font-bold text-[#ff6b35] mb-0.5">{item.value}</div>
-                  <div className="text-xs text-slate-600">{item.title}</div>
+                <div key={i} className="clean-card p-6 flex flex-col items-center justify-center text-center">
+                  <item.icon className="text-[#ff6b35] mb-3" size={28} />
+                  <div className="text-3xl font-black text-[#ff6b35] mb-1">{item.value}</div>
+                  <div className="text-sm font-semibold text-slate-600">{item.title}</div>
                 </div>
               ))}
             </div>
@@ -405,9 +388,9 @@ export default function Home() {
       </section>
 
       {/*  Footer  */}
-      <footer className="py-10 border-t border-slate-200 bg-white">
+      <footer className="py-10 border-t border-white/30 clean-panel">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
-          <div className="border-t border-slate-200 pt-6 text-center text-xs text-slate-500">
+          <div className="border-t border-slate-200/50 pt-6 text-center text-xs font-medium text-slate-500">
             © {new Date().getFullYear()} SkillBridge. All rights reserved.
           </div>
         </div>

@@ -68,9 +68,11 @@ const categoryColors: Record<string, { pill: string; active: string; dot: string
 
 function Navbar() {
   return (
-    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
-        <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
+    <header className="clean-nav sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-brand transition-colors">
+          SkillBridge
+        </Link>
         <div className="flex items-center gap-6">
           <Link href="/" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all hover:shadow-lg text-xs">
             Home
@@ -93,7 +95,7 @@ function StepCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+    <section className="clean-card overflow-hidden">
       <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
       <div className="p-6">
         <div className="flex items-center gap-3 mb-6">
@@ -207,7 +209,7 @@ export default function OnboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f7f5]">
+    <div className="min-h-screen bg-transparent">
       <style>{`
         [data-radix-popper-content-wrapper] > div,
         [role="listbox"] {
@@ -218,7 +220,7 @@ export default function OnboardPage() {
       `}</style>
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
+      <main className="max-w-6xl mx-auto px-4 lg:px-8 py-10">
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-6">
           <Link href="/" className="hover:text-slate-600 transition-colors">Home</Link>
@@ -231,7 +233,7 @@ export default function OnboardPage() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-[10px] font-bold text-[#ff6b35] uppercase tracking-wide mb-3">
             AI-Powered Analysis
           </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight mb-2">Create Your Career Profile</h1>
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-3 text-blue-900">Create Your Career Profile</h1>
           <p className="text-slate-500 text-sm max-w-xl leading-relaxed">
             Fill in your details and upload your resume. Our AI will analyze your readiness and create a personalized 30-day roadmap.
           </p>
@@ -467,7 +469,7 @@ export default function OnboardPage() {
               </StepCard>
 
               {/* Mobile Resume Upload */}
-              <div className="lg:hidden bg-white rounded-2xl border-2 border-[#ff6b35]/30 overflow-hidden shadow-lg">
+              <div className="lg:hidden clean-card border-2 border-[#ff6b35]/30 overflow-hidden shadow-lg">
                 <div className="h-px bg-linear-to-r from-[#ff6b35] via-[#ff8a5c] to-transparent" />
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-1">
@@ -501,7 +503,7 @@ export default function OnboardPage() {
               <div className="sticky top-20 flex flex-col gap-5">
 
                 {/* Resume Upload */}
-                <div className="bg-white rounded-2xl border-2 border-[#ff6b35]/25 overflow-hidden shadow-lg">
+                <div className="clean-card border-2 border-[#ff6b35]/25 overflow-hidden shadow-lg">
                   <div className="h-0.5 bg-linear-to-r from-[#ff6b35] via-[#ff8a5c] to-transparent" />
                   <div className="p-5">
                     <div className="flex items-center gap-2 mb-1">
@@ -562,7 +564,7 @@ export default function OnboardPage() {
                 </div>
 
                 {/* What happens next */}
-                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm">
+                <div className="clean-card p-5">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="h-1.5 w-1.5 rounded-full bg-[#ff6b35]" />
                     <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">What happens next?</h3>

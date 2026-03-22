@@ -23,9 +23,11 @@ import {
 
 function Navbar() {
   return (
-    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
-        <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
+    <header className="clean-nav sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-brand transition-colors">
+          SkillBridge
+        </Link>
         <div className="flex items-center gap-6">
           <Link href="/" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all hover:shadow-lg text-xs">
             Home
@@ -207,10 +209,10 @@ export default async function DashboardPage({
   const mediumCount = sortedGaps.filter((g: any) => g.percentage < 40).length;
 
   return (
-    <div className="min-h-screen bg-[#f8f7f5]">
+    <div className="min-h-screen bg-transparent">
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-4 lg:px-8 py-8 space-y-5">
+      <main className="max-w-6xl mx-auto px-4 lg:px-8 py-12 space-y-8">
 
         {/* BREADCRUMB */}
         <div className="flex items-center gap-1.5 text-xs text-slate-400">
@@ -220,7 +222,7 @@ export default async function DashboardPage({
         </div>
 
         {/* HERO BANNER */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div className="clean-card overflow-hidden">
           <div className="h-0.5 bg-linear-to-r from-[#ff6b35] via-[#ff8a5c] to-transparent" />
           <div className="grid lg:grid-cols-[200px_1fr_240px]">
             {/* Score ring */}
@@ -267,7 +269,7 @@ export default async function DashboardPage({
                   AI Analysis Complete
                 </span>
               </div>
-              <h1 className="text-2xl font-black text-slate-900 mb-1 tracking-tight">Career Readiness Report</h1>
+              <h1 className="text-3xl lg:text-4xl font-black mb-2 tracking-tight text-blue-900">Career Readiness Report</h1>
               <p className="text-sm text-slate-400 mb-5">
                 Analyzed against <span className="font-semibold text-slate-600 capitalize">{targetRole}</span> role expectations
               </p>
@@ -335,7 +337,7 @@ export default async function DashboardPage({
             { label: "Skill Gaps Found", value: skillGaps.length > 0 ? `${skillGaps.length}` : "—", bar: null, icon: BarChart3 },
             { label: "Est. Ready In", value: estimatedTime, bar: null, icon: Clock },
           ].map((m, i) => (
-            <div key={i} className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-sm hover:shadow-md transition-shadow">
+            <div key={i} className="clean-card p-4">
               <div className="flex items-center gap-1.5 mb-2">
                 <m.icon size={11} className="text-[#ff6b35]" />
                 <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wide">{m.label}</p>
@@ -358,7 +360,7 @@ export default async function DashboardPage({
 
             {/* JD Match */}
             {hasJD && (
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+              <div className="clean-card p-6">
                 <SectionHeader
                   icon={FileSearch}
                   title="JD Match Analysis"
@@ -398,7 +400,7 @@ export default async function DashboardPage({
             )}
 
             {/* Skill Gap Analysis */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+            <div className="clean-card p-6">
               <SectionHeader
                 icon={BarChart3}
                 title="Skill Gap Analysis"
@@ -444,7 +446,7 @@ export default async function DashboardPage({
             <div className="grid sm:grid-cols-2 gap-5">
 
               {/* Strengths */}
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+              <div className="clean-card overflow-hidden">
                 <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-green-50/50">
                   <div className="h-6 w-6 rounded-lg bg-green-100 flex items-center justify-center">
                     <CheckCircle2 size={12} className="text-green-600" />
@@ -480,7 +482,7 @@ export default async function DashboardPage({
               </div>
 
               {/* Weaknesses */}
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+              <div className="clean-card overflow-hidden">
                 <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-red-50/50">
                   <div className="h-6 w-6 rounded-lg bg-red-100 flex items-center justify-center">
                     <AlertCircle size={12} className="text-red-500" />
@@ -521,7 +523,7 @@ export default async function DashboardPage({
           <div className="space-y-4">
 
             {/* Recommendation */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+            <div className="clean-card p-5">
               <div className="flex items-center gap-2 mb-3">
                 <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
                   <Activity size={11} className="text-[#ff6b35]" />
@@ -539,7 +541,7 @@ export default async function DashboardPage({
 
             {/* JD Targeting */}
             {hasJD && (
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5">
+              <div className="clean-card p-5">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
                     <Target size={11} className="text-[#ff6b35]" />
@@ -564,7 +566,7 @@ export default async function DashboardPage({
 
             {/* Github Analysis */}
             {hasGithub ? (
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+              <div className="clean-card overflow-hidden">
                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <div className="h-6 w-6 rounded-lg bg-[#fff3ed] flex items-center justify-center">
@@ -600,7 +602,7 @@ export default async function DashboardPage({
                 </div>
               </div>
             ) : (
-              <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-5 text-center">
+              <div className="clean-card border-dashed p-5 text-center">
                 <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3">
                   <Github size={16} className="text-slate-400" />
                 </div>
