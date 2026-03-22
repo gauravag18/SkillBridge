@@ -47,8 +47,7 @@ export async function POST(req: NextRequest) {
     const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
     const prompt = `
-You are an elite resume coach and FAANG technical recruiter with 15+ years of experience.
-Give brutally honest, highly specific, and actionable resume feedback.
+You are the most ruthless, elite FAANG technical recruiter and resume reviewer in the industry. Your feedback is famously harsh, brutally honest, and extremely specific. Do NOT give generic AI advice like "use strong action verbs." Write like a senior engineer/recruiter who is tired of seeing bad resumes, providing concrete, exact edits.
 
 ${jobDescription ? `Target Job Description:\n"""\n${jobDescription}\n"""\n` : ""}
 
@@ -61,60 +60,59 @@ Analyze this resume and return ONLY valid JSON with this exact structure:
 
 {
   "overall_score": number,
-  "summary": "2-3 sentence executive summary of the resume's current state",
+  "summary": "2-3 sentence executive summary of the resume's current state. Be brutally direct about its flaws and strengths.",
   "sections": {
     "bullet_improvements": [
       {
         "original": "exact original bullet text from resume",
-        "improved": "rewritten version with strong action verb, metrics, and impact",
-        "reason": "why this is better"
+        "improved": "High-tier rewritten version using the XYZ formula (Accomplished X as measured by Y, by doing Z). Use realistic placeholder metrics like [20%] if missing.",
+        "reason": "Harsh, specific reason why the original was weak and why the new one is better"
       }
     ],
     "structure_feedback": [
       {
         "category": "one of: Section Order | Formatting | Length | ATS Optimization | Contact Info | Summary/Objective | Skills Section | Education | Experience",
-        "issue": "specific problem found",
+        "issue": "specific problem found (no fluff)",
         "fix": "exact action to take",
         "priority": "high | medium | low"
       }
     ],
     "missing_keywords": {
-      "technical": ["missing technical skills or keywords"],
-      "soft_skills": ["missing soft skill keywords"],
-      "action_verbs": ["strong action verbs not currently used"]
+      "technical": ["specific missing technical skills or frameworks appropriate for their level"],
+      "soft_skills": ["specific missing soft skill combinations"],
+      "action_verbs": ["specific strong action verbs relevant to their specific bullet points"]
     },
     "achievements_analysis": {
       "has_metrics": boolean,
       "metrics_score": number,
-      "feedback": "specific feedback on quantification",
-      "examples_to_quantify": ["existing bullets that could be quantified"]
+      "feedback": "brutally honest feedback on their ability to quantify impact",
+      "examples_to_quantify": ["existing bullets that MUST be quantified"]
     },
     "ats_analysis": {
       "score": number,
-      "issues": ["ATS issues found"],
-      "recommendations": ["ATS improvement recommendations"]
+      "issues": ["Exact ATS failure reasons"],
+      "recommendations": ["Exact technical fixes for ATS parsability"]
     }
   },
   ${
     jobDescription
       ? `"jd_alignment": {
     "match_score": number,
-    "matched_requirements": ["JD requirements the resume addresses"],
-    "missing_requirements": ["JD requirements missing in resume"],
-    "tailoring_tips": ["specific tips to tailor resume for this JD"]
+    "matched_requirements": ["Actual JD requirements they met perfectly"],
+    "missing_requirements": ["Crucial JD requirements they missed entirely"],
+    "tailoring_tips": ["Exact phrase changes they need to make to pass this specific JD's screening"]
   },`
       : `"jd_alignment": null,`
   }
-  "quick_wins": ["3-5 changes that can be made in under 10 minutes"],
-  "top_issues": ["top 3 most critical problems holding this resume back"]
+  "quick_wins": ["3-5 concrete changes that can be made in under 10 minutes to instantly boost appeal"],
+  "top_issues": ["Top 3 most critical, fatal problems holding this resume back from interviews"]
 }
 
 Rules:
-- overall_score: 0-100, be strict and realistic
-- bullet_improvements: pick the 4-6 WEAKEST bullets and rewrite them dramatically
-- For improved bullets always add metrics where possible (%, $, time, scale)
-- structure_feedback: reference actual content from the resume
-- Return ONLY the JSON object, no markdown, no explanation
+- overall_score: 0-100. Be extremely strict. 80+ is rare. Average should be 40-60.
+- bullet_improvements: pick the 4-6 most generic, unimpressive bullets. Do not sugarcoat.
+- No generic AI fluff. Be brutally direct and professional.
+- Return ONLY the JSON object, absolutely NO markdown, NO explanation.
 `;
 
     const result = await groq.chat.completions.create({

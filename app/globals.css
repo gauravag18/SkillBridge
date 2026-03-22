@@ -37,6 +37,10 @@ html, body {
 body {
   font-family: var(--font-body), system-ui, -apple-system, sans-serif;
   background: var(--background);
+  background-image:
+    radial-gradient(ellipse at 0% 0%, hsla(25, 100%, 95%, 0.6) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, hsla(25, 100%, 95%, 0.4) 0%, transparent 50%);
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.65;
 }

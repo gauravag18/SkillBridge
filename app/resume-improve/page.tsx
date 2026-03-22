@@ -266,7 +266,7 @@ function UploadPanel({
         )}
       </button>
 
-      {/* What you'll get */}
+      {/* What you'll get
       {!file && (
         <div className="p-4 bg-[#fffcfa] border border-slate-100 rounded-xl">
           <p className="text-[10px] font-bold text-slate-500 mb-2.5 uppercase tracking-wider">What you'll get</p>
@@ -285,10 +285,10 @@ function UploadPanel({
             ))}
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Cross-sell */}
-      <div className="p-4 bg-[#1a1a1a] rounded-2xl text-white">
+      {/* <div className="p-4 bg-[#1a1a1a] rounded-2xl text-white">
         <div className="flex items-start gap-3">
           <div className="h-8 w-8 rounded-lg bg-[#ff6b35]/20 flex items-center justify-center shrink-0">
             <Award size={14} className="text-[#ff6b35]" />
@@ -306,7 +306,7 @@ function UploadPanel({
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -364,42 +364,42 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
     ...(data.jd_alignment ? [{ id: "jd" as const, label: "JD Fit", icon: Target }] : []),
   ];
 
-  const overallColor = data.overall_score >= 75 ? "#16a34a" : data.overall_score >= 50 ? "#f59e0b" : "#ef4444";
+  const overallColor = data.overall_score >= 75 ? "#1E3A8A" : data.overall_score >= 50 ? "#EA580C" : "#DC2626";
   const overallLabel = data.overall_score >= 75 ? "Strong Resume" : data.overall_score >= 50 ? "Needs Polish" : "Needs Work";
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
 
       {/* HERO SCORE BANNER */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div className="h-0.5 bg-linear-to-r from-[#ff6b35] via-[#ff8a5c] to-transparent" />
+      <div className="clean-card overflow-hidden">
+        <div className="h-1 bg-gradient-to-r from-[#EA580C] via-[#1E3A8A] to-transparent" />
         <div className="grid sm:grid-cols-[auto_1fr]">
           {/* Score ring */}
-          <div className="flex flex-col items-center justify-center p-6 bg-linear-to-br from-[#fffaf7] to-[#fff3ed]/30 border-b sm:border-b-0 sm:border-r border-slate-100 min-w-36">
-            <ScoreRing score={data.overall_score} size={80} strokeWidth={7} />
+          <div className="flex flex-col items-center justify-center p-8 bg-slate-50/50 border-b sm:border-b-0 sm:border-r border-slate-100 min-w-44">
+            <ScoreRing score={data.overall_score} size={96} strokeWidth={8} />
             <span
-              className="mt-3 text-[10px] font-bold px-2.5 py-1 rounded-full border uppercase tracking-wide"
-              style={{ color: overallColor, borderColor: overallColor + "44", backgroundColor: overallColor + "11" }}
+              className="mt-4 text-[10px] font-bold px-3 py-1 rounded-full border uppercase tracking-wider"
+              style={{ color: overallColor, borderColor: overallColor + "33", backgroundColor: overallColor + "0D" }}
             >
               {overallLabel}
             </span>
           </div>
 
           {/* Summary + score bars + reset */}
-          <div className="p-5 flex flex-col justify-between gap-4">
-            <div className="flex items-start justify-between gap-3">
+          <div className="p-6 flex flex-col justify-between gap-5">
+            <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="font-black text-slate-900 text-base tracking-tight">Analysis Results</h2>
-                <p className="text-xs text-slate-500 mt-0.5 leading-relaxed max-w-md">{data.summary}</p>
+                <h2 className="font-black text-lg text-blue-900 tracking-tight">Resume Analysis</h2>
+                <p className="text-sm text-slate-500 mt-1 leading-relaxed max-w-lg">{data.summary}</p>
               </div>
               <button
                 onClick={onReset}
-                className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition-all shrink-0"
+                className="flex items-center gap-1.5 px-3 py-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-600 hover:border-[#EA580C] hover:text-[#EA580C] transition-all shrink-0"
               >
-                <RefreshCw size={11} /> New
+                <RefreshCw size={12} /> New Analysis
               </button>
             </div>
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               <ScoreBar score={data.sections.ats_analysis.score} label="ATS Compatibility" />
               <ScoreBar score={data.sections.achievements_analysis.metrics_score} label="Impact & Metrics" />
               {data.jd_alignment && (
@@ -410,133 +410,128 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
         </div>
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-4">
-        {/* Top issues */}
-        <div className="bg-white rounded-2xl border border-red-100 shadow-sm overflow-hidden">
-          <div className="flex items-center gap-2.5 px-4 py-3 border-b border-red-100 bg-red-50/60">
-            <div className="h-6 w-6 rounded-lg bg-red-100 flex items-center justify-center">
-              <AlertTriangle size={12} className="text-red-500" />
+      {/* ACTION ITEMS — Top issues + Quick wins */}
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div className="clean-card overflow-hidden">
+          <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
+            <div className="h-7 w-7 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+              <AlertTriangle size={13} className="text-[#EA580C]" />
             </div>
-            <span className="text-[10px] font-bold text-red-700 uppercase tracking-wider">Top Issues to Fix</span>
-            <span className="ml-auto text-[10px] font-bold text-red-600 bg-red-100 px-1.5 py-0.5 rounded-full">{data.top_issues.length}</span>
+            <span className="text-xs font-bold text-slate-700">Priority Issues</span>
+            <span className="ml-auto text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{data.top_issues.length} found</span>
           </div>
-          <div className="p-4 space-y-2.5">
+          <div className="p-5 space-y-3">
             {data.top_issues.map((issue, i) => (
-              <div key={i} className="flex items-start gap-2.5">
-                <div className="h-4 w-4 rounded-full bg-red-100 flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="text-red-600 text-[9px] font-black">{i + 1}</span>
+              <div key={i} className="flex items-start gap-3">
+                <div className="h-5 w-5 rounded-md bg-[#FFF7ED] flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-[#EA580C] text-[10px] font-black">{i + 1}</span>
                 </div>
-                <p className="text-xs text-slate-700 leading-relaxed">{issue}</p>
+                <p className="text-sm text-slate-600 leading-relaxed">{issue}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Quick wins */}
-        <div className="bg-white rounded-2xl border border-green-100 shadow-sm overflow-hidden">
-          <div className="flex items-center gap-2.5 px-4 py-3 border-b border-green-100 bg-green-50/60">
-            <div className="h-6 w-6 rounded-lg bg-green-100 flex items-center justify-center">
-              <Zap size={12} className="text-green-600" />
+        <div className="clean-card overflow-hidden">
+          <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
+            <div className="h-7 w-7 rounded-lg bg-[#EFF6FF] flex items-center justify-center">
+              <Zap size={13} className="text-[#1E3A8A]" />
             </div>
-            <span className="text-[10px] font-bold text-green-700 uppercase tracking-wider">Quick Wins</span>
-            <span className="ml-auto text-[10px] font-bold text-green-700 bg-green-100 px-1.5 py-0.5 rounded-full">Under 10 min</span>
+            <span className="text-xs font-bold text-slate-700">Quick Wins</span>
+            <span className="ml-auto text-[10px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-2 py-0.5 rounded-full">Under 10 min</span>
           </div>
-          <div className="p-4 space-y-2.5">
+          <div className="p-5 space-y-3">
             {data.quick_wins.map((win, i) => (
-              <div key={i} className="flex items-start gap-2.5">
-                <div className="h-4 w-4 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-0.5">
-                  <CheckCircle2 size={9} className="text-green-600" />
+              <div key={i} className="flex items-start gap-3">
+                <div className="h-5 w-5 rounded-md bg-[#EFF6FF] flex items-center justify-center shrink-0 mt-0.5">
+                  <CheckCircle2 size={10} className="text-[#1E3A8A]" />
                 </div>
-                <p className="text-xs text-slate-700 leading-relaxed">{win}</p>
+                <p className="text-sm text-slate-600 leading-relaxed">{win}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/*  TABS */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div className="h-px bg-linear-to-r from-[#ff6b35]/20 via-transparent to-transparent" />
-        <div className="p-5">
-          <div className="flex gap-1 bg-slate-100 p-1 rounded-xl mb-5">
+      {/*  DETAILED TABS */}
+      <div className="clean-card overflow-hidden">
+        <div className="h-1 bg-gradient-to-r from-[#EA580C]/20 via-transparent to-transparent" />
+        <div className="p-6">
+          <div className="flex gap-1 bg-slate-100 p-1 rounded-xl mb-6">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex-1 justify-center ${
-                  activeTab === tab.id ? "bg-white text-[#ff6b35] shadow-sm" : "text-slate-500 hover:text-slate-700"
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all flex-1 justify-center ${
+                  activeTab === tab.id ? "bg-white text-[#1E3A8A] shadow-sm" : "text-slate-500 hover:text-slate-700"
                 }`}
               >
-                <tab.icon size={11} />{tab.label}
+                <tab.icon size={12} />{tab.label}
               </button>
             ))}
           </div>
 
           <AnimatePresence mode="wait">
-            <motion.div key={activeTab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.15 }} className="space-y-4">
+            <motion.div key={activeTab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.15 }} className="space-y-5">
 
               {/* BULLETS */}
               {activeTab === "bullets" && (
                 <>
-                  <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 rounded-lg bg-[#fff3ed] flex items-center justify-center">
-                      <Type size={13} className="text-[#ff6b35]" />
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="h-8 w-8 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                      <Type size={15} className="text-[#EA580C]" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-sm">Bullet Point Rewrites</h3>
-                      <p className="text-xs text-slate-500">AI-improved versions of your weakest bullets</p>
+                      <h3 className="font-bold text-blue-900 text-sm">Bullet Point Rewrites</h3>
+                      <p className="text-xs text-slate-500">Your weakest bullets, rewritten with impact</p>
                     </div>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {data.sections.bullet_improvements.map((b, i) => (
-                      <div key={i} className="rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                        <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-200">
-                          <div className="p-4 bg-red-50/30">
-                            <div className="flex items-center gap-1.5 mb-2">
-                              <div className="h-4 w-4 rounded-full bg-red-100 flex items-center justify-center shrink-0">
-                                <AlertCircle size={9} className="text-red-600" />
-                              </div>
-                              <span className="text-[10px] font-bold text-red-600 uppercase tracking-wider">Before</span>
-                            </div>
-                            <p className="text-xs text-slate-600 leading-relaxed">{b.original}</p>
+                      <div key={i} className="rounded-xl border border-slate-200 overflow-hidden">
+                        {/* Current version */}
+                        <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Current</span>
                           </div>
-                          <div className="p-4 bg-green-50/30">
-                            <div className="flex items-center gap-1.5 mb-2">
-                              <div className="h-4 w-4 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                                <CheckCircle2 size={9} className="text-green-600" />
-                              </div>
-                              <span className="text-[10px] font-bold text-green-600 uppercase tracking-wider">After</span>
-                            </div>
-                            <p className="text-xs text-slate-800 font-semibold leading-relaxed">{b.improved}</p>
+                          <p className="text-sm text-slate-500 leading-relaxed line-through decoration-slate-300">{b.original}</p>
+                        </div>
+                        {/* Improved version */}
+                        <div className="p-4 bg-white">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Sparkles size={11} className="text-[#EA580C]" />
+                            <span className="text-[10px] font-bold text-[#EA580C] uppercase tracking-wider">Improved</span>
                           </div>
+                          <p className="text-sm text-slate-800 font-medium leading-relaxed">{b.improved}</p>
+                          <p className="text-xs text-slate-400 mt-2 italic">{b.reason}</p>
                         </div>
                       </div>
                     ))}
                   </div>
 
                   {/* Metrics */}
-                  <div className="rounded-xl border border-amber-100 overflow-hidden shadow-sm">
-                    <div className="flex items-center gap-2.5 px-4 py-3 border-b border-amber-100 bg-amber-50/60">
-                      <div className="h-6 w-6 rounded-lg bg-amber-100 flex items-center justify-center">
-                        <TrendingUp size={12} className="text-amber-600" />
+                  <div className="rounded-xl border border-slate-200 overflow-hidden">
+                    <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
+                      <div className="h-7 w-7 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                        <TrendingUp size={13} className="text-[#EA580C]" />
                       </div>
-                      <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Metrics & Quantification</span>
-                      <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                        data.sections.achievements_analysis.has_metrics ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
+                      <span className="text-xs font-bold text-slate-700">Metrics & Quantification</span>
+                      <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        data.sections.achievements_analysis.has_metrics ? "bg-[#EFF6FF] text-[#1E3A8A]" : "bg-[#FFF7ED] text-[#EA580C]"
                       }`}>
                         {data.sections.achievements_analysis.has_metrics ? "Present" : "Missing"}
                       </span>
                     </div>
-                    <div className="p-4 bg-white">
-                      <p className="text-xs text-slate-600 leading-relaxed mb-3">{data.sections.achievements_analysis.feedback}</p>
+                    <div className="p-5 bg-white">
+                      <p className="text-sm text-slate-600 leading-relaxed mb-4">{data.sections.achievements_analysis.feedback}</p>
                       {data.sections.achievements_analysis.examples_to_quantify.length > 0 && (
                         <>
-                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Could be quantified</p>
-                          <div className="space-y-1.5">
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Needs quantification</p>
+                          <div className="space-y-2">
                             {data.sections.achievements_analysis.examples_to_quantify.map((ex, i) => (
-                              <div key={i} className="flex items-start gap-2 text-xs text-slate-600">
-                                <ChevronRight size={11} className="text-amber-500 shrink-0 mt-0.5" />{ex}
+                              <div key={i} className="flex items-start gap-2.5 text-sm text-slate-600">
+                                <ChevronRight size={12} className="text-[#EA580C] shrink-0 mt-0.5" />{ex}
                               </div>
                             ))}
                           </div>
@@ -550,34 +545,34 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
               {/* STRUCTURE */}
               {activeTab === "structure" && (
                 <>
-                  <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 rounded-lg bg-[#fff3ed] flex items-center justify-center">
-                      <Layout size={13} className="text-[#ff6b35]" />
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="h-8 w-8 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                      <Layout size={15} className="text-[#EA580C]" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-sm">Structure & Formatting</h3>
-                      <p className="text-xs text-slate-500">Issues with how your resume is organized</p>
+                      <h3 className="font-bold text-blue-900 text-sm">Structure & Formatting</h3>
+                      <p className="text-xs text-slate-500">Organization and presentation issues</p>
                     </div>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {data.sections.structure_feedback.map((s, i) => (
-                      <div key={i} className="rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-slate-100 bg-slate-50">
-                          <span className="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded-lg">{s.category}</span>
+                      <div key={i} className="rounded-xl border border-slate-200 overflow-hidden">
+                        <div className="flex items-center gap-2 px-5 py-3 border-b border-slate-100 bg-slate-50/60">
+                          <span className="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2.5 py-0.5 rounded-lg">{s.category}</span>
                           <PriorityBadge priority={s.priority} />
                         </div>
-                        <div className="p-4 bg-white space-y-2.5">
-                          <div className="flex items-start gap-2.5">
-                            <div className="h-5 w-5 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0 mt-0.5">
-                              <AlertCircle size={10} className="text-red-400" />
+                        <div className="p-5 bg-white space-y-3">
+                          <div className="flex items-start gap-3">
+                            <div className="h-5 w-5 rounded-md bg-[#FFF7ED] flex items-center justify-center shrink-0 mt-0.5">
+                              <AlertCircle size={10} className="text-[#EA580C]" />
                             </div>
-                            <p className="text-xs text-slate-600 leading-relaxed">{s.issue}</p>
+                            <p className="text-sm text-slate-600 leading-relaxed">{s.issue}</p>
                           </div>
-                          <div className="flex items-start gap-2.5">
-                            <div className="h-5 w-5 rounded-full bg-green-50 border border-green-200 flex items-center justify-center shrink-0 mt-0.5">
-                              <CheckCircle2 size={10} className="text-green-500" />
+                          <div className="flex items-start gap-3">
+                            <div className="h-5 w-5 rounded-md bg-[#EFF6FF] flex items-center justify-center shrink-0 mt-0.5">
+                              <CheckCircle2 size={10} className="text-[#1E3A8A]" />
                             </div>
-                            <p className="text-xs text-slate-800 font-semibold leading-relaxed">{s.fix}</p>
+                            <p className="text-sm text-slate-700 font-medium leading-relaxed">{s.fix}</p>
                           </div>
                         </div>
                       </div>
@@ -589,38 +584,37 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
               {/* KEYWORDS */}
               {activeTab === "keywords" && (
                 <>
-                  <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 rounded-lg bg-[#fff3ed] flex items-center justify-center">
-                      <Search size={13} className="text-[#ff6b35]" />
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="h-8 w-8 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                      <Search size={15} className="text-[#EA580C]" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-sm">Missing Keywords</h3>
-                      <p className="text-xs text-slate-500">Add these to improve visibility and relevance</p>
+                      <h3 className="font-bold text-blue-900 text-sm">Missing Keywords</h3>
+                      <p className="text-xs text-slate-500">Add these to boost visibility and ATS matches</p>
                     </div>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {[
-                      { label: "Technical Skills",    items: data.sections.missing_keywords.technical,    dot: "bg-[#ff6b35]",  bg: "bg-[#fff3ed]", border: "border-[#ff6b35]/20", tc: "text-[#ff6b35]" },
-                      { label: "Soft Skills",         items: data.sections.missing_keywords.soft_skills,  dot: "bg-violet-500", bg: "bg-violet-50", border: "border-violet-200",    tc: "text-violet-700" },
-                      { label: "Strong Action Verbs", items: data.sections.missing_keywords.action_verbs, dot: "bg-cyan-500",   bg: "bg-cyan-50",   border: "border-cyan-200",      tc: "text-cyan-700" },
-                    ].map(({ label, items, dot, bg, border, tc }) => (
-                      <div key={label} className="rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-slate-100 bg-slate-50">
-                          <div className={`h-2 w-2 rounded-full ${dot}`} />
-                          <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">{label}</span>
+                      { label: "Technical Skills",    items: data.sections.missing_keywords.technical,    bg: "bg-[#FFF7ED]", border: "border-[#EA580C]/20", tc: "text-[#EA580C]" },
+                      { label: "Soft Skills",         items: data.sections.missing_keywords.soft_skills,  bg: "bg-[#EFF6FF]", border: "border-[#1E3A8A]/20", tc: "text-[#1E3A8A]" },
+                      { label: "Strong Action Verbs", items: data.sections.missing_keywords.action_verbs, bg: "bg-slate-50",  border: "border-slate-200",    tc: "text-slate-700" },
+                    ].map(({ label, items, bg, border, tc }) => (
+                      <div key={label} className="rounded-xl border border-slate-200 overflow-hidden">
+                        <div className="flex items-center gap-2 px-5 py-3 border-b border-slate-100 bg-slate-50/60">
+                          <span className="text-xs font-bold text-slate-600">{label}</span>
                           <span className="ml-auto text-[10px] font-bold text-slate-400">{items.length} missing</span>
                         </div>
-                        <div className="p-4 bg-white">
+                        <div className="p-5 bg-white">
                           {items.length > 0 ? (
                             <div className="flex flex-wrap gap-2">
                               {items.map((kw, i) => (
-                                <span key={i} className={`px-2.5 py-1 rounded-lg text-xs font-semibold border ${bg} ${border} ${tc}`}>+ {kw}</span>
+                                <span key={i} className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${bg} ${border} ${tc}`}>+ {kw}</span>
                               ))}
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
-                              <CheckCircle2 size={13} className="text-green-500" />
-                              <p className="text-xs text-slate-500 font-medium">All covered</p>
+                              <CheckCircle2 size={14} className="text-[#1E3A8A]" />
+                              <p className="text-sm text-slate-500 font-medium">All covered</p>
                             </div>
                           )}
                         </div>
@@ -633,26 +627,26 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
               {/* ATS */}
               {activeTab === "ats" && (
                 <>
-                  <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 rounded-lg bg-[#fff3ed] flex items-center justify-center">
-                      <BarChart3 size={13} className="text-[#ff6b35]" />
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="h-8 w-8 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                      <BarChart3 size={15} className="text-[#EA580C]" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-sm">ATS Optimization</h3>
-                      <p className="text-xs text-slate-500">How well your resume performs with Applicant Tracking Systems</p>
+                      <h3 className="font-bold text-blue-900 text-sm">ATS Optimization</h3>
+                      <p className="text-xs text-slate-500">Applicant Tracking System compatibility</p>
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                    <div className="p-5 bg-white flex items-center gap-5">
-                      <ScoreRing score={data.sections.ats_analysis.score} size={72} strokeWidth={6} />
+                  <div className="rounded-xl border border-slate-200 overflow-hidden">
+                    <div className="p-6 bg-white flex items-center gap-6">
+                      <ScoreRing score={data.sections.ats_analysis.score} size={80} strokeWidth={7} />
                       <div className="flex-1">
-                        <p className="font-bold text-slate-900 text-sm mb-1">ATS Compatibility Score</p>
-                        <p className="text-xs text-slate-500 leading-relaxed mb-3">
+                        <p className="font-bold text-blue-900 text-sm mb-1">ATS Compatibility Score</p>
+                        <p className="text-sm text-slate-500 leading-relaxed mb-3">
                           {data.sections.ats_analysis.score >= 75
-                            ? "Good — most ATS systems will parse this correctly."
+                            ? "Good — most systems will parse your resume correctly."
                             : data.sections.ats_analysis.score >= 50
-                            ? "Needs work — some ATS issues may filter you out."
+                            ? "Needs work — some systems may filter you out."
                             : "Critical — likely being filtered by ATS systems."}
                         </p>
                         <ScoreBar score={data.sections.ats_analysis.score} label="Parsability" />
@@ -660,37 +654,37 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                     </div>
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    <div className="rounded-xl border border-red-100 overflow-hidden shadow-sm">
-                      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-red-100 bg-red-50/60">
-                        <div className="h-6 w-6 rounded-lg bg-red-100 flex items-center justify-center">
-                          <AlertCircle size={12} className="text-red-500" />
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="rounded-xl border border-slate-200 overflow-hidden">
+                      <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
+                        <div className="h-6 w-6 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                          <AlertCircle size={12} className="text-[#EA580C]" />
                         </div>
-                        <span className="text-[10px] font-bold text-red-700 uppercase tracking-wider">Issues Found</span>
-                        <span className="ml-auto text-[10px] font-bold text-red-600 bg-red-100 px-1.5 py-0.5 rounded-full">{data.sections.ats_analysis.issues.length}</span>
+                        <span className="text-xs font-bold text-slate-700">Issues Found</span>
+                        <span className="ml-auto text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{data.sections.ats_analysis.issues.length}</span>
                       </div>
-                      <div className="p-4 bg-white space-y-2">
+                      <div className="p-5 bg-white space-y-2.5">
                         {data.sections.ats_analysis.issues.map((issue, i) => (
-                          <div key={i} className="flex items-start gap-2">
-                            <AlertCircle size={11} className="text-red-400 shrink-0 mt-0.5" />
-                            <p className="text-xs text-slate-700 leading-relaxed">{issue}</p>
+                          <div key={i} className="flex items-start gap-2.5">
+                            <ChevronRight size={12} className="text-[#EA580C] shrink-0 mt-0.5" />
+                            <p className="text-sm text-slate-600 leading-relaxed">{issue}</p>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-green-100 overflow-hidden shadow-sm">
-                      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-green-100 bg-green-50/60">
-                        <div className="h-6 w-6 rounded-lg bg-green-100 flex items-center justify-center">
-                          <CheckCircle2 size={12} className="text-green-600" />
+                    <div className="rounded-xl border border-slate-200 overflow-hidden">
+                      <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
+                        <div className="h-6 w-6 rounded-lg bg-[#EFF6FF] flex items-center justify-center">
+                          <CheckCircle2 size={12} className="text-[#1E3A8A]" />
                         </div>
-                        <span className="text-[10px] font-bold text-green-700 uppercase tracking-wider">Recommendations</span>
+                        <span className="text-xs font-bold text-slate-700">Recommendations</span>
                       </div>
-                      <div className="p-4 bg-white space-y-2">
+                      <div className="p-5 bg-white space-y-2.5">
                         {data.sections.ats_analysis.recommendations.map((rec, i) => (
-                          <div key={i} className="flex items-start gap-2">
-                            <CheckCircle2 size={11} className="text-green-500 shrink-0 mt-0.5" />
-                            <p className="text-xs text-slate-700 leading-relaxed">{rec}</p>
+                          <div key={i} className="flex items-start gap-2.5">
+                            <ChevronRight size={12} className="text-[#1E3A8A] shrink-0 mt-0.5" />
+                            <p className="text-sm text-slate-600 leading-relaxed">{rec}</p>
                           </div>
                         ))}
                       </div>
@@ -702,22 +696,22 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
               {/* JD FIT */}
               {activeTab === "jd" && data.jd_alignment && (
                 <>
-                  <div className="flex items-center gap-2">
-                    <div className="h-7 w-7 rounded-lg bg-[#fff3ed] flex items-center justify-center">
-                      <Target size={13} className="text-[#ff6b35]" />
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="h-8 w-8 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                      <Target size={15} className="text-[#EA580C]" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-sm">Job Description Alignment</h3>
-                      <p className="text-xs text-slate-500">How well your resume matches the provided JD</p>
+                      <h3 className="font-bold text-blue-900 text-sm">Job Description Alignment</h3>
+                      <p className="text-xs text-slate-500">How well your resume matches the target JD</p>
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                    <div className="p-5 bg-white flex items-center gap-5">
-                      <ScoreRing score={data.jd_alignment.match_score} size={72} strokeWidth={6} />
+                  <div className="rounded-xl border border-slate-200 overflow-hidden">
+                    <div className="p-6 bg-white flex items-center gap-6">
+                      <ScoreRing score={data.jd_alignment.match_score} size={80} strokeWidth={7} />
                       <div className="flex-1">
-                        <p className="font-bold text-slate-900 text-sm mb-1">JD Match Score</p>
-                        <p className="text-xs text-slate-500 leading-relaxed mb-3">
+                        <p className="font-bold text-blue-900 text-sm mb-1">JD Match Score</p>
+                        <p className="text-sm text-slate-500 leading-relaxed mb-3">
                           {data.jd_alignment.match_score >= 75 ? "Strong match — you cover most requirements."
                             : data.jd_alignment.match_score >= 50 ? "Partial match — tailor your resume further."
                             : "Low match — significant gaps vs this JD."}
@@ -727,56 +721,56 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                     </div>
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    <div className="rounded-xl border border-green-100 overflow-hidden shadow-sm">
-                      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-green-100 bg-green-50/60">
-                        <div className="h-6 w-6 rounded-lg bg-green-100 flex items-center justify-center">
-                          <CheckCircle2 size={12} className="text-green-600" />
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="rounded-xl border border-slate-200 overflow-hidden">
+                      <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
+                        <div className="h-6 w-6 rounded-lg bg-[#EFF6FF] flex items-center justify-center">
+                          <CheckCircle2 size={12} className="text-[#1E3A8A]" />
                         </div>
-                        <span className="text-[10px] font-bold text-green-700 uppercase tracking-wider">Matched</span>
-                        <span className="ml-auto text-[10px] font-bold text-green-700 bg-green-100 px-1.5 py-0.5 rounded-full">{data.jd_alignment.matched_requirements.length}</span>
+                        <span className="text-xs font-bold text-slate-700">Matched Requirements</span>
+                        <span className="ml-auto text-[10px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-2 py-0.5 rounded-full">{data.jd_alignment.matched_requirements.length}</span>
                       </div>
-                      <div className="p-4 bg-white space-y-2">
+                      <div className="p-5 bg-white space-y-2.5">
                         {data.jd_alignment.matched_requirements.map((r, i) => (
-                          <div key={i} className="flex items-start gap-2">
-                            <CheckCircle2 size={11} className="text-green-500 shrink-0 mt-0.5" />
-                            <p className="text-xs text-slate-700 leading-relaxed">{r}</p>
+                          <div key={i} className="flex items-start gap-2.5">
+                            <CheckCircle2 size={11} className="text-[#1E3A8A] shrink-0 mt-0.5" />
+                            <p className="text-sm text-slate-600 leading-relaxed">{r}</p>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-red-100 overflow-hidden shadow-sm">
-                      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-red-100 bg-red-50/60">
-                        <div className="h-6 w-6 rounded-lg bg-red-100 flex items-center justify-center">
-                          <AlertCircle size={12} className="text-red-500" />
+                    <div className="rounded-xl border border-slate-200 overflow-hidden">
+                      <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
+                        <div className="h-6 w-6 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                          <AlertCircle size={12} className="text-[#EA580C]" />
                         </div>
-                        <span className="text-[10px] font-bold text-red-700 uppercase tracking-wider">Missing</span>
-                        <span className="ml-auto text-[10px] font-bold text-red-600 bg-red-100 px-1.5 py-0.5 rounded-full">{data.jd_alignment.missing_requirements.length}</span>
+                        <span className="text-xs font-bold text-slate-700">Missing Requirements</span>
+                        <span className="ml-auto text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{data.jd_alignment.missing_requirements.length}</span>
                       </div>
-                      <div className="p-4 bg-white space-y-2">
+                      <div className="p-5 bg-white space-y-2.5">
                         {data.jd_alignment.missing_requirements.map((r, i) => (
-                          <div key={i} className="flex items-start gap-2">
-                            <AlertCircle size={11} className="text-red-400 shrink-0 mt-0.5" />
-                            <p className="text-xs text-slate-700 leading-relaxed">{r}</p>
+                          <div key={i} className="flex items-start gap-2.5">
+                            <AlertCircle size={11} className="text-[#EA580C] shrink-0 mt-0.5" />
+                            <p className="text-sm text-slate-600 leading-relaxed">{r}</p>
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-[#ff6b35]/20 overflow-hidden shadow-sm">
-                    <div className="flex items-center gap-2.5 px-4 py-3 border-b border-[#ff6b35]/15 bg-[#fff3ed]/60">
-                      <div className="h-6 w-6 rounded-lg bg-[#ff6b35]/15 flex items-center justify-center">
-                        <Sparkles size={12} className="text-[#ff6b35]" />
+                  <div className="rounded-xl border border-slate-200 overflow-hidden">
+                    <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
+                      <div className="h-6 w-6 rounded-lg bg-[#FFF7ED] flex items-center justify-center">
+                        <Sparkles size={12} className="text-[#EA580C]" />
                       </div>
-                      <span className="text-[10px] font-bold text-[#ff6b35] uppercase tracking-wider">Tailoring Tips</span>
+                      <span className="text-xs font-bold text-slate-700">Tailoring Tips</span>
                     </div>
-                    <div className="p-4 bg-white space-y-2">
+                    <div className="p-5 bg-white space-y-2.5">
                       {data.jd_alignment.tailoring_tips.map((tip, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <ChevronRight size={11} className="text-[#ff6b35] shrink-0 mt-0.5" />
-                          <p className="text-xs text-slate-700 leading-relaxed">{tip}</p>
+                        <div key={i} className="flex items-start gap-2.5">
+                          <ChevronRight size={12} className="text-[#EA580C] shrink-0 mt-0.5" />
+                          <p className="text-sm text-slate-600 leading-relaxed">{tip}</p>
                         </div>
                       ))}
                     </div>
@@ -820,12 +814,14 @@ export default function ResumeImprovementPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f7f5]">
+    <div className="min-h-screen bg-transparent">
 
       {/* Navbar */}
-      <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
-          <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
+      <header className="clean-nav sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
+          <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-brand transition-colors">
+            SkillBridge
+          </Link>
           <div className="flex items-center gap-6">
             <Link href="/onboard" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all hover:shadow-lg text-xs">
               Full Analysis
@@ -834,7 +830,7 @@ export default function ResumeImprovementPage() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 lg:px-6 py-8">
+      <main className="max-w-6xl mx-auto px-4 lg:px-6 py-12">
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-6">
@@ -843,11 +839,11 @@ export default function ResumeImprovementPage() {
           <span className="text-slate-600 font-medium">Resume Improvement</span>
         </div>
 
-        <div className="grid lg:grid-cols-[360px_1fr] gap-5 items-start">
+        <div className="grid lg:grid-cols-[360px_1fr] gap-5 items-stretch">
 
           {/* LEFT — sticky upload */}
           <div className="lg:sticky lg:top-20">
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <div className="clean-card overflow-hidden">
               <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
               <div className="p-6">
                 <UploadPanel onAnalyze={handleAnalyze} isLoading={isLoading} />
@@ -856,14 +852,14 @@ export default function ResumeImprovementPage() {
           </div>
 
           {/* RIGHT — results */}
-          <div className="min-h-150">
+          <div className="flex flex-col">
             {isLoading ? (
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+              <div className="clean-card overflow-hidden">
                 <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
                 <div className="p-6"><LoadingState /></div>
               </div>
             ) : error ? (
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+              <div className="clean-card overflow-hidden">
                 <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
                 <div className="p-6 flex flex-col items-center justify-center min-h-100 gap-4">
                   <div className="h-14 w-14 rounded-2xl bg-red-50 border border-red-100 flex items-center justify-center">
@@ -884,9 +880,9 @@ export default function ResumeImprovementPage() {
             ) : result ? (
               <ResultsPanel data={result} onReset={() => setResult(null)} />
             ) : (
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+              <div className="clean-card overflow-hidden flex-1 flex flex-col">
                 <div className="h-px bg-linear-to-r from-[#ff6b35]/30 via-transparent to-transparent" />
-                <div className="p-6 flex flex-col items-center justify-center min-h-125 gap-5 text-center">
+                <div className="p-6 flex flex-col items-center justify-center flex-1 gap-5 text-center">
                   <div className="h-20 w-20 rounded-2xl bg-[#fff3ed] border border-[#ff6b35]/15 flex items-center justify-center">
                     <FileText size={32} className="text-[#ff6b35]/50" />
                   </div>
