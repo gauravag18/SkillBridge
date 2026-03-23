@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { generateNextInterviewQuestion, generateFinalInterviewReport } from "@/app/actions/interview";
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// Types 
 interface InterviewQuestion {
   question: string;
   question_type: string;
@@ -39,24 +39,26 @@ interface FinalReport {
   summary: string;
 }
 
-// ── Sub-components ─────────────────────────────────────────────────────────
+// Sub-components 
 
 function Navbar({ uuid }: { uuid: string }) {
   return (
     <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
-      <div className="max-w-4xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
-        <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
-        <div className="flex items-center gap-4">
+      <div className="max-w-4xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-[#ff6b35] transition-colors">
+          SkillBridge
+        </Link>
+        <div className="flex items-center gap-3">
           {uuid && (
             <Link
               href={`/dashboard?uuid=${uuid}`}
-              className="text-slate-600 hover:text-[#ff6b35] font-medium transition-colors text-sm hidden sm:block"
+              className="text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors hidden sm:block"
             >
               Dashboard
             </Link>
           )}
-          <Link href="/" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg hover:shadow-lg transition-all text-xs">
-            Home
+          <Link href="/onboard" className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg hover:shadow-lg hover:bg-[#e55a28] transition-all text-xs">
+            Full Analysis
           </Link>
         </div>
       </div>
@@ -89,8 +91,7 @@ function ScoreRing({ score, max = 10, size = 64 }: { score: number; max?: number
   );
 }
 
-// ── Main Page ───────────────────────────────────────────────────────────────
-
+//Main Page
 export default function MockInterviewPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -119,7 +120,7 @@ export default function MockInterviewPage() {
   const recognitionRef = useRef<any>(null);
   const hasLoadedFirst = useRef(false);
 
-  // ── Init speech recognition ───────────────────────────────────────────
+  // Init speech recognition 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -159,7 +160,7 @@ export default function MockInterviewPage() {
     };
   }, []);
 
-  // ── Load first question on mount ──────────────────────────────────────
+  //  Load first question on mount
   useEffect(() => {
     if (!hasLoadedFirst.current && uuid) {
       hasLoadedFirst.current = true;
@@ -167,7 +168,7 @@ export default function MockInterviewPage() {
     }
   }, [uuid]);
 
-  // ── Load a question ───────────────────────────────────────────────────
+  //  Load a question
   const loadQuestion = useCallback(async (index: number, prevQuestions: InterviewQuestion[]) => {
     setIsLoadingQuestion(true);
     setTranscript("");
@@ -197,7 +198,7 @@ export default function MockInterviewPage() {
     }
   }, [uuid, role, jobDescription]);
 
-  // ── TTS ───────────────────────────────────────────────────────────────
+  //speech
   const speakText = useCallback((text: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
 
@@ -214,7 +215,7 @@ export default function MockInterviewPage() {
     window.speechSynthesis.speak(utterance);
   }, []);
 
-  // ── Toggle mic ────────────────────────────────────────────────────────
+  // Toggle mic 
   const toggleListening = useCallback(() => {
     if (!recognitionRef.current) return;
 
@@ -247,7 +248,7 @@ export default function MockInterviewPage() {
     }
   }, [isListening, transcript, allAnswers, currentIndex, questions]);
 
-  // ── Skip question ─────────────────────────────────────────────────────
+  //  Skip question 
   const skipQuestion = useCallback(() => {
     if (isListening) {
       try { recognitionRef.current?.stop(); } catch {}
@@ -266,13 +267,13 @@ export default function MockInterviewPage() {
     }
   }, [isListening, allAnswers, currentIndex, questions]);
 
-  // ── Replay question ───────────────────────────────────────────────────
+  // Replay question
   const replayQuestion = useCallback(() => {
     const current = questions[currentIndex];
     if (current) speakText(current.question);
   }, [questions, currentIndex, speakText]);
 
-  // ── Finish ────────────────────────────────────────────────────────────
+  // Finish
   const finishInterview = useCallback(async (answers: string[]) => {
     setIsGeneratingReport(true);
     window.speechSynthesis?.cancel();
@@ -297,7 +298,7 @@ export default function MockInterviewPage() {
     }
   }, [questions, uuid, role, jobDescription]);
 
-  // ── Restart ───────────────────────────────────────────────────────────
+  //  Restart 
   const restart = () => {
     window.speechSynthesis?.cancel();
     setQuestions([]);
@@ -318,7 +319,7 @@ export default function MockInterviewPage() {
   const currentQuestion = questions[currentIndex];
   const progress = Math.round(((currentIndex) / TOTAL_QUESTIONS) * 100);
 
-  // ── REPORT VIEW ───────────────────────────────────────────────────────
+  //  REPORT VIEW 
   if (finalReport) {
     const scoreColor = (s: number, max = 10) => {
       const pct = (s / max) * 100;
@@ -515,7 +516,7 @@ export default function MockInterviewPage() {
     );
   }
 
-  // ── GENERATING REPORT ─────────────────────────────────────────────────
+  //  GENERATING REPORT
   if (isGeneratingReport) {
     return (
       <div className="min-h-screen bg-[#f8f7f5]">
@@ -536,7 +537,7 @@ export default function MockInterviewPage() {
     );
   }
 
-  // ── INTERVIEW VIEW ────────────────────────────────────────────────────
+  //  INTERVIEW VIEW 
   return (
     <div className="min-h-screen bg-[#f8f7f5]">
       <Navbar uuid={uuid} />

@@ -334,29 +334,31 @@ export default function Home() {
               </p>
 
               {/* THREE CTAs */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-1 flex-wrap">
+              <div className="flex flex-col gap-3 pt-1 sm:max-w-md">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <Link
+                    href="/resume-improve"
+                    className="group inline-flex items-center justify-center px-4 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
+                  >
+                    <FileEdit size={15} className="mr-2 shrink-0" />
+                    Improve Resume
+                  </Link>
+
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="group inline-flex items-center justify-center px-4 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
+                  >
+                    <Mic size={15} className="mr-2 shrink-0" />
+                    Mock Interview
+                  </button>
+                </div>
+
                 <Link
                   href="/onboard"
-                  className="group inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                  className="group w-full inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-bold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 >
                   Start Your Analysis
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
-                </Link>
-
-                <button
-                  onClick={() => setShowModal(true)}
-                  className="group inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
-                >
-                  <Mic size={15} className="mr-2" />
-                  Mock Interview
-                </button>
-
-                <Link
-                  href="/resume-improve"
-                  className="group inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
-                >
-                  <FileEdit size={15} className="mr-2" />
-                  Improve Resume
                 </Link>
               </div>
 
