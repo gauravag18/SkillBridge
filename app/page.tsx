@@ -2,9 +2,10 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight, Upload, Brain, Calendar,
-  CheckCircle2, TrendingUp, Award, FileEdit,
+  CheckCircle2, TrendingUp, Award, FileEdit, Mic, X, ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/ui/marquee";
@@ -79,7 +80,7 @@ const ReviewCard = ({
 }) => (
   <figure className={cn(
     "relative h-full w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
-    "border-slate-200 bg-white hover:border-border-strong hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+    "border-slate-200 bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
   )}>
     <div className="flex flex-row items-center gap-2">
       <img className="rounded-full" width="32" height="32" alt={name} src={img} />
@@ -131,6 +132,146 @@ const Icons = {
   ),
 };
 
+// Mock Interview Setup Modal
+function MockInterviewModal({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
+  const [role, setRole] = useState("");
+  const [customRole, setCustomRole] = useState("");
+  const [jd, setJd] = useState("");
+  const [jdOpen, setJdOpen] = useState(false);
+
+  const roles = [
+    "Frontend Developer",
+    "Backend Developer",
+    "Full Stack Developer",
+    "Software Engineer",
+    "Data Scientist",
+    "DevOps Engineer",
+    "Product Manager",
+    "Other",
+  ];
+
+  const handleStart = () => {
+    const finalRole = role === "Other" ? customRole.trim() : role;
+    if (!finalRole) return;
+    const uuid = localStorage.getItem("skillbridge_uuid") || crypto.randomUUID();
+    localStorage.setItem("skillbridge_uuid", uuid);
+    const params = new URLSearchParams({ uuid, role: finalRole });
+    if (jd.trim()) params.set("jobDescription", jd.trim());
+    router.push(`/mock-interview?${params.toString()}`);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <div className="relative bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden animate-fade-in">
+        <div className="h-0.5 bg-gradient-to-r from-[#ff6b35] via-[#ff8a5c] to-transparent" />
+
+        {/* Header */}
+        <div className="p-6 border-b border-slate-100">
+          <div className="flex items-center justify-between mb-1">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#fff3ed] border border-[#ff6b35]/20 rounded-full text-[10px] font-bold text-[#ff6b35] uppercase tracking-wide">
+              AI Mock Interview
+            </div>
+            <button
+              onClick={onClose}
+              className="h-7 w-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
+            >
+              <X size={13} className="text-slate-500" />
+            </button>
+          </div>
+          <h2 className="text-lg font-black text-slate-900 mt-3">Set Up Your Interview</h2>
+          <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+            The AI will ask you questions by voice. Answer by speaking — get a detailed report at the end.
+          </p>
+        </div>
+
+        {/* Body */}
+        <div className="p-6 space-y-4">
+          {/* Role select */}
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wide">Target Role</label>
+            <div className="relative">
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl bg-white text-slate-800 focus:outline-none focus:border-[#ff6b35] appearance-none cursor-pointer"
+              >
+                <option value="">Select a role...</option>
+                {roles.map((r) => (
+                  <option key={r} value={r}>{r}</option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            </div>
+            {role === "Other" && (
+              <input
+                type="text"
+                placeholder="e.g. Machine Learning Engineer"
+                value={customRole}
+                onChange={(e) => setCustomRole(e.target.value)}
+                className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-[#ff6b35] mt-2"
+              />
+            )}
+          </div>
+
+          {/* JD toggle */}
+          <div>
+            <button
+              onClick={() => setJdOpen((p) => !p)}
+              className="w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:border-[#ff6b35]/40 transition-all"
+            >
+              <span className="text-xs">Add Job Description <span className="text-slate-400 font-normal">(optional — improves accuracy)</span></span>
+              <ChevronDown size={13} className={`text-slate-400 transition-transform ${jdOpen ? "rotate-180" : ""}`} />
+            </button>
+            {jdOpen && (
+              <textarea
+                value={jd}
+                onChange={(e) => setJd(e.target.value)}
+                placeholder="Paste the job description here..."
+                rows={4}
+                className="w-full mt-2 px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-[#ff6b35] resize-none text-slate-700 placeholder:text-slate-400"
+              />
+            )}
+          </div>
+
+          {/* What to expect */}
+          <div className="p-3.5 bg-[#fffaf7] border border-[#ff6b35]/15 rounded-xl">
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">What to expect</p>
+            <div className="space-y-1.5">
+              {[
+                "9 questions: intro + role-specific mix",
+                "AI speaks each question aloud",
+                "Tap mic to record your answer",
+                "Detailed report with scores & tips",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-2">
+                  <CheckCircle2 size={11} className="text-[#ff6b35] shrink-0" />
+                  <span className="text-xs text-slate-600">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button
+            disabled={!role || (role === "Other" && !customRole.trim())}
+            onClick={handleStart}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-[#ff6b35] text-white font-semibold rounded-xl text-sm hover:bg-[#e55a28] hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Start Interview <ArrowRight size={14} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const div1Ref = useRef<HTMLDivElement>(null);
@@ -141,23 +282,23 @@ export default function Home() {
   const div6Ref = useRef<HTMLDivElement>(null);
   const div7Ref = useRef<HTMLDivElement>(null);
   const centerRef = useRef<HTMLDivElement>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" && !localStorage.getItem("skillbridge_uuid")) {
-      const newUuid = crypto.randomUUID();
-      localStorage.setItem("skillbridge_uuid", newUuid);
+      localStorage.setItem("skillbridge_uuid", crypto.randomUUID());
     }
   }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
 
-      {/*Navbar*/}
-      <header className="clean-nav sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-brand transition-colors">
-            SkillBridge
-          </Link>
+      {showModal && <MockInterviewModal onClose={() => setShowModal(false)} />}
+
+      {/* Navbar */}
+      <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
+          <span className="font-bold text-lg tracking-tight text-slate-900">SkillBridge</span>
           <div className="flex items-center gap-6">
             <nav className="hidden md:flex items-center gap-6">
               <Link href="#features" className="text-slate-600 hover:text-[#ff6b35] font-medium transition-colors text-sm">Features</Link>
@@ -171,7 +312,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/*Hero */}
+      {/* Hero */}
       <section className="pt-12 pb-16 md:pt-16 md:pb-20">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="grid lg:grid-cols-2 gap-10 items-center">
@@ -183,18 +324,17 @@ export default function Home() {
                 AI Powered Career Intelligence
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-slate-900">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] text-slate-900">
                 Bridge the Gap Between
-                <span className="block text-brand mt-1 pb-1">Skills & Success</span>
+                <span className="block text-[#ff6b35] mt-1">Skills & Success</span>
               </h1>
 
               <p className="text-base text-slate-600 leading-relaxed max-w-xl">
                 Transform your career trajectory with AI driven resume analysis, personalized skill gap identification, and actionable 30 day roadmaps designed for the competitive tech landscape.
               </p>
 
-              {/* TWO CTAs */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-1">
-                {/* Primary */}
+              {/* THREE CTAs */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-1 flex-wrap">
                 <Link
                   href="/onboard"
                   className="group inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
@@ -203,23 +343,29 @@ export default function Home() {
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
                 </Link>
 
-                {/* Secondary */}
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="group inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
+                >
+                  <Mic size={15} className="mr-2" />
+                  Mock Interview
+                </button>
+
                 <Link
                   href="/resume-improve"
                   className="group inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
                 >
                   <FileEdit size={15} className="mr-2" />
-                  Improve My Resume
+                  Improve Resume
                 </Link>
               </div>
-
 
             </div>
 
             {/* Right — Animated Beam */}
-            <div className="relative flex items-center justify-center lg:justify-end" ref={containerRef}>
-              <div className="relative h-90 w-full max-w-lg overflow-hidden clean-card p-8">
-                <Circle ref={centerRef} className="size-16 border-[#ff6b35] bg-[#fff3ed] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xl hover:scale-110 transition-transform">
+            <div className="relative flex items-center justify-center" ref={containerRef}>
+              <div className="relative h-90 w-full max-w-lg overflow-hidden rounded-xl bg-[#fffaf7] border border-slate-200 p-8">
+                <Circle ref={centerRef} className="size-16 border-[#ff6b35] bg-[#fff3ed] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-xl">
                   <svg viewBox="0 0 24 24" fill="none" stroke="#ff6b35" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
@@ -246,9 +392,9 @@ export default function Home() {
       </section>
 
       {/* Stats */}
-      <section className="py-12 border-y border-white/40 clean-panel">
+      <section className="py-10 border-y border-slate-200 bg-[#fffcfa]">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
-          <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-200/50">
+          <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-200">
             {[
               { number: "10,000+", label: "Resumes Analyzed" },
               { number: "94%", label: "Success Rate" },
@@ -263,58 +409,75 @@ export default function Home() {
         </div>
       </section>
 
-      {/*Features*/}
+      {/* Features */}
       <section id="features" className="py-16">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
-          <div className="max-w-2xl mx-auto text-center mb-14">
-            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Precision Career Engineering</h2>
-            <p className="text-lg text-slate-600">
+          <div className="max-w-2xl mx-auto text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">Precision Career Engineering</h2>
+            <p className="text-base text-slate-600">
               Advanced AI technology meets career strategy to deliver actionable insights that accelerate your professional growth.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { icon: Upload, title: "Intelligent Resume Analysis", desc: "Advanced AI evaluates your resume against current industry standards and job requirements from top tier companies." },
-              { icon: Brain, title: "Skill Gap Identification", desc: "Pinpoint exact competency gaps in technical skills, system design, algorithms, and emerging technologies with actionable recommendations." },
-              { icon: Calendar, title: "Personalized Roadmap", desc: "Receive a structured 30 day action plan with daily objectives, curated resources, and progress tracking mechanisms." },
+              { icon: Upload,    title: "Resume Analysis",       desc: "Advanced AI evaluates your resume against current industry standards and top-tier job requirements." },
+              { icon: Brain,     title: "Skill Gap Detection",   desc: "Pinpoint exact competency gaps in technical skills, system design, and emerging technologies." },
+              { icon: Calendar,  title: "30-Day Roadmap",        desc: "Receive a structured action plan with daily objectives, curated resources, and progress tracking." },
+              { icon: Mic,       title: "Mock Interview",        desc: "Practice with an AI interviewer that speaks questions, listens to your answers, and scores your performance." },
             ].map((item, i) => (
-              <div key={i} className="group clean-card p-6">
-                <div className="w-14 h-14 rounded-xl bg-[#fff3ed] flex items-center justify-center mb-5 group-hover:bg-[#ffebe1] transition-colors shadow-sm">
-                  <item.icon className="text-[#ff6b35]" size={28} />
+              <div key={i} className="group bg-white rounded-xl p-6 border border-slate-200 hover:border-[#ff6b35]/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="w-12 h-12 rounded-lg bg-[#fff3ed] flex items-center justify-center mb-4 group-hover:bg-[#ffebe1] transition-colors">
+                  <item.icon className="text-[#ff6b35]" size={22} />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
-                <p className="text-slate-600 leading-relaxed text-sm">{item.desc}</p>
+                <h3 className="text-base font-bold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-slate-600 leading-relaxed text-xs">{item.desc}</p>
               </div>
             ))}
           </div>
 
-          {/* Resume improvement callout */}
-          <div className="mt-8 p-5 bg-white border-2 border-dashed border-[#ff6b35]/25 rounded-2xl flex flex-col sm:flex-row items-center gap-4">
-            <div className="h-11 w-11 rounded-xl bg-[#fff3ed] flex items-center justify-center shrink-0">
-              <FileEdit size={20} className="text-[#ff6b35]" />
+          {/* Callout strip */}
+          <div className="mt-8 grid sm:grid-cols-2 gap-4">
+            <div className="p-5 bg-white border-2 border-dashed border-[#ff6b35]/25 rounded-2xl flex items-center gap-4">
+              <div className="h-10 w-10 rounded-xl bg-[#fff3ed] flex items-center justify-center shrink-0">
+                <Mic size={18} className="text-[#ff6b35]" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-slate-900 text-sm mb-0.5">Practice with AI interviewer</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">Voice-based interview, real-time scoring, actionable feedback report.</p>
+              </div>
+              <button
+                onClick={() => setShowModal(true)}
+                className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-xl text-xs hover:bg-[#e55a28] hover:shadow-lg transition-all"
+              >
+                Try Now <ArrowRight size={12} />
+              </button>
             </div>
-            <div className="flex-1 text-center sm:text-left">
-              <h3 className="font-bold text-slate-900 text-sm mb-0.5">Just want to improve your resume?</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Upload your resume and get instant bullet rewrites, structure feedback, ATS optimization, and keyword analysis.
-              </p>
+
+            <div className="p-5 bg-white border-2 border-dashed border-slate-200 rounded-2xl flex items-center gap-4">
+              <div className="h-10 w-10 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
+                <FileEdit size={18} className="text-slate-400" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-slate-900 text-sm mb-0.5">Just want to improve your resume?</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">Bullet rewrites, ATS fixes, keyword analysis — instantly free.</p>
+              </div>
+              <Link
+                href="/resume-improve"
+                className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white font-semibold rounded-xl text-xs hover:bg-slate-700 transition-all"
+              >
+                Try Free <ArrowRight size={12} />
+              </Link>
             </div>
-            <Link
-              href="/resume-improve"
-              className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-[#ff6b35] text-white font-semibold rounded-xl text-sm hover:bg-[#e55a28] hover:shadow-lg transition-all"
-            >
-              Try It Free <ArrowRight size={14} />
-            </Link>
           </div>
         </div>
       </section>
 
-      {/* Testimonials*/}
-      <section id="testimonials" className="py-20 clean-panel border-y border-white/40">
+      {/* Testimonials */}
+      <section id="testimonials" className="py-16 bg-[#fffcfa]">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-slate-900 mb-4">Trusted by Professionals</h2>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">Trusted by Professionals</h2>
             <p className="text-base text-slate-600">Join thousands who've accelerated their tech careers with SkillBridge</p>
           </div>
 
@@ -325,15 +488,15 @@ export default function Home() {
               <Marquee pauseOnHover vertical className="[--duration:26s]">{thirdRow.map((r) => <ReviewCard key={r.username} {...r} />)}</Marquee>
               <Marquee reverse pauseOnHover vertical className="[--duration:30s]">{fourthRow.map((r) => <ReviewCard key={r.username} {...r} />)}</Marquee>
             </div>
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[rgba(255,255,255,0.5)] to-transparent" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[rgba(255,255,255,0.5)] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-linear-to-r from-[rgba(255,255,255,0.5)] to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-linear-to-l from-[rgba(255,255,255,0.5)] to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#fffcfa] to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#fffcfa] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#fffcfa] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#fffcfa] to-transparent" />
           </div>
         </div>
       </section>
 
-      {/* Why SkillBridge  */}
+      {/* Why SkillBridge */}
       <section id="process" className="py-16">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -357,29 +520,32 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 flex-wrap">
                 <Link href="/onboard" className="group inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                   Start Your Analysis
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
                 </Link>
-                <Link href="/resume-improve" className="group inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm">
-                  <FileEdit size={14} className="mr-2" />
-                  Improve Resume
-                </Link>
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="group inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
+                >
+                  <Mic size={14} className="mr-2" />
+                  Mock Interview
+                </button>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: TrendingUp, title: "Career Growth", value: "3x faster" },
-                { icon: Award, title: "Success Rate", value: "94%" },
-                { icon: Brain, title: "AI Accuracy", value: "99.2%" },
-                { icon: CheckCircle2, title: "Satisfaction", value: "4.9/5" },
+                { icon: TrendingUp,  title: "Career Growth",  value: "3x faster" },
+                { icon: Award,       title: "Success Rate",   value: "94%" },
+                { icon: Brain,       title: "AI Accuracy",    value: "99.2%" },
+                { icon: CheckCircle2, title: "Satisfaction",  value: "4.9/5" },
               ].map((item, i) => (
-                <div key={i} className="clean-card p-6 flex flex-col items-center justify-center text-center">
-                  <item.icon className="text-[#ff6b35] mb-3" size={28} />
-                  <div className="text-3xl font-black text-[#ff6b35] mb-1">{item.value}</div>
-                  <div className="text-sm font-semibold text-slate-600">{item.title}</div>
+                <div key={i} className="bg-white rounded-xl p-5 border border-slate-200 hover:border-[#ff6b35]/30 hover:shadow-md transition-all">
+                  <item.icon className="text-[#ff6b35] mb-2" size={22} />
+                  <div className="text-2xl font-bold text-[#ff6b35] mb-0.5">{item.value}</div>
+                  <div className="text-xs text-slate-600">{item.title}</div>
                 </div>
               ))}
             </div>
@@ -387,10 +553,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/*  Footer  */}
-      <footer className="py-10 border-t border-white/30 clean-panel">
+      {/* Footer */}
+      <footer className="py-10 border-t border-slate-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
-          <div className="border-t border-slate-200/50 pt-6 text-center text-xs font-medium text-slate-500">
+          <div className="border-t border-slate-200 pt-6 text-center text-xs text-slate-500">
             © {new Date().getFullYear()} SkillBridge. All rights reserved.
           </div>
         </div>
