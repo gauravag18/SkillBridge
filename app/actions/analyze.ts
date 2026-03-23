@@ -83,7 +83,7 @@ ${jobDescription ? "Since a job description is provided, weight the score heavil
 Prioritize:
 - Match to technical skills${jobDescription ? " and JD requirements" : ""}
 - Depth in DSA/problem-solving skills
-- System design knowledge according to Job description
+- System design knowledge if specified in JD
 - Cloud/DevOps exposure if specified in JD
 - Project quality and real-world impact over quantity of projects
 
@@ -101,9 +101,9 @@ Return ONLY valid JSON with this exact structure:
 Rules:
 - "jd_match_score": 0-100 score of how well resume matches the JD. Set to null if no JD was provided.
 - "jd_missing_skills": list of skills/requirements from JD that are missing in resume. Empty array if no JD.
-- strengths: 3-6 concise bullets
-- weaknesses: 3-6 concise bullets
-- skill_gaps: top 5-8 skills with gap percentage
+- strengths: 3-5 concise bullets
+- weaknesses: 3-5 concise bullets
+- skill_gaps: top 3-5 skills with gap percentage
 `;
 
   try {

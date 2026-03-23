@@ -33,7 +33,7 @@ const tierConfig = {
     icon: <AlertTriangle size={9} />,
   },
   high: {
-    bar: "#D97706",        // warm amber
+    bar: "#D97706",        
     bg: "bg-white",
     border: "border-amber-100",
     badge: "bg-amber-50 text-amber-700 border-amber-200",
@@ -44,7 +44,7 @@ const tierConfig = {
     icon: <TrendingUp size={9} />,
   },
   medium: {
-    bar: "#1E3A8A",        // navy blue (brand secondary)
+    bar: "#1E3A8A",        
     bg: "bg-white",
     border: "border-blue-100",
     badge: "bg-[#EFF6FF] text-[#1E3A8A] border-[#1E3A8A]/20",
@@ -129,7 +129,6 @@ function SectionHeader({ icon: Icon, title, badge }: { icon: any; title: string;
   );
 }
 
-/* ─── Score tier helper ────────────────────────────────────────────── */
 function getScoreTier(score: number | null) {
   if (score === null) return { label: null, color: "#94a3b8", bg: "transparent", border: "transparent" };
   if (score >= 80) return { label: "Interview Ready", color: "#1E3A8A", bg: "#EFF6FF", border: "#1E3A8A33" };

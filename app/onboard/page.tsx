@@ -22,17 +22,17 @@ const skillCategories = {
   "Programming Languages": {
     icon: "{ }",
     color: "blue",
-    skills: ["C++", "Java", "Python", "JavaScript", "TypeScript"],
+    skills: ["C", "C++", "Java", "Python", "JavaScript", "TypeScript", "Rust", "Go", "Kotlin", "Swift"],
   },
   "Frontend": {
     icon: "◻",
     color: "violet",
-    skills: ["HTML", "CSS", "Tailwind CSS", "React", "Next.js", "Redux"],
+    skills: ["HTML", "CSS", "Tailwind CSS", "React", "Next.js", "Redux", "Context-API", "Frame-Motion"],
   },
   "Backend": {
     icon: "⬡",
     color: "green",
-    skills: ["Node.js", "Express.js", "Spring Boot", "Django", "Flask"],
+    skills: ["Node.js", "Express.js", "Spring Boot", "Django", "Flask", "FastAPI", "NestJS"],
   },
   "Database": {
     icon: "⊞",
@@ -47,12 +47,12 @@ const skillCategories = {
   "Core CS": {
     icon: "◈",
     color: "rose",
-    skills: ["DSA", "OOPs", "Operating Systems", "DBMS", "System Design"],
+    skills: ["DSA", "OOPs", "Operating Systems", "Computer Networks", "DBMS", "System Design"],
   },
   "AI / Data": {
     icon: "◉",
     color: "purple",
-    skills: ["Machine Learning", "Deep Learning", "NLP", "TensorFlow", "PyTorch"],
+    skills: ["Machine Learning", "Deep Learning", "NLP", "TensorFlow", "PyTorch", "Computer Vision"],
   },
 };
 

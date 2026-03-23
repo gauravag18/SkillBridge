@@ -265,48 +265,6 @@ function UploadPanel({
           <>Analyze Resume <ArrowRight size={14} /></>
         )}
       </button>
-
-      {/* What you'll get
-      {!file && (
-        <div className="p-4 bg-[#fffcfa] border border-slate-100 rounded-xl">
-          <p className="text-[10px] font-bold text-slate-500 mb-2.5 uppercase tracking-wider">What you'll get</p>
-          <div className="space-y-2">
-            {[
-              "Bullet-by-bullet rewrites with stronger impact",
-              "Structure & formatting recommendations",
-              "ATS optimization score & fixes",
-              "Missing keywords & action verbs",
-              "Quick wins you can apply today",
-            ].map((item) => (
-              <div key={item} className="flex items-start gap-2">
-                <CheckCircle2 size={12} className="text-[#ff6b35] mt-0.5 shrink-0" />
-                <span className="text-xs text-slate-600">{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )} */}
-
-      {/* Cross-sell */}
-      {/* <div className="p-4 bg-[#1a1a1a] rounded-2xl text-white">
-        <div className="flex items-start gap-3">
-          <div className="h-8 w-8 rounded-lg bg-[#ff6b35]/20 flex items-center justify-center shrink-0">
-            <Award size={14} className="text-[#ff6b35]" />
-          </div>
-          <div>
-            <p className="font-bold text-sm mb-0.5">Want the full analysis?</p>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Get skill gaps, a 30-day roadmap, GitHub analysis & JD matching.
-            </p>
-            <Link
-              href="/onboard"
-              className="inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 bg-[#ff6b35] text-white text-xs font-semibold rounded-lg hover:bg-[#e55a28] transition-colors"
-            >
-              Start Full Analysis <ArrowRight size={11} />
-            </Link>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }
