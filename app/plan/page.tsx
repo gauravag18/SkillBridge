@@ -148,9 +148,9 @@ export default function PlanPage({
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-999 overflow-hidden">
           {Array.from({ length: 48 }).map((_, i) => {
-            const colors = ["#ff6b35","#ff8a5c","#ffd700","#22c55e","#3b82f6","#a855f7","#ec4899"];
+            const colors = ["#ff6b35", "#ff8a5c", "#ffd700", "#22c55e", "#3b82f6", "#a855f7", "#ec4899"];
             const color = colors[i % colors.length];
-            const shapes = ["rounded-sm","rounded-full",""];
+            const shapes = ["rounded-sm", "rounded-full", ""];
             const shape = shapes[i % 3];
             return (
               <div
@@ -184,19 +184,25 @@ export default function PlanPage({
       `}</style>
 
       {/* Navbar  */}
-      <header className="clean-nav sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-brand transition-colors">
+      <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
+
+          {/* LEFT */}
+          <Link
+            href="/"
+            className="font-bold text-lg tracking-tight text-slate-900 hover:text-[#ff6b35] transition-colors"
+          >
             SkillBridge
           </Link>
-          <div className="flex items-center gap-6">
-            <Link
-              href={`/dashboard?uuid=${uuid}`}
-              className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg hover:shadow-lg transition-all text-xs"
-            >
-              Dashboard
-            </Link>
-          </div>
+
+          {/* RIGHT → DASHBOARD */}
+          <Link
+            href={`/dashboard?uuid=${uuid}`}
+            className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all hover:shadow-lg text-xs"
+          >
+            Dashboard
+          </Link>
+
         </div>
       </header>
 
@@ -309,15 +315,14 @@ export default function PlanPage({
                   className="relative flex-1 group"
                 >
                   <div
-                    className={`h-8 rounded transition-all ${
-                      isCurrent
+                    className={`h-8 rounded transition-all ${isCurrent
                         ? "bg-[#ff6b35] shadow-md scale-y-110"
                         : isDone
-                        ? "bg-green-400"
-                        : isPartial
-                        ? "bg-orange-200"
-                        : "bg-slate-100 hover:bg-slate-200"
-                    }`}
+                          ? "bg-green-400"
+                          : isPartial
+                            ? "bg-orange-200"
+                            : "bg-slate-100 hover:bg-slate-200"
+                      }`}
                   />
                   {d % 5 === 0 && (
                     <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[9px] text-slate-400">{d}</span>
@@ -342,10 +347,10 @@ export default function PlanPage({
             </h2>
 
             {[
-              { label: "Week 1", days: [1,2,3,4,5,6,7] },
-              { label: "Week 2", days: [8,9,10,11,12,13,14] },
-              { label: "Week 3", days: [15,16,17,18,19,20,21] },
-              { label: "Week 4", days: [22,23,24,25,26,27,28,29,30] },
+              { label: "Week 1", days: [1, 2, 3, 4, 5, 6, 7] },
+              { label: "Week 2", days: [8, 9, 10, 11, 12, 13, 14] },
+              { label: "Week 3", days: [15, 16, 17, 18, 19, 20, 21] },
+              { label: "Week 4", days: [22, 23, 24, 25, 26, 27, 28, 29, 30] },
             ].map(({ label, days }) => (
               <div key={label} className="mb-4">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{label}</p>
@@ -362,8 +367,8 @@ export default function PlanPage({
                           ${isCurrent
                             ? "bg-[#ff6b35] text-white border-[#ff6b35] shadow-sm"
                             : isDone
-                            ? "bg-green-100 border-green-300 text-green-700"
-                            : "bg-slate-50 border-slate-200 text-slate-600 hover:border-[#ff6b35]/40 hover:bg-[#fff3ed]"
+                              ? "bg-green-100 border-green-300 text-green-700"
+                              : "bg-slate-50 border-slate-200 text-slate-600 hover:border-[#ff6b35]/40 hover:bg-[#fff3ed]"
                           }`}
                       >
                         {d}
@@ -470,9 +475,8 @@ export default function PlanPage({
                           <Circle size={18} className="text-slate-300 shrink-0 mt-0.5" />
                         )}
                         <span
-                          className={`text-sm leading-relaxed ${
-                            completed[i] ? "line-through text-slate-400" : "text-slate-700"
-                          }`}
+                          className={`text-sm leading-relaxed ${completed[i] ? "line-through text-slate-400" : "text-slate-700"
+                            }`}
                         >
                           {task}
                         </span>
@@ -519,8 +523,8 @@ export default function PlanPage({
               </h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
-                  { week: "Week 1", focus: "Address Top Skill Gaps", days: "Days 1–7",   start: 1,  end: 7  },
-                  { week: "Week 2", focus: "Deep Dive & Practice",   days: "Days 8–14",  start: 8,  end: 14 },
+                  { week: "Week 1", focus: "Address Top Skill Gaps", days: "Days 1–7", start: 1, end: 7 },
+                  { week: "Week 2", focus: "Deep Dive & Practice", days: "Days 8–14", start: 8, end: 14 },
                   { week: "Week 3", focus: "System Design & Architecture", days: "Days 15–21", start: 15, end: 21 },
                   { week: "Week 4", focus: "Projects, Mocks & Applications", days: "Days 22–30", start: 22, end: 30 },
                 ].map(({ week, focus, days, start, end }) => {
@@ -535,11 +539,10 @@ export default function PlanPage({
                   return (
                     <div
                       key={week}
-                      className={`rounded-xl border p-4 transition-all ${
-                        isCurrentWeek
+                      className={`rounded-xl border p-4 transition-all ${isCurrentWeek
                           ? "border-[#ff6b35]/30 bg-[#fff3ed]"
                           : "border-slate-100 bg-slate-50"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className={`text-[10px] font-bold uppercase tracking-wide ${isCurrentWeek ? "text-[#ff6b35]" : "text-slate-400"}`}>

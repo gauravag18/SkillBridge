@@ -68,19 +68,25 @@ const categoryColors: Record<string, { pill: string; active: string; dot: string
 
 function Navbar() {
   return (
-    <header className="clean-nav sticky top-0 z-50">
-      <div className="max-w-5xl mx-auto px-4 lg:px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="font-bold text-xl tracking-tight text-slate-900 hover:text-[#EA580C] transition-colors">
+    <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
+        
+        {/* LEFT */}
+        <Link
+          href="/"
+          className="font-bold text-lg tracking-tight text-slate-900 hover:text-[#ff6b35] transition-colors"
+        >
           SkillBridge
         </Link>
-        <div className="flex items-center gap-3">
-          <Link href="/resume-improve" className="text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors hidden sm:block">
-            Resume Coach
-          </Link>
-          <Link href="/" className="px-4 py-2 bg-[#EA580C] text-white font-semibold rounded-lg transition-all hover:bg-[#C2410C] text-xs">
-            Home
-          </Link>
-        </div>
+
+        {/* RIGHT → HOME */}
+        <Link
+          href="/"
+          className="px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-lg transition-all hover:shadow-lg text-xs"
+        >
+          Home
+        </Link>
+
       </div>
     </header>
   );
