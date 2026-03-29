@@ -343,23 +343,14 @@ export default function Home() {
                     <FileEdit size={15} className="mr-2 shrink-0" />
                     Improve Resume
                   </Link>
-
-                  <button
-                    onClick={() => setShowModal(true)}
-                    className="group inline-flex items-center justify-center px-4 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-[#ff6b35] hover:text-[#ff6b35] transition-all text-sm"
-                  >
-                    <Mic size={15} className="mr-2 shrink-0" />
-                    Mock Interview
-                  </button>
-                </div>
-
-                <Link
+<Link
                   href="/onboard"
                   className="group w-full inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-bold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 >
                   Start Your Analysis
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
                 </Link>
+                </div>
               </div>
 
             </div>
@@ -394,7 +385,7 @@ export default function Home() {
       </section>
 
       {/* Stats */}
-      <section className="py-10 border-y border-slate-200 bg-[#fffcfa]">
+      <section className="py-10 border-y border-slate-200 bg-[#fffcfa] mt-10">
         <div className="max-w-6xl mx-auto px-4 lg:px-6">
           <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-200">
             {[
@@ -421,12 +412,11 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               { icon: Upload,    title: "Resume Analysis",       desc: "Advanced AI evaluates your resume against current industry standards and top-tier job requirements." },
               { icon: Brain,     title: "Skill Gap Detection",   desc: "Pinpoint exact competency gaps in technical skills, system design, and emerging technologies." },
               { icon: Calendar,  title: "30-Day Roadmap",        desc: "Receive a structured action plan with daily objectives, curated resources, and progress tracking." },
-              { icon: Mic,       title: "Mock Interview",        desc: "Practice with an AI interviewer that speaks questions, listens to your answers, and scores your performance." },
             ].map((item, i) => (
               <div key={i} className="group bg-white rounded-xl p-6 border border-slate-200 hover:border-[#ff6b35]/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="w-12 h-12 rounded-lg bg-[#fff3ed] flex items-center justify-center mb-4 group-hover:bg-[#ffebe1] transition-colors">
@@ -436,41 +426,6 @@ export default function Home() {
                 <p className="text-slate-600 leading-relaxed text-xs">{item.desc}</p>
               </div>
             ))}
-          </div>
-
-          {/* Callout strip */}
-          <div className="mt-8 grid sm:grid-cols-2 gap-4">
-            <div className="p-5 bg-white border-2 border-dashed border-[#ff6b35]/25 rounded-2xl flex items-center gap-4">
-              <div className="h-10 w-10 rounded-xl bg-[#fff3ed] flex items-center justify-center shrink-0">
-                <Mic size={18} className="text-[#ff6b35]" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-slate-900 text-sm mb-0.5">Practice with AI interviewer</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">Voice-based interview, real-time scoring, actionable feedback report.</p>
-              </div>
-              <button
-                onClick={() => setShowModal(true)}
-                className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 bg-[#ff6b35] text-white font-semibold rounded-xl text-xs hover:bg-[#e55a28] hover:shadow-lg transition-all"
-              >
-                Try Now <ArrowRight size={12} />
-              </button>
-            </div>
-
-            <div className="p-5 bg-white border-2 border-dashed border-slate-200 rounded-2xl flex items-center gap-4">
-              <div className="h-10 w-10 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
-                <FileEdit size={18} className="text-slate-400" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-slate-900 text-sm mb-0.5">Just want to improve your resume?</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">Bullet rewrites, ATS fixes, keyword analysis — instantly free.</p>
-              </div>
-              <Link
-                href="/resume-improve"
-                className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white font-semibold rounded-xl text-xs hover:bg-slate-700 transition-all"
-              >
-                Try Free <ArrowRight size={12} />
-              </Link>
-            </div>
           </div>
         </div>
       </section>
