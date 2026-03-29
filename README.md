@@ -26,13 +26,7 @@
 
 ## 🔭 Overview
 
-**SkillBridge** is a comprehensive professional documentation and career optimization platform designed to bridge the gap between complex codebases and high-impact repository presentation. By leveraging advanced generative AI, SkillBridge transforms the often-tedious task of repository analysis and README generation into a seamless, automated experience that empowers developers to showcase their work with the professional polish it deserves.
-
-### The Problem
-> Modern software development moves at a lightning pace, yet documentation remains a persistent bottleneck. Developers frequently struggle to articulate the value of their technical achievements, leading to repositories that are technically brilliant but poorly communicated. This "documentation debt" results in lower project adoption, confusion for contributors, and missed opportunities for developers to truly demonstrate their expertise to potential employers or collaborators.
-
-### The Solution
-SkillBridge provides a centralized suite for technical professionalization. It eliminates the friction of manual documentation by providing an intelligent interface that analyzes repository structures and generates comprehensive README files. Beyond mere documentation, it extends its utility into career readiness through integrated resume analysis and mock interview preparation, ensuring that the "bridge" between a developer's code and their career goals is sturdier than ever.
+**SkillBridge** full-stack career development platform designed to help users enhance their skills, prepare for interviews, and track their professional growth. It offers features like project showcasing, personalized dashboards, and guided onboarding to create a structured learning and career progression experience. Built with modern web technologies, SkillBridge focuses on performance, scalability, and a seamless user interface, making it an efficient tool for students and professionals aiming to bridge the gap between learning and real-world opportunities.
 
 ### Architecture Overview
 Built on a modern **Component-based Architecture**, SkillBridge utilizes **Next.js 16** and **React 19** to deliver a high-performance, single-page application experience. The system is engineered for responsiveness and interactivity, utilizing **Tailwind CSS 4** for styling and **Framer Motion** for sophisticated UI transitions. The backend logic is encapsulated within Next.js Server Actions, providing a secure and efficient bridge to external AI models and database services.
@@ -52,10 +46,6 @@ Transform your GitHub repositories into professional showcases. By analyzing the
 The `resume-improve` module provides users with the tools to refine their professional narrative. By utilizing the `ResumeUploader` and `pdf-parse` capabilities, the platform identifies gaps in technical descriptions and suggests high-impact enhancements.
 - **Benefit:** Increases the visibility of your technical skills to both automated screening systems and human recruiters.
 - **User Action:** Upload a PDF resume and receive immediate, actionable feedback based on industry trends.
-
-### 🎙️ Interactive Mock Interviews
-Prepare for high-stakes technical evaluations using the `mock-interview` environment. The platform simulates real-world interview scenarios, providing a safe space for developers to practice their communication and problem-solving skills.
-- **Benefit:** Reduces interview anxiety and improves technical articulation through repeated, low-stakes exposure.
 
 ### 📊 Progress Tracking & Dashboarding
 The centralized `dashboard` provides a holistic view of your career readiness and project documentation status. Utilizing components like `ScoreRing` and `Progress` actions, users can visualize their improvement over time.
@@ -181,11 +171,6 @@ SkillBridge is designed for intuitive navigation. Once the development server is
 2. Use the `FileUpload` component to submit your PDF.
 3. The platform processes the file through `pdf-parse` and provides a score using the `ScoreRing` component.
 4. Review the AI-generated suggestions to enhance your professional impact.
-
-### Mock Interview Practice
-1. Enter the `/mock-interview` module.
-2. Select your target role.
-3. Interact with the AI-driven prompt system to simulate a real-world interview experience.
 
 ---
 
