@@ -30,57 +30,10 @@
 > Modern software development moves at a lightning pace, yet documentation remains a persistent bottleneck. Developers frequently struggle to articulate the value of their technical achievements, leading to repositories that are technically brilliant but poorly communicated. This "documentation debt" results in lower project adoption, confusion for contributors, and missed opportunities for developers to truly demonstrate their expertise to potential employers or collaborators.
 
 ### The Solution
-SkillBridge provides a centralized suite for technical professionalization. It eliminates the friction of manual documentation by providing an intelligent interface that analyzes repository structures and generates comprehensive README files. Beyond mere documentation, it extends its utility into career readiness through integrated resume analysis and mock interview preparation.
+SkillBridge provides a centralized suite for technical professionalization. It eliminates the friction of manual documentation by providing an intelligent interface that analyzes repository structures and generates comprehensive README files. Beyond mere documentation, it extends its utility into career readiness through integrated resume analysis and mock interview preparation, ensuring that the "bridge" between a developer's code and their career goals is sturdier than ever.
 
----
-
-## 🧩 Architecture & Flow
-
-### System Architecture
-SkillBridge is built on a modern **Component-based Architecture** utilizing **Next.js 16** with the App Router. The backend logic is encapsulated within Next.js Server Actions, providing a secure and efficient bridge to external AI models and database services.
-
-```mermaid
-graph LR
-    subgraph Frontend [Next.js App Router]
-        UI[React 19 Components]
-        TW[Tailwind CSS 4]
-        FM[Framer Motion]
-    end
-    subgraph Backend [Server Actions & APIs]
-        SA[Next.js Server Actions]
-        API[API Routes]
-    end
-    subgraph External Services
-        SB[(Supabase DB & Auth)]
-        AI[Groq/Grok AI API]
-        GH[GitHub API]
-    end
-
-    UI --> SA
-    UI --> API
-    SA --> SB
-    SA --> AI
-    SA --> GH
-    API --> AI
-```
-
-### User Journey Flow
-The platform is designed to seamlessly guide users from onboarding to actionable career insights.
-
-```mermaid
-graph TD
-    A[User] -->|Lands on| B(Homepage)
-    B -->|Authenticates| C{Onboarding Flow}
-    C -->|Completes| D[Main Dashboard]
-    
-    D --> E[Mock Interview]
-    D --> F[Resume Improvement]
-    D --> G[GitHub Repo Analysis]
-    
-    E -->|Simulates Interview| H[AI Feedback & Performance Score]
-    F -->|Uploads PDF| I[Resume Score & Optimization Suggestions]
-    G -->|Connects Repo| J[Automated Professional README]
-```
+### Architecture Overview
+Built on a modern **Component-based Architecture**, SkillBridge utilizes **Next.js 16** and **React 19** to deliver a high-performance, single-page application experience. The system is engineered for responsiveness and interactivity, utilizing **Tailwind CSS 4** for styling and **Framer Motion** for sophisticated UI transitions. The backend logic is encapsulated within Next.js Server Actions, providing a secure and efficient bridge to external AI models and database services.
 
 ---
 
@@ -94,13 +47,13 @@ Transform your GitHub repositories into professional showcases. By analyzing the
 - **User Action:** Simply connect your repository and let the AI extract the essential technical context.
 
 ### 📄 Intelligent Resume Optimization
-The platform identifies gaps in technical descriptions and suggests high-impact enhancements.
-- **Benefit:** Increases the visibility of your technical skills to screening systems and recruiters.
-- **User Action:** Upload a PDF resume and receive immediate, actionable feedback.
+The `resume-improve` module provides users with the tools to refine their professional narrative. By utilizing the `ResumeUploader` and `pdf-parse` capabilities, the platform identifies gaps in technical descriptions and suggests high-impact enhancements.
+- **Benefit:** Increases the visibility of your technical skills to both automated screening systems and human recruiters.
+- **User Action:** Upload a PDF resume and receive immediate, actionable feedback based on industry trends.
 
 ### 🎙️ Interactive Mock Interviews
-Prepare for high-stakes technical evaluations using the `mock-interview` environment. Simulate real-world interview scenarios.
-- **Benefit:** Reduces interview anxiety and improves technical articulation.
+Prepare for high-stakes technical evaluations using the `mock-interview` environment. The platform simulates real-world interview scenarios, providing a safe space for developers to practice their communication and problem-solving skills.
+- **Benefit:** Reduces interview anxiety and improves technical articulation through repeated, low-stakes exposure.
 
 ### 📊 Progress Tracking & Dashboarding
 The centralized dashboard provides a holistic view of your career readiness and project documentation status.
@@ -190,13 +143,16 @@ Once the development server is running, navigate to `http://localhost:3000`.
 - Navigate to the **GitHub Integration** section.
 - Provide repository details. Let the AI scan and generate your README.
 
-### 2. Improving Your Resume
-- Head to the `/resume-improve` page.
-- Upload your PDF to calculate your score and receive optimization tips.
+### Improving Your Resume
+1. Head to the `/resume-improve` page.
+2. Use the `FileUpload` component to submit your PDF.
+3. The platform processes the file through `pdf-parse` and provides a score using the `ScoreRing` component.
+4. Review the AI-generated suggestions to enhance your professional impact.
 
-### 3. Mock Interview Practice
-- Enter the `/mock-interview` module.
-- Select your target role and begin the AI-driven interview simulation.
+### Mock Interview Practice
+1. Enter the `/mock-interview` module.
+2. Select your target role.
+3. Interact with the AI-driven prompt system to simulate a real-world interview experience.
 
 ---
 
