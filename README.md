@@ -32,8 +32,51 @@
 ### The Solution
 SkillBridge provides a centralized suite for technical professionalization. It eliminates the friction of manual documentation by providing an intelligent interface that analyzes repository structures and generates comprehensive README files. Beyond mere documentation, it extends its utility into career readiness through integrated resume analysis and mock interview preparation, ensuring that the "bridge" between a developer's code and their career goals is sturdier than ever.
 
-### Architecture Overview
+### Architecture & Flow
+
 Built on a modern **Component-based Architecture**, SkillBridge utilizes **Next.js 16** and **React 19** to deliver a high-performance, single-page application experience. The system is engineered for responsiveness and interactivity, utilizing **Tailwind CSS 4** for styling and **Framer Motion** for sophisticated UI transitions. The backend logic is encapsulated within Next.js Server Actions, providing a secure and efficient bridge to external AI models and database services.
+
+#### System Architecture
+```mermaid
+graph LR
+    subgraph Frontend [Next.js App Router]
+        UI[React 19 Components]
+        TW[Tailwind CSS 4]
+        FM[Framer Motion]
+    end
+    subgraph Backend [Server Actions & APIs]
+        SA[Next.js Server Actions]
+        API[API Routes]
+    end
+    subgraph External Services
+        SB[(Supabase DB & Auth)]
+        AI[Groq/Grok AI API]
+        GH[GitHub API]
+    end
+
+    UI --> SA
+    UI --> API
+    SA --> SB
+    SA --> AI
+    SA --> GH
+    API --> AI
+```
+
+#### User Journey Flow
+```mermaid
+graph TD
+    A[User] -->|Lands on| B(Homepage)
+    B -->|Authenticates| C{Onboarding Flow}
+    C -->|Completes| D[Main Dashboard]
+    
+    D --> E[Mock Interview]
+    D --> F[Resume Improvement]
+    D --> G[GitHub Repo Analysis]
+    
+    E -->|Simulates Interview| H[AI Feedback & Score]
+    F -->|Uploads PDF| I[Resume Score & Optimization]
+    G -->|Connects Repo| J[Automated Professional README]
+```
 
 ---
 
