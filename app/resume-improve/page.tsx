@@ -129,9 +129,9 @@ function ScoreBar({ score, label }: { score: number; label: string }) {
 
 function PriorityBadge({ priority }: { priority: string }) {
   const map: Record<string, string> = {
-    high:   "bg-[#FFF7ED] text-[#EA580C] border-[#EA580C]/20",
+    high: "bg-[#FFF7ED] text-[#EA580C] border-[#EA580C]/20",
     medium: "bg-amber-50 text-amber-700 border-amber-200",
-    low:    "bg-[#EFF6FF] text-[#1E3A8A] border-[#1E3A8A]/20",
+    low: "bg-[#EFF6FF] text-[#1E3A8A] border-[#1E3A8A]/20",
   };
   return (
     <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${map[priority] ?? map.low}`}>
@@ -181,7 +181,7 @@ function UploadPanel({
         className={`relative rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-200 flex flex-col items-center justify-center p-6 text-center min-h-50
           ${isDragActive ? "border-[#EA580C] bg-[#FFF7ED]"
             : file ? "border-[#EA580C]/40 bg-[#FFF7ED]/50"
-            : "border-slate-200 bg-slate-50 hover:border-[#EA580C]/50 hover:bg-[#FFF7ED]/40"
+              : "border-slate-200 bg-slate-50 hover:border-[#EA580C]/50 hover:bg-[#FFF7ED]/40"
           }`}
       >
         <input {...getInputProps()} />
@@ -315,10 +315,10 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
   const [activeTab, setActiveTab] = useState<"bullets" | "structure" | "keywords" | "ats" | "jd">("bullets");
 
   const tabs = [
-    { id: "bullets" as const,   label: "Bullets",   icon: Type },
+    { id: "bullets" as const, label: "Bullets", icon: Type },
     { id: "structure" as const, label: "Structure", icon: Layout },
-    { id: "keywords" as const,  label: "Keywords",  icon: Search },
-    { id: "ats" as const,       label: "ATS",       icon: BarChart3 },
+    { id: "keywords" as const, label: "Keywords", icon: Search },
+    { id: "ats" as const, label: "ATS", icon: BarChart3 },
     ...(data.jd_alignment ? [{ id: "jd" as const, label: "JD Fit", icon: Target }] : []),
   ];
 
@@ -416,9 +416,8 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all flex-1 justify-center ${
-                  activeTab === tab.id ? "bg-white text-[#1E3A8A] shadow-sm" : "text-slate-500 hover:text-slate-700"
-                }`}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all flex-1 justify-center ${activeTab === tab.id ? "bg-white text-[#1E3A8A] shadow-sm" : "text-slate-500 hover:text-slate-700"
+                  }`}
               >
                 <tab.icon size={12} />{tab.label}
               </button>
@@ -470,9 +469,8 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                         <TrendingUp size={13} className="text-[#EA580C]" />
                       </div>
                       <span className="text-xs font-bold text-slate-700">Metrics & Quantification</span>
-                      <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        data.sections.achievements_analysis.has_metrics ? "bg-[#EFF6FF] text-[#1E3A8A]" : "bg-[#FFF7ED] text-[#EA580C]"
-                      }`}>
+                      <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full ${data.sections.achievements_analysis.has_metrics ? "bg-[#EFF6FF] text-[#1E3A8A]" : "bg-[#FFF7ED] text-[#EA580C]"
+                        }`}>
                         {data.sections.achievements_analysis.has_metrics ? "Present" : "Missing"}
                       </span>
                     </div>
@@ -544,9 +542,9 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                   </div>
                   <div className="space-y-4">
                     {[
-                      { label: "Technical Skills",    items: data.sections.missing_keywords.technical,    bg: "bg-[#FFF7ED]", border: "border-[#EA580C]/20", tc: "text-[#EA580C]" },
-                      { label: "Soft Skills",         items: data.sections.missing_keywords.soft_skills,  bg: "bg-[#EFF6FF]", border: "border-[#1E3A8A]/20", tc: "text-[#1E3A8A]" },
-                      { label: "Strong Action Verbs", items: data.sections.missing_keywords.action_verbs, bg: "bg-slate-50",  border: "border-slate-200",    tc: "text-slate-700" },
+                      { label: "Technical Skills", items: data.sections.missing_keywords.technical, bg: "bg-[#FFF7ED]", border: "border-[#EA580C]/20", tc: "text-[#EA580C]" },
+                      { label: "Soft Skills", items: data.sections.missing_keywords.soft_skills, bg: "bg-[#EFF6FF]", border: "border-[#1E3A8A]/20", tc: "text-[#1E3A8A]" },
+                      { label: "Strong Action Verbs", items: data.sections.missing_keywords.action_verbs, bg: "bg-slate-50", border: "border-slate-200", tc: "text-slate-700" },
                     ].map(({ label, items, bg, border, tc }) => (
                       <div key={label} className="rounded-xl border border-slate-200 overflow-hidden">
                         <div className="flex items-center gap-2 px-5 py-3 border-b border-slate-100 bg-slate-50/60">
@@ -594,8 +592,8 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                           {data.sections.ats_analysis.score >= 75
                             ? "Good — most systems will parse your resume correctly."
                             : data.sections.ats_analysis.score >= 50
-                            ? "Needs work — some systems may filter you out."
-                            : "Critical — likely being filtered by ATS systems."}
+                              ? "Needs work — some systems may filter you out."
+                              : "Critical — likely being filtered by ATS systems."}
                         </p>
                         <ScoreBar score={data.sections.ats_analysis.score} label="Parsability" />
                       </div>
@@ -656,7 +654,7 @@ function ResultsPanel({ data, onReset }: { data: ResumeAnalysis; onReset: () => 
                         <p className="text-sm text-slate-500 leading-relaxed mb-3">
                           {data.jd_alignment.match_score >= 75 ? "Strong match — you cover most requirements."
                             : data.jd_alignment.match_score >= 50 ? "Partial match — tailor your resume further."
-                            : "Low match — significant gaps vs this JD."}
+                              : "Low match — significant gaps vs this JD."}
                         </p>
                         <ScoreBar score={data.jd_alignment.match_score} label="Overall match" />
                       </div>
@@ -829,9 +827,9 @@ export default function ResumeImprovementPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-3 w-full max-w-xs">
                     {[
-                      { icon: Type,      label: "Bullet rewrites" },
-                      { icon: Layout,    label: "Structure fixes" },
-                      { icon: Search,    label: "Keyword gaps" },
+                      { icon: Type, label: "Bullet rewrites" },
+                      { icon: Layout, label: "Structure fixes" },
+                      { icon: Search, label: "Keyword gaps" },
                       { icon: BarChart3, label: "ATS score" },
                     ].map(({ icon: Icon, label }) => (
                       <div key={label} className="flex items-center gap-2 p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs text-slate-500 font-medium">

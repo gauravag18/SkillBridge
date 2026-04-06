@@ -343,13 +343,13 @@ export default function Home() {
                     <FileEdit size={15} className="mr-2 shrink-0" />
                     Improve Resume
                   </Link>
-<Link
-                  href="/onboard"
-                  className="group w-full inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-bold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                >
-                  Start Your Analysis
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
-                </Link>
+                  <Link
+                    href="/onboard"
+                    className="group w-full inline-flex items-center justify-center px-6 py-3 bg-[#ff6b35] text-white font-bold rounded-lg transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                  >
+                    Start Your Analysis
+                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                  </Link>
                 </div>
               </div>
 
@@ -414,9 +414,9 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { icon: Upload,    title: "Resume Analysis",       desc: "Advanced AI evaluates your resume against current industry standards and top-tier job requirements." },
-              { icon: Brain,     title: "Skill Gap Detection",   desc: "Pinpoint exact competency gaps in technical skills, system design, and emerging technologies." },
-              { icon: Calendar,  title: "30-Day Roadmap",        desc: "Receive a structured action plan with daily objectives, curated resources, and progress tracking." },
+              { icon: Upload, title: "Resume Analysis", desc: "Advanced AI evaluates your resume against current industry standards and top-tier job requirements." },
+              { icon: Brain, title: "Skill Gap Detection", desc: "Pinpoint exact competency gaps in technical skills, system design, and emerging technologies." },
+              { icon: Calendar, title: "30-Day Roadmap", desc: "Receive a structured action plan with daily objectives, curated resources, and progress tracking." },
             ].map((item, i) => (
               <div key={i} className="group bg-white rounded-xl p-6 border border-slate-200 hover:border-[#ff6b35]/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="w-12 h-12 rounded-lg bg-[#fff3ed] flex items-center justify-center mb-4 group-hover:bg-[#ffebe1] transition-colors">
@@ -494,10 +494,10 @@ export default function Home() {
 
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: TrendingUp,  title: "Career Growth",  value: "3x faster" },
-                { icon: Award,       title: "Success Rate",   value: "94%" },
-                { icon: Brain,       title: "AI Accuracy",    value: "99.2%" },
-                { icon: CheckCircle2, title: "Satisfaction",  value: "4.9/5" },
+                { icon: TrendingUp, title: "Career Growth", value: "3x faster" },
+                { icon: Award, title: "Success Rate", value: "94%" },
+                { icon: Brain, title: "AI Accuracy", value: "99.2%" },
+                { icon: CheckCircle2, title: "Satisfaction", value: "4.9/5" },
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-xl p-5 border border-slate-200 hover:border-[#ff6b35]/30 hover:shadow-md transition-all">
                   <item.icon className="text-[#ff6b35] mb-2" size={22} />

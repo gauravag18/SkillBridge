@@ -57,12 +57,12 @@ const skillCategories = {
 };
 
 const categoryColors: Record<string, { pill: string; active: string; dot: string }> = {
-  blue:   { pill: "bg-blue-50 border-blue-100 text-blue-700",   active: "bg-blue-600 border-blue-600 text-white",   dot: "bg-blue-500" },
+  blue: { pill: "bg-blue-50 border-blue-100 text-blue-700", active: "bg-blue-600 border-blue-600 text-white", dot: "bg-blue-500" },
   violet: { pill: "bg-violet-50 border-violet-100 text-violet-700", active: "bg-violet-600 border-violet-600 text-white", dot: "bg-violet-500" },
-  green:  { pill: "bg-emerald-50 border-emerald-100 text-emerald-700", active: "bg-emerald-600 border-emerald-600 text-white", dot: "bg-emerald-500" },
-  amber:  { pill: "bg-amber-50 border-amber-100 text-amber-700", active: "bg-amber-600 border-amber-600 text-white",  dot: "bg-amber-500" },
-  slate:  { pill: "bg-slate-50 border-slate-200 text-slate-600", active: "bg-slate-700 border-slate-700 text-white",  dot: "bg-slate-500" },
-  rose:   { pill: "bg-rose-50 border-rose-100 text-rose-700",   active: "bg-rose-600 border-rose-600 text-white",   dot: "bg-rose-500" },
+  green: { pill: "bg-emerald-50 border-emerald-100 text-emerald-700", active: "bg-emerald-600 border-emerald-600 text-white", dot: "bg-emerald-500" },
+  amber: { pill: "bg-amber-50 border-amber-100 text-amber-700", active: "bg-amber-600 border-amber-600 text-white", dot: "bg-amber-500" },
+  slate: { pill: "bg-slate-50 border-slate-200 text-slate-600", active: "bg-slate-700 border-slate-700 text-white", dot: "bg-slate-500" },
+  rose: { pill: "bg-rose-50 border-rose-100 text-rose-700", active: "bg-rose-600 border-rose-600 text-white", dot: "bg-rose-500" },
   purple: { pill: "bg-purple-50 border-purple-100 text-purple-700", active: "bg-purple-600 border-purple-600 text-white", dot: "bg-purple-500" },
 };
 
@@ -70,7 +70,7 @@ function Navbar() {
   return (
     <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
-        
+
         {/* LEFT */}
         <Link
           href="/"
@@ -375,9 +375,8 @@ export default function OnboardPage() {
                         maxLength={JD_LIMIT}
                         className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:border-[#EA580C] focus:outline-none focus:ring-1 focus:ring-[#EA580C] resize-none text-slate-800 placeholder:text-slate-400 bg-white"
                       />
-                      <span className={`absolute bottom-3 right-3 text-[10px] font-semibold tabular-nums ${
-                        jobDescription.length >= JD_LIMIT - 50 ? "text-red-500" : "text-slate-300"
-                      }`}>
+                      <span className={`absolute bottom-3 right-3 text-[10px] font-semibold tabular-nums ${jobDescription.length >= JD_LIMIT - 50 ? "text-red-500" : "text-slate-300"
+                        }`}>
                         {jobDescription.length}/{JD_LIMIT}
                       </span>
                     </div>
@@ -556,57 +555,6 @@ export default function OnboardPage() {
 
                     {errorMsg && <p className="text-red-600 text-xs mt-3 text-center font-medium">{errorMsg}</p>}
                   </div>
-                </div>
-
-                {/* Progress tracker */}
-                <div className="clean-card p-5">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xs font-bold text-slate-700">Progress</h3>
-                    <span className="text-[10px] font-bold text-[#EA580C] bg-[#FFF7ED] px-2 py-0.5 rounded-full">{completedSteps}/3 done</span>
-                  </div>
-                  <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden mb-4">
-                    <div
-                      className="h-full bg-[#EA580C] rounded-full transition-all duration-500"
-                      style={{ width: `${(completedSteps / 3) * 100}%` }}
-                    />
-                  </div>
-                  <div className="space-y-2.5">
-                    {[
-                      { label: "Basic info & required fields", done: !!(fullName.trim() && targetRole && year && (year === "passed" ? experience.trim() : cgpa.trim())) },
-                      { label: "Technical skills", done: skills.length > 0 },
-                      { label: "Resume uploaded", done: !!resumeFile },
-                    ].map(({ label, done }) => (
-                      <div key={label} className="flex items-center gap-2.5">
-                        <div className={cn(
-                          "h-5 w-5 rounded-md flex items-center justify-center transition-colors",
-                          done ? "bg-[#EA580C]" : "bg-slate-100"
-                        )}>
-                          <CheckCircle2 size={10} className={done ? "text-white" : "text-slate-300"} />
-                        </div>
-                        <span className={cn("text-xs font-medium", done ? "text-slate-700" : "text-slate-400")}>{label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Report includes */}
-                <div className="clean-card p-5">
-                  <h3 className="text-xs font-bold text-slate-700 mb-4">Your report includes</h3>
-                  <ul className="space-y-2.5">
-                    {[
-                      "Career readiness score",
-                      "JD match percentage",
-                      "GitHub profile analysis",
-                      "Missing technical skills",
-                      "Suggested job roles",
-                      "Personalized 30-day roadmap",
-                    ].map((item) => (
-                      <li key={item} className="flex items-center gap-2.5">
-                        <ChevronRight size={12} className="text-[#EA580C] shrink-0" />
-                        <span className="text-xs text-slate-500">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
 
                 {/* What happens next */}

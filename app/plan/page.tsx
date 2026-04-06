@@ -316,12 +316,12 @@ export default function PlanPage({
                 >
                   <div
                     className={`h-8 rounded transition-all ${isCurrent
-                        ? "bg-[#ff6b35] shadow-md scale-y-110"
-                        : isDone
-                          ? "bg-green-400"
-                          : isPartial
-                            ? "bg-orange-200"
-                            : "bg-slate-100 hover:bg-slate-200"
+                      ? "bg-[#ff6b35] shadow-md scale-y-110"
+                      : isDone
+                        ? "bg-green-400"
+                        : isPartial
+                          ? "bg-orange-200"
+                          : "bg-slate-100 hover:bg-slate-200"
                       }`}
                   />
                   {d % 5 === 0 && (
@@ -540,8 +540,8 @@ export default function PlanPage({
                     <div
                       key={week}
                       className={`rounded-xl border p-4 transition-all ${isCurrentWeek
-                          ? "border-[#ff6b35]/30 bg-[#fff3ed]"
-                          : "border-slate-100 bg-slate-50"
+                        ? "border-[#ff6b35]/30 bg-[#fff3ed]"
+                        : "border-slate-100 bg-slate-50"
                         }`}
                     >
                       <div className="flex items-center justify-between mb-1">

@@ -1,4 +1,4 @@
-"use server";
+
 
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
@@ -22,7 +22,7 @@ import {
 
 const tierConfig = {
   critical: {
-    bar: "#EA580C",     
+    bar: "#EA580C",
     bg: "bg-white",
     border: "border-orange-100",
     badge: "bg-[#FFF7ED] text-[#EA580C] border-[#EA580C]/20",
@@ -33,7 +33,7 @@ const tierConfig = {
     icon: <AlertTriangle size={9} />,
   },
   high: {
-    bar: "#D97706",        
+    bar: "#D97706",
     bg: "bg-white",
     border: "border-amber-100",
     badge: "bg-amber-50 text-amber-700 border-amber-200",
@@ -44,7 +44,7 @@ const tierConfig = {
     icon: <TrendingUp size={9} />,
   },
   medium: {
-    bar: "#1E3A8A",        
+    bar: "#1E3A8A",
     bg: "bg-white",
     border: "border-blue-100",
     badge: "bg-[#EFF6FF] text-[#1E3A8A] border-[#1E3A8A]/20",
@@ -60,7 +60,7 @@ function Navbar() {
   return (
     <header className="border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between">
-        
+
         {/* LEFT */}
         <Link
           href="/"
@@ -86,8 +86,8 @@ function GapCard({ gap, index }: { gap: any; index: number }) {
   const pct: number = gap.percentage;
   const tier =
     pct >= 70 ? "critical"
-    : pct >= 40 ? "high"
-    : "medium";
+      : pct >= 40 ? "high"
+        : "medium";
 
   const config = tierConfig[tier];
 
@@ -217,9 +217,9 @@ export default async function DashboardPage({
 
   const estimatedTime =
     readiness === null ? "Pending"
-    : readiness < 60 ? "6–8 Weeks"
-    : readiness < 80 ? "3–5 Weeks"
-    : "1–3 Weeks";
+      : readiness < 60 ? "6–8 Weeks"
+        : readiness < 80 ? "3–5 Weeks"
+          : "1–3 Weeks";
 
   const sortedGaps = [...skillGaps].sort((a: any, b: any) => b.percentage - a.percentage);
   const criticalCount = sortedGaps.filter((g: any) => g.percentage >= 70).length;
